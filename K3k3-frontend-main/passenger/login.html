@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K3K3 | Passenger Login & Sign Up</title>
+    <link rel="icon" type="image/png" href="../assets/k3k3.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="toast.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+    <div class="login-container">
+        <!-- Professional Sidebar -->
+        <aside class="login-sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <img src="../assets/k3k3.png" alt="K3K3 Logo" class="sidebar-logo">
+                    <div class="sidebar-title">
+                        <h1>K3K3</h1>
+                        <span class="subtitle">Premium Passenger Service</span>
+                    </div>
+                </div>
+                <div class="branding-line"></div>
+                <div class="sidebar-description">
+                    <p>Experience luxury transportation with our premium ride service. Your journey, our priority.</p>
+                </div>
+            </div>
+            
+            <!-- Trust Badges -->
+            <div class="trust-badges">
+                <div class="badge">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Secure & Safe</span>
+                </div>
+                <div class="badge">
+                    <i class="fas fa-clock"></i>
+                    <span>24/7 Available</span>
+                </div>
+                <div class="badge">
+                    <i class="fas fa-star"></i>
+                    <span>Premium Service</span>
+                </div>
+            </div>
+            
+            <!-- Features List -->
+            <div class="features-list">
+                <h3>Why Choose K3K3?</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> Professional drivers</li>
+                    <li><i class="fas fa-check-circle"></i> Luxury vehicles</li>
+                    <li><i class="fas fa-check-circle"></i> Real-time tracking</li>
+                    <li><i class="fas fa-check-circle"></i> Easy payments</li>
+                    <li><i class="fas fa-check-circle"></i> Customer support</li>
+                </ul>
+            </div>
+            
+            <!-- Back to Home -->
+            <div class="back-home">
+                <a href="../index.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Home
+                </a>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="login-main">
+            <div class="login-content">
+                <!-- Header -->
+                <header class="login-header">
+                    <div class="header-logo">
+                        <img src="../assets/k3k3.png" alt="K3K3 Logo" class="header-logo-img">
+                    </div>
+                    <div class="header-text">
+                        <h2>Welcome to K3K3</h2>
+                        <p>Your premium ride-sharing experience starts here</p>
+                    </div>
+                </header>
+                
+                <!-- Tab Container -->
+                <div class="tab-container">
+                    <div class="tab-nav">
+                        <button class="tab-btn active" data-tab="login">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Login
+                        </button>
+                        <button class="tab-btn" data-tab="signup">
+                            <i class="fas fa-user-plus"></i>
+                            Sign Up
+                        </button>
+                    </div>
+                    
+                    <!-- Login Tab -->
+                    <div class="tab-content active" id="login-tab">
+                        <form id="loginForm" class="login-form">
+                            <div class="form-header">
+                                <h3>Welcome Back</h3>
+                                <p>Login to access your K3K3 account</p>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="login-email">
+                                    <i class="fas fa-envelope"></i>
+                                    Email Address
+                                </label>
+                                <input type="email" id="login-email" name="email" required 
+                                       placeholder="Enter your email address">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="login-password">
+                                    <i class="fas fa-lock"></i>
+                                    Password
+                                </label>
+                                <div class="password-input-wrapper">
+                                    <input type="password" id="login-password" name="password" required 
+                                           placeholder="Enter your password">
+                                    <button type="button" class="password-toggle" data-target="login-password">
+                                        <i class="fas fa-eye eye-icon"></i>
+                                        <i class="fas fa-eye-slash eye-slash-icon" style="display: none;"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="form-options">
+                                <label class="remember-me">
+                                    <input type="checkbox" name="remember">
+                                    <span class="checkmark"></span>
+                                    Remember me
+                                </label>
+                                <a href="#" class="forgot-password">Forgot password?</a>
+                            </div>
+                            
+                            <button type="submit" class="login-btn">
+                                <i class="fas fa-sign-in-alt"></i>
+                                Login to Account
+                            </button>
+                            
+                            <div class="divider">
+                                <span>or continue with</span>
+                            </div>
+                            
+                            <div class="social-login">
+                                <div id="google-signin-button"></div>
+                                <button type="button" class="social-btn google" onclick="loginWithGooglePopup()">
+                                    <i class="fab fa-google"></i>
+                                    Google
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Sign Up Tab -->
+                    <div class="tab-content" id="signup-tab">
+                        <form id="signupForm" class="signup-form">
+                            <div class="form-header">
+                                <h3>Create Account</h3>
+                                <p>Join K3K3 for premium ride experiences</p>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="signup-firstname">
+                                        <i class="fas fa-user"></i>
+                                        First Name
+                                    </label>
+                                    <input type="text" id="signup-firstname" name="firstName" required 
+                                           placeholder="Enter first name">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="signup-lastname">
+                                        <i class="fas fa-user"></i>
+                                        Last Name
+                                    </label>
+                                    <input type="text" id="signup-lastname" name="lastName" required 
+                                           placeholder="Enter last name">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="signup-middlename">
+                                    <i class="fas fa-user"></i>
+                                    Middle Name (Optional)
+                                </label>
+                                <input type="text" id="signup-middlename" name="middleName" 
+                                       placeholder="Enter middle name">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="signup-email">
+                                    <i class="fas fa-envelope"></i>
+                                    Email Address
+                                </label>
+                                <input type="email" id="signup-email" name="email" required 
+                                       placeholder="Enter your email address">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="signup-phone">
+                                    <i class="fas fa-phone"></i>
+                                    Phone Number
+                                </label>
+                                <div class="phone-input-wrapper">
+                                    <div class="country-selector">
+                                        <select id="signup-countryCode" name="countryCode" class="country-dropdown">
+                                            <option value="+233" data-flag="🇬🇭">🇬🇭 +233</option>
+                                            <option value="+234" data-flag="🇳🇬">🇳🇬 +234</option>
+                                            <option value="+254" data-flag="🇰🇪">🇰🇪 +254</option>
+                                            <option value="+255" data-flag="🇹🇿">🇹🇿 +255</option>
+                                            <option value="+256" data-flag="🇺🇬">🇺🇬 +256</option>
+                                            <option value="+258" data-flag="🇲🇿">🇲🇿 +258</option>
+                                            <option value="+260" data-flag="🇿🇲">🇿🇲 +260</option>
+                                            <option value="+263" data-flag="🇿🇼">🇿🇼 +263</option>
+                                            <option value="+264" data-flag="🇳🇦">🇳🇦 +264</option>
+                                            <option value="+265" data-flag="🇲🇼">🇲🇼 +265</option>
+                                            <option value="+266" data-flag="🇱🇸">🇱🇸 +266</option>
+                                            <option value="+267" data-flag="🇧🇼">🇧🇼 +267</option>
+                                            <option value="+268" data-flag="🇸🇿">🇸🇿 +268</option>
+                                            <option value="+27" data-flag="🇿🇦">🇿🇦 +27</option>
+                                            <option value="+211" data-flag="🇸🇸">🇸🇸 +211</option>
+                                            <option value="+212" data-flag="🇲🇦">🇲🇦 +212</option>
+                                            <option value="+213" data-flag="🇩🇿">🇩🇿 +213</option>
+                                            <option value="+216" data-flag="🇹🇳">🇹🇳 +216</option>
+                                            <option value="+218" data-flag="🇱🇾">🇱🇾 +218</option>
+                                            <option value="+220" data-flag="🇬🇲">🇬🇲 +220</option>
+                                            <option value="+221" data-flag="🇸🇳">🇸🇳 +221</option>
+                                            <option value="+222" data-flag="🇲🇷">🇲🇷 +222</option>
+                                            <option value="+223" data-flag="🇲🇱">🇲🇱 +223</option>
+                                            <option value="+224" data-flag="🇬🇳">🇬🇳 +224</option>
+                                            <option value="+225" data-flag="🇨🇮">🇨🇮 +225</option>
+                                            <option value="+226" data-flag="🇧🇫">🇧🇫 +226</option>
+                                            <option value="+227" data-flag="🇳🇪">🇳🇪 +227</option>
+                                            <option value="+228" data-flag="🇹🇬">🇹🇬 +228</option>
+                                            <option value="+229" data-flag="🇧🇯">🇧🇯 +229</option>
+                                            <option value="+230" data-flag="🇲🇺">🇲🇺 +230</option>
+                                            <option value="+231" data-flag="🇱🇷">🇱🇷 +231</option>
+                                            <option value="+232" data-flag="🇸🇱">🇸🇱 +232</option>
+                                            <option value="+237" data-flag="🇨🇲">🇨🇲 +237</option>
+                                            <option value="+238" data-flag="🇨🇻">🇨🇻 +238</option>
+                                            <option value="+239" data-flag="🇸🇹">🇸🇹 +239</option>
+                                            <option value="+240" data-flag="🇬🇶">🇬🇶 +240</option>
+                                            <option value="+241" data-flag="🇬🇦">🇬🇦 +241</option>
+                                            <option value="+242" data-flag="🇨🇬">🇨🇬 +242</option>
+                                            <option value="+243" data-flag="🇨🇩">🇨🇩 +243</option>
+                                            <option value="+244" data-flag="🇦🇴">🇦🇴 +244</option>
+                                            <option value="+245" data-flag="🇬🇼">🇬🇼 +245</option>
+                                            <option value="+246" data-flag="🇾🇹">🇾🇹 +246</option>
+                                            <option value="+247" data-flag="🇦🇨">🇦🇨 +247</option>
+                                            <option value="+248" data-flag="🇸🇨">🇸🇨 +248</option>
+                                            <option value="+249" data-flag="🇸🇩">🇸🇩 +249</option>
+                                            <option value="+250" data-flag="🇷🇼">🇷🇼 +250</option>
+                                            <option value="+251" data-flag="🇪🇹">🇪🇹 +251</option>
+                                            <option value="+252" data-flag="🇸🇴">🇸🇴 +252</option>
+                                            <option value="+253" data-flag="🇩🇯">🇩🇯 +253</option>
+                                            <option value="+254" data-flag="🇰🇪">🇰🇪 +254</option>
+                                            <option value="+257" data-flag="🇧🇮">🇧🇮 +257</option>
+                                            <option value="+258" data-flag="🇲🇿">🇲🇿 +258</option>
+                                            <option value="+259" data-flag="🇲🇬">🇲🇬 +259</option>
+                                            <option value="+290" data-flag="🇸🇭">🇸🇭 +290</option>
+                                            <option value="+291" data-flag="🇪🇷">🇪🇷 +291</option>
+                                            <option value="+297" data-flag="🇦🇼">🇦🇼 +297</option>
+                                            <option value="+298" data-flag="🇫🇴">🇫🇴 +298</option>
+                                            <option value="+299" data-flag="🇬🇱">🇬🇱 +299</option>
+                                            <option value="+350" data-flag="🇬🇮">🇬🇮 +350</option>
+                                            <option value="+351" data-flag="🇵🇹">🇵🇹 +351</option>
+                                            <option value="+352" data-flag="🇱🇺">🇱🇺 +352</option>
+                                            <option value="+353" data-flag="🇮🇪">🇮🇪 +353</option>
+                                            <option value="+354" data-flag="🇮🇸">🇮🇸 +354</option>
+                                            <option value="+355" data-flag="🇦🇱">🇦🇱 +355</option>
+                                            <option value="+356" data-flag="🇲🇹">🇲🇹 +356</option>
+                                            <option value="+357" data-flag="🇨🇾">🇨🇾 +357</option>
+                                            <option value="+358" data-flag="🇫🇮">🇫🇮 +358</option>
+                                            <option value="+359" data-flag="🇧🇬">🇧🇬 +359</option>
+                                            <option value="+36" data-flag="🇭🇺">🇭🇺 +36</option>
+                                            <option value="+371" data-flag="🇱🇻">🇱🇻 +371</option>
+                                            <option value="+372" data-flag="🇪🇪">🇪🇪 +372</option>
+                                            <option value="+373" data-flag="🇲🇩">🇲🇩 +373</option>
+                                            <option value="+374" data-flag="🇦🇲">🇦🇲 +374</option>
+                                            <option value="+375" data-flag="🇧🇾">🇧🇾 +375</option>
+                                            <option value="+376" data-flag="🇦🇩">🇦🇩 +376</option>
+                                            <option value="+377" data-flag="🇲🇨">🇲🇨 +377</option>
+                                            <option value="+378" data-flag="🇸🇲">🇸🇲 +378</option>
+                                            <option value="+380" data-flag="🇺🇦">🇺🇦 +380</option>
+                                            <option value="+381" data-flag="🇷🇸">🇷🇸 +381</option>
+                                            <option value="+382" data-flag="🇲🇪">🇲🇪 +382</option>
+                                            <option value="+383" data-flag="🇽🇰">🇽🇰 +383</option>
+                                            <option value="+385" data-flag="🇭🇷">🇭🇷 +385</option>
+                                            <option value="+386" data-flag="🇸🇮">🇸🇮 +386</option>
+                                            <option value="+387" data-flag="🇧🇦">🇧🇦 +387</option>
+                                            <option value="+389" data-flag="🇲🇰">🇲🇰 +389</option>
+                                            <option value="+39" data-flag="🇮🇹">🇮🇹 +39</option>
+                                            <option value="+40" data-flag="🇷🇴">🇷🇴 +40</option>
+                                            <option value="+41" data-flag="🇨🇭">🇨🇭 +41</option>
+                                            <option value="+43" data-flag="🇦🇹">🇦🇹 +43</option>
+                                            <option value="+44" data-flag="🇬🇧">🇬🇧 +44</option>
+                                            <option value="+45" data-flag="🇩🇰">🇩🇰 +45</option>
+                                            <option value="+46" data-flag="🇸🇪">🇸🇪 +46</option>
+                                            <option value="+47" data-flag="🇳🇴">🇳🇴 +47</option>
+                                            <option value="+48" data-flag="🇵🇱">🇵🇱 +48</option>
+                                            <option value="+49" data-flag="🇩🇪">🇩🇪 +49</option>
+                                        </select>
+                                    </div>
+                                    <input type="tel" id="signup-phone" name="phone" placeholder="Phone number" class="phone-input-field" required>
+                                </div>
+                                <small style="color: #666; font-size: 0.85rem; margin-top: 5px; display: block;">
+                                    Select your country code, then enter your phone number
+                                </small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="signup-password">
+                                    <i class="fas fa-lock"></i>
+                                    Password
+                                </label>
+                                <div class="password-input-wrapper">
+                                    <input type="password" id="signup-password" name="password" required 
+                                           placeholder="Create a strong password">
+                                    <button type="button" class="password-toggle" data-target="signup-password">
+                                        <i class="fas fa-eye eye-icon"></i>
+                                        <i class="fas fa-eye-slash eye-slash-icon" style="display: none;"></i>
+                                    </button>
+                                </div>
+                                <div class="password-requirements">
+                                    <p>Password must:</p>
+                                    <ul>
+                                        <li>Be at least 8 characters long</li>
+                                        <li>Contain uppercase and lowercase letters</li>
+                                        <li>Include at least one number</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="signup-confirm-password">
+                                    <i class="fas fa-lock"></i>
+                                    Confirm Password
+                                </label>
+                                <div class="password-input-wrapper">
+                                    <input type="password" id="signup-confirm-password" name="confirmPassword" required 
+                                           placeholder="Confirm your password">
+                                    <button type="button" class="password-toggle" data-target="signup-confirm-password">
+                                        <i class="fas fa-eye eye-icon"></i>
+                                        <i class="fas fa-eye-slash eye-slash-icon" style="display: none;"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="terms-checkbox">
+                                    <input type="checkbox" name="terms" required>
+                                    <span class="checkmark"></span>
+                                    I agree to the <a href="../legal/terms-of-service.html" class="terms-link">Terms of Service</a> and <a href="../legal/privacy-policy.html" class="terms-link">Privacy Policy</a>
+                                </label>
+                            </div>
+                            
+                            <button type="submit" class="signup-btn">
+                                <i class="fas fa-user-plus"></i>
+                                Create Account
+                            </button>
+                            
+                            <div class="divider">
+                                <span>or sign up with</span>
+                            </div>
+                            
+                            <div class="social-login">
+                                <div id="google-signin-button"></div>
+                                <button type="button" class="social-btn google" onclick="loginWithGooglePopup()">
+                                    <i class="fab fa-google"></i>
+                                    Google
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Uber-style Notification -->
+    <div class="notification" id="notification"></div>
+    
+    <!-- JavaScript -->
+    <script src="google-auth.js"></script>
+    <script src="login.js"></script>
+</body>
+</html>

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K3K3 Rider Registration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>K3K3</h1>
+                    <span>Rider Registration</span>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-outline" onclick="window.location.href='../admin/rider-management.html'">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Admin Login
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="app-main">
+            <!-- Welcome Section -->
+            <section class="welcome-section" id="welcomeSection">
+                <div class="welcome-content">
+                    <div class="welcome-text">
+                        <h2>Join K3K3 as a Rider</h2>
+                        <p>Start earning money by providing transportation services in your community. Complete our simple registration process to get started.</p>
+                        
+                        <div class="benefits">
+                            <div class="benefit-item">
+                                <i class="fas fa-coins"></i>
+                                <h3>Flexible Earnings</h3>
+                                <p>Work when you want, earn what you need</p>
+                            </div>
+                            <div class="benefit-item">
+                                <i class="fas fa-users"></i>
+                                <h3>Community Support</h3>
+                                <p>Join a network of trusted riders</p>
+                            </div>
+                            <div class="benefit-item">
+                                <i class="fas fa-shield-alt"></i>
+                                <h3>Safe & Secure</h3>
+                                <p>Insurance coverage and safety features</p>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-primary btn-large" id="startRegistration">
+                            <i class="fas fa-rocket"></i>
+                            Start Registration
+                        </button>
+                    </div>
+                    <div class="welcome-image">
+                        <i class="fas fa-motorcycle"></i>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Registration Form -->
+            <section class="registration-section" id="registrationSection" style="display: none;">
+                <div class="registration-container">
+                    <!-- Progress Bar -->
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressBar"></div>
+                        </div>
+                        <div class="step-indicators">
+                            <div class="step-indicator active" data-step="1">
+                                <span class="step-number">1</span>
+                                <span class="step-label">Personal Info</span>
+                            </div>
+                            <div class="step-indicator" data-step="2">
+                                <span class="step-number">2</span>
+                                <span class="step-label">Contact Info</span>
+                            </div>
+                            <div class="step-indicator" data-step="3">
+                                <span class="step-number">3</span>
+                                <span class="step-label">ID Verification</span>
+                            </div>
+                            <div class="step-indicator" data-step="4">
+                                <span class="step-number">4</span>
+                                <span class="step-label">Vehicle Info</span>
+                            </div>
+                            <div class="step-indicator" data-step="5">
+                                <span class="step-number">5</span>
+                                <span class="step-label">Payment Info</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Registration Steps -->
+                    <div class="registration-form">
+                        <!-- Step 1: Personal Information -->
+                        <div class="registration-step" id="step1">
+                            <div class="step-header">
+                                <h3>Personal Information</h3>
+                                <p>Tell us about yourself</p>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="firstName">First Name *</label>
+                                    <input type="text" id="firstName" name="firstName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName">Last Name *</label>
+                                    <input type="text" id="lastName" name="lastName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="dateOfBirth">Date of Birth *</label>
+                                    <input type="date" id="dateOfBirth" name="dateOfBirth" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="gender">Gender *</label>
+                                    <select id="gender" name="gender" required>
+                                        <option value="">Select Gender</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="step-actions">
+                                <button class="btn btn-primary" id="nextStep1">
+                                    Next <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Contact Information -->
+                        <div class="registration-step" id="step2" style="display: none;">
+                            <div class="step-header">
+                                <h3>Contact Information</h3>
+                                <p>How can we reach you?</p>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="phone">Phone Number *</label>
+                                    <input type="tel" id="phone" name="phone" placeholder="+233 XX XXX XXXX" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email Address *</label>
+                                    <input type="email" id="email" name="email" required>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label for="address">Residential Address *</label>
+                                    <input type="text" id="address" name="address" placeholder="Enter your full address" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="emergencyContact">Emergency Contact *</label>
+                                    <input type="tel" id="emergencyContact" name="emergencyContact" placeholder="+233 XX XXX XXXX" required>
+                                </div>
+                            </div>
+                            <div class="step-actions">
+                                <button class="btn btn-outline" onclick="riderApp.showStep(1)">
+                                    <i class="fas fa-arrow-left"></i> Back
+                                </button>
+                                <button class="btn btn-primary" id="nextStep2">
+                                    Next <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: ID Verification -->
+                        <div class="registration-step" id="step3" style="display: none;">
+                            <div class="step-header">
+                                <h3>ID Verification</h3>
+                                <p>Verify your identity</p>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="idType">ID Type *</label>
+                                    <select id="idType" name="idType" required>
+                                        <option value="">Select ID Type</option>
+                                        <option value="Ghana Card">Ghana Card</option>
+                                        <option value="Passport">Passport</option>
+                                        <option value="Driver's License">Driver's License</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="idNumber">ID Number *</label>
+                                    <input type="text" id="idNumber" name="idNumber" placeholder="Enter your ID number" required>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label for="idUpload">Upload ID Document *</label>
+                                    <div class="file-upload">
+                                        <input type="file" id="idUpload" name="idUpload" accept="image/*,.pdf" required>
+                                        <div class="file-upload-label">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                            <span>Click to upload or drag and drop</span>
+                                            <small>PNG, JPG, PDF up to 5MB</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="step-actions">
+                                <button class="btn btn-outline" onclick="riderApp.showStep(2)">
+                                    <i class="fas fa-arrow-left"></i> Back
+                                </button>
+                                <button class="btn btn-primary" id="nextStep3">
+                                    Next <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Vehicle Information -->
+                        <div class="registration-step" id="step4" style="display: none;">
+                            <div class="step-header">
+                                <h3>Vehicle Information</h3>
+                                <p>Tell us about your vehicle</p>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="vehicleType">Vehicle Type *</label>
+                                    <select id="vehicleType" name="vehicleType" required>
+                                        <option value="">Select Vehicle Type</option>
+                                        <option value="motorcycle">Motorcycle</option>
+                                        <option value="scooter">Scooter</option>
+                                        <option value="bicycle">Bicycle</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vehicleBrand">Brand *</label>
+                                    <input type="text" id="vehicleBrand" name="vehicleBrand" placeholder="e.g., Honda, Yamaha" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vehicleModel">Model *</label>
+                                    <input type="text" id="vehicleModel" name="vehicleModel" placeholder="e.g., CB125, NMAX" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vehicleYear">Year *</label>
+                                    <input type="number" id="vehicleYear" name="vehicleYear" min="2010" max="2024" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vehiclePlate">License Plate *</label>
+                                    <input type="text" id="vehiclePlate" name="vehiclePlate" placeholder="Enter license plate number" required>
+                                </div>
+                            </div>
+                            <div class="step-actions">
+                                <button class="btn btn-outline" onclick="riderApp.showStep(3)">
+                                    <i class="fas fa-arrow-left"></i> Back
+                                </button>
+                                <button class="btn btn-primary" id="nextStep4">
+                                    Next <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Step 5: Payment Information -->
+                        <div class="registration-step" id="step5" style="display: none;">
+                            <div class="step-header">
+                                <h3>Payment Information</h3>
+                                <p>Set up your payment method</p>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="paymentMethod">Preferred Payment Method *</label>
+                                    <select id="paymentMethod" name="paymentMethod" required>
+                                        <option value="">Select Payment Method</option>
+                                        <option value="Mobile Money">Mobile Money</option>
+                                        <option value="Bank Transfer">Bank Transfer</option>
+                                        <option value="Cash">Cash</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="accountNumber">Account Number *</label>
+                                    <input type="text" id="accountNumber" name="accountNumber" placeholder="Mobile Money or Bank Account" required>
+                                </div>
+                            </div>
+                            
+                            <!-- Terms and Conditions -->
+                            <div class="terms-section">
+                                <div class="form-group checkbox-group">
+                                    <input type="checkbox" id="termsAccepted" name="termsAccepted" required>
+                                    <label for="termsAccepted">
+                                        I agree to the K3K3 Terms of Service and Privacy Policy
+                                    </label>
+                                </div>
+                                <div class="form-group checkbox-group">
+                                    <input type="checkbox" id="backgroundCheck" name="backgroundCheck" required>
+                                    <label for="backgroundCheck">
+                                        I consent to a background check as part of the verification process
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="step-actions">
+                                <button class="btn btn-outline" onclick="riderApp.showStep(4)">
+                                    <i class="fas fa-arrow-left"></i> Back
+                                </button>
+                                <button class="btn btn-primary btn-large" id="submitApplication">
+                                    <i class="fas fa-paper-plane"></i> Submit Application
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Contact Support</a>
+                </div>
+                <div class="footer-social">
+                    <a href="#" title="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notificationContainer" class="notification-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

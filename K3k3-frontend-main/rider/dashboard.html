@@ -1,0 +1,2142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rider Dashboard - K3K3</title>
+    <link rel="icon" type="image/png" href="../assets/k3k3.png">
+    <link rel="stylesheet" href="../css/k3k3-theme.css">
+    <link rel="stylesheet" href="../css/rider-dashboard.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Professional Styling -->
+    <style>    
+        /* Professional Online Toggle Switch */
+        .professional-toggle {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 32px;
+        }
+
+        .professional-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--k3k3-gray-300);
+            transition: 0.4s;
+            border-radius: 34px;
+            border: 2px solid var(--k3k3-gray-200);
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 24px;
+            width: 24px;
+            left: 2px;
+            bottom: 2px;
+            background: var(--k3k3-white);
+            transition: 0.4s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-indicator {
+            position: absolute;
+            top: 50%;
+            right: 8px;
+            transform: translateY(-50%);
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--k3k3-gray-600);
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input:checked + .toggle-slider {
+            background: var(--k3k3-success);
+            border-color: var(--k3k3-success);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(28px);
+        }
+
+        input:checked ~ .toggle-indicator {
+            color: var(--k3k3-white);
+            right: 6px;
+            font-weight: 800;
+        }
+
+        /* Location Display Section */
+        .location-display-section {
+            background: var(--k3k3-white);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+
+        .location-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--k3k3-gray-200);
+        }
+
+        .location-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--k3k3-gray-900);
+            margin: 0;
+        }
+
+        .location-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--k3k3-gray-400);
+            transition: var(--transition-normal);
+        }
+
+        .status-dot.online {
+            background: var(--k3k3-success);
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .location-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .location-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .location-coordinates {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .coord-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: var(--k3k3-gray-50);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--k3k3-gray-200);
+        }
+
+        .coord-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--k3k3-gray-700);
+        }
+
+        .coord-value {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--k3k3-gray-900);
+            font-family: 'Courier New', monospace;
+        }
+
+        .location-map-preview {
+            background: var(--k3k3-gray-50);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--k3k3-gray-200);
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .map-placeholder {
+            text-align: center;
+            color: var(--k3k3-gray-500);
+        }
+
+        .map-placeholder i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .map-placeholder p {
+            margin: 0;
+            font-size: 0.875rem;
+        }
+
+        .location-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .location-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition-normal);
+            font-size: 0.875rem;
+            font-weight: 500;
+            flex: 1;
+        }
+
+        .location-btn.primary {
+            background: var(--k3k3-success);
+            color: var(--k3k3-white);
+        }
+
+        .location-btn.primary:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .location-btn:not(.primary) {
+            background: var(--k3k3-gray-100);
+            color: var(--k3k3-gray-700);
+        }
+
+        .location-btn:not(.primary):hover {
+            background: var(--k3k3-gray-200);
+        }
+
+        /* Status Header Updates */
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .status-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--k3k3-white);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .location-content {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .location-actions {
+                flex-direction: column;
+            }
+
+            .coord-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.25rem;
+            }
+        }
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FFD60A 0%, #FFB800 100%);
+            color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <script src="../js/rider-dashboard.js"></script>
+
+    <!-- Professional Header with Hamburger Menu -->
+    <header class="rider-header">
+        <div class="header-content">
+            <div class="header-left">
+                <!-- Hamburger Menu -->
+                <div class="hamburger-menu" onclick="toggleMainMenu()">
+                    <div class="hamburger-line"></div>
+                    <div class="hamburger-line"></div>
+                    <div class="hamburger-line"></div>
+                </div>
+                
+                <div class="header-brand">
+                    <img src="../assets/k3k3.png" alt="K3K3" class="brand-logo">
+                    <span class="brand-text">K3K3</span>
+                </div>
+            </div>
+            
+            <div class="header-center">
+                <div class="status-indicator">
+                    <div class="status-dot online"></div>
+                    <span class="status-text">Online</span>
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <div class="notification-bell" onclick="showNotifications()">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </div>
+                <div class="user-menu" onclick="toggleUserMenu()">
+                    <div class="user-avatar">JD</div>
+                    <span class="user-name">John</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Menu Overlay -->
+    <div class="main-menu-overlay" id="mainMenuOverlay" onclick="closeMainMenu()"></div>
+    
+    <!-- Main Menu -->
+    <div class="main-menu" id="mainMenu">
+        <div class="menu-header">
+            <div class="menu-brand">
+                <img src="../assets/k3k3.png" alt="K3K3" class="menu-logo">
+                <span class="menu-title">K3K3 Rider</span>
+            </div>
+            <button class="close-menu" onclick="closeMainMenu()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="menu-content">
+            <div class="menu-section">
+                <div class="menu-section-title">Main</div>
+                <div class="menu-item" onclick="goToHome()">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="menu-item" onclick="findRides()">
+                    <i class="fas fa-route"></i>
+                    <span>Find Passengers</span>
+                </div>
+                <div class="menu-item" onclick="viewEarnings()">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <span>Earnings</span>
+                </div>
+                <div class="menu-item" onclick="viewHistory()">
+                    <i class="fas fa-history"></i>
+                    <span>Trip History</span>
+                </div>
+            </div>
+            
+            <div class="menu-section">
+                <div class="menu-section-title">Account</div>
+                <div class="menu-item" onclick="navigateToProfile()">
+                    <i class="fas fa-user"></i>
+                    <span>My Profile</span>
+                    <div class="menu-item-description">Manage your personal information</div>
+                </div>
+                <div class="menu-item" onclick="navigateToWallet()">
+                    <i class="fas fa-wallet"></i>
+                    <span>Wallet</span>
+                    <div class="menu-item-description">View earnings and payment methods</div>
+                </div>
+                <div class="menu-item" onclick="navigateToSettings()">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                    <div class="menu-item-description">App preferences and account settings</div>
+                </div>
+                <div class="menu-item" onclick="navigateToSupport()">
+                    <i class="fas fa-headset"></i>
+                    <span>Support</span>
+                    <div class="menu-item-description">Get help and contact support</div>
+                </div>
+            </div>
+            
+            <div class="menu-section">
+                <div class="menu-item danger" onclick="handleLogout()">
+                    <i class="fas fa-power-off"></i>
+                    <span>Logout</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Container -->
+    <main class="dashboard-container">
+        <!-- Professional Status Overview -->
+        <section class="status-overview">
+            <div class="status-header">
+                <div class="welcome-section">
+                    <h1 class="welcome-title">Good evening, John</h1>
+                    <p class="welcome-subtitle">Ready to earn? Let's get you on the road</p>
+                </div>
+                <div class="online-status-card">
+                    <div class="status-header">
+                        <div class="status-title">Online Status</div>
+                        <div class="status-toggle-wrapper">
+                            <label class="professional-toggle">
+                                <input type="checkbox" id="onlineStatus" onchange="toggleOnlineStatus()">
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-indicator">OFF</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="status-details">
+                        <div class="status-location" id="statusLocation">Getting location...</div>
+                        <div class="status-earnings">₵185.50 today</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Location Display Section -->
+            <section class="location-display-section">
+                <div class="location-header">
+                    <h3 class="location-title">Live Location</h3>
+                    <div class="location-status" id="locationStatus">
+                        <span class="status-dot offline" id="locationIndicator"></span>
+                        <span id="locationStatusText">GPS Off</span>
+                    </div>
+                </div>
+                <div class="location-content">
+                    <div class="location-info">
+                        <div class="location-coordinates" id="locationCoords">
+                            <div class="coord-item">
+                                <span class="coord-label">Latitude:</span>
+                                <span class="coord-value" id="latValue">--</span>
+                            </div>
+                            <div class="coord-item">
+                                <span class="coord-label">Longitude:</span>
+                                <span class="coord-value" id="lngValue">--</span>
+                            </div>
+                            <div class="coord-item">
+                                <span class="coord-label">Accuracy:</span>
+                                <span class="coord-value" id="accuracyValue">--</span>
+                            </div>
+                        </div>
+                        <div class="location-map-preview" id="mapPreview">
+                            <div class="map-placeholder">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <p>Location will appear here when online</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="location-actions">
+                        <button class="location-btn primary" id="toggleLocation" onclick="toggleLocationSharing()">
+                            <i class="fas fa-location-arrow"></i>
+                            <span>Start Location Sharing</span>
+                        </button>
+                        <button class="location-btn" onclick="refreshLocation()">
+                            <i class="fas fa-sync-alt"></i>
+                            <span>Refresh</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Professional Stats Grid -->
+            <div class="professional-stats-grid">
+                <div class="stat-card professional">
+                    <div class="stat-header">
+                        <div class="stat-icon-wrapper trips">
+                            <span class="stat-icon">R</span>
+                        </div>
+                        <div class="stat-trend positive">
+                            <span class="trend-arrow">↑</span>
+                            <span class="trend-value">+12%</span>
+                        </div>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Trips Today</div>
+                        <div class="stat-subtitle">2.5 avg per hour</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card professional">
+                    <div class="stat-header">
+                        <div class="stat-icon-wrapper rating">
+                            <span class="stat-icon">★</span>
+                        </div>
+                        <div class="stat-trend positive">
+                            <span class="trend-arrow">↑</span>
+                            <span class="trend-value">+0.2</span>
+                        </div>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value">4.8</div>
+                        <div class="stat-label">Rating</div>
+                        <div class="stat-subtitle">156 trips this month</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card professional">
+                    <div class="stat-header">
+                        <div class="stat-icon-wrapper time">
+                            <span class="stat-icon">T</span>
+                        </div>
+                        <div class="stat-trend neutral">
+                            <span class="trend-arrow">→</span>
+                            <span class="trend-value">0%</span>
+                        </div>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value">2.5h</div>
+                        <div class="stat-label">Online Time</div>
+                        <div class="stat-subtitle">Since 2:30 PM</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card professional primary">
+                    <div class="stat-header">
+                        <div class="stat-icon-wrapper earnings">
+                            <span class="stat-icon">$</span>
+                        </div>
+                        <div class="stat-trend positive">
+                            <span class="trend-arrow">↑</span>
+                            <span class="trend-value">+18%</span>
+                        </div>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value">₵185</div>
+                        <div class="stat-label">Today's Earnings</div>
+                        <div class="stat-subtitle">₵74/hr average</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Professional Quick Actions -->
+        <section class="professional-quick-actions">
+            <div class="section-header">
+                <h2 class="section-title">Quick Actions</h2>
+                <button class="view-all-link">View All Options →</button>
+            </div>
+            
+            <div class="professional-actions-grid">
+                <button class="professional-action-btn primary" onclick="goOnline()">
+                    <div class="action-icon-wrapper">
+                            <span class="action-icon">GO</span>
+                    </div>
+                    <div class="action-content">
+                        <div class="action-title">Go Online</div>
+                        <div class="action-subtitle">Start receiving trips</div>
+                    </div>
+                    <div class="action-arrow">→</div>
+                </button>
+                
+                <button class="professional-action-btn" onclick="findRides()">
+                    <div class="action-icon-wrapper">
+                            <span class="action-icon">FP</span>
+                    </div>
+                    <div class="action-content">
+                        <div class="action-title">Find Passengers</div>
+                        <div class="action-subtitle">View available trips</div>
+                    </div>
+                    <div class="action-arrow">→</div>
+                </button>
+                
+                <button class="professional-action-btn" onclick="viewMap()">
+                    <div class="action-icon-wrapper">
+                            <span class="action-icon">LM</span>
+                    </div>
+                    <div class="action-content">
+                        <div class="action-title">Live Map</div>
+                        <div class="action-subtitle">See nearby requests</div>
+                    </div>
+                    <div class="action-arrow">→</div>
+                </button>
+                
+                <button class="professional-action-btn" onclick="viewEarnings()">
+                    <div class="action-icon-wrapper">
+                            <span class="action-icon">ER</span>
+                    </div>
+                    <div class="action-content">
+                        <div class="action-title">Earnings</div>
+                        <div class="action-subtitle">Detailed breakdown</div>
+                    </div>
+                    <div class="action-arrow">→</div>
+                </button>
+                
+                <button class="professional-action-btn" onclick="testLocationPermission()">
+                    <div class="action-icon-wrapper">
+                            <span class="action-icon">GPS</span>
+                    </div>
+                    <div class="action-content">
+                        <div class="action-title">Test Location</div>
+                        <div class="action-subtitle">Request location permission</div>
+                    </div>
+                    <div class="action-arrow">→</div>
+                </button>
+            </div>
+        </section>
+
+        <!-- Professional Recent Activity -->
+        <section class="professional-recent-activity">
+            <div class="section-header">
+                <h2 class="section-title">Recent Activity</h2>
+                <button class="view-all-link" onclick="viewHistory()">View All →</button>
+            </div>
+            
+            <div class="professional-activity-list">
+                <div class="professional-activity-item">
+                    <div class="activity-icon-wrapper completed">
+                            <span class="activity-icon">✓</span>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-header-info">
+                            <div class="activity-title">Trip Completed</div>
+                            <div class="activity-time">15 min ago</div>
+                        </div>
+                        <div class="activity-details">
+                            <div class="activity-route">Accra Mall → Kotoka Airport</div>
+                            <div class="activity-earnings positive">+45.00</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="professional-activity-item">
+                    <div class="activity-icon-wrapper rating">
+                            <span class="activity-icon">★</span>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-header-info">
+                            <div class="activity-title">New Rating Received</div>
+                            <div class="activity-time">1 hour ago</div>
+                        </div>
+                        <div class="activity-details">
+                            <div class="activity-rating">5.0 stars</div>
+                            <div class="activity-bonus">+5.00 bonus</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="professional-activity-item">
+                    <div class="activity-icon-wrapper payment">
+                            <span class="activity-icon">$</span>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-header-info">
+                            <div class="activity-title">Weekly Bonus Deposited</div>
+                            <div class="activity-time">2 hours ago</div>
+                        </div>
+                        <div class="activity-details">
+                            <div class="activity-description">Top performer bonus</div>
+                            <div class="activity-earnings positive">+₵50.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Professional Earnings Overview -->
+        <section class="professional-earnings-overview">
+            <div class="section-header">
+                <h2 class="section-title">Earnings Overview</h2>
+                <div class="period-selector">
+                    <button class="period-btn active" onclick="updateEarningsPeriod('today')">Today</button>
+                    <button class="period-btn" onclick="updateEarningsPeriod('week')">This Week</button>
+                    <button class="period-btn" onclick="updateEarningsPeriod('month')">This Month</button>
+                </div>
+            </div>
+            
+            <div class="professional-earnings-card">
+                <div class="earnings-header">
+                    <div class="earnings-amount">₵185.50</div>
+                    <div class="earnings-period">Today's Earnings</div>
+                </div>
+                
+                <div class="earnings-chart-placeholder">
+                    <div class="chart-bars">
+                        <div class="chart-bar" style="height: 60%"></div>
+                        <div class="chart-bar" style="height: 80%"></div>
+                        <div class="chart-bar" style="height: 45%"></div>
+                        <div class="chart-bar" style="height: 90%"></div>
+                        <div class="chart-bar" style="height: 70%"></div>
+                        <div class="chart-bar" style="height: 85%"></div>
+                        <div class="chart-bar" style="height: 100%"></div>
+                    </div>
+                    <div class="chart-labels">
+                        <span>Mon</span>
+                        <span>Tue</span>
+                        <span>Wed</span>
+                        <span>Thu</span>
+                        <span>Fri</span>
+                        <span>Sat</span>
+                        <span>Sun</span>
+                    </div>
+                </div>
+                
+                <div class="earnings-breakdown">
+                    <div class="breakdown-item">
+                        <div class="breakdown-info">
+                            <div class="breakdown-label">Trip Earnings</div>
+                            <div class="breakdown-description">12 completed trips</div>
+                        </div>
+                        <div class="breakdown-value">₵165.50</div>
+                    </div>
+                    <div class="breakdown-item">
+                        <div class="breakdown-info">
+                            <div class="breakdown-label">Tips & Bonuses</div>
+                            <div class="breakdown-description">Performance rewards</div>
+                        </div>
+                        <div class="breakdown-value">₵20.00</div>
+                    </div>
+                    <div class="breakdown-item total">
+                        <div class="breakdown-info">
+                            <div class="breakdown-label">Total Earnings</div>
+                            <div class="breakdown-description">After platform fees</div>
+                        </div>
+                        <div class="breakdown-value">₵185.50</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- User Menu Dropdown -->
+    <div class="user-menu-dropdown" id="userMenuDropdown">
+        <div class="user-menu-item" onclick="viewProfile()">
+            <i class="fas fa-user"></i>
+            <span>My Profile</span>
+        </div>
+        <div class="user-menu-item" onclick="viewWallet()">
+            <i class="fas fa-wallet"></i>
+            <span>Wallet</span>
+        </div>
+        <div class="user-menu-item" onclick="showSettings()">
+            <i class="fas fa-cog"></i>
+            <span>Settings</span>
+        </div>
+        <div class="user-menu-divider"></div>
+        <div class="user-menu-item danger" onclick="handleLogout()">
+            <i class="fas fa-power-off"></i>
+            <span>Logout</span>
+        </div>
+    </div>
+
+    <!-- Professional Styling -->
+    <style>
+        /* Header Styles */
+        .rider-header {
+            background: linear-gradient(135deg, var(--k3k3-primary) 0%, var(--k3k3-gray-900) 100%);
+            color: var(--k3k3-white);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            max-width: 100%;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .hamburger-menu {
+            width: 30px;
+            height: 24px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: var(--transition-normal);
+        }
+
+        .hamburger-line {
+            width: 100%;
+            height: 3px;
+            background: var(--k3k3-white);
+            border-radius: 2px;
+            transition: var(--transition-normal);
+        }
+
+        .hamburger-menu:hover .hamburger-line {
+            background: var(--k3k3-secondary);
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .brand-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--k3k3-white);
+        }
+
+        .header-center {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.online {
+            background: var(--k3k3-success);
+        }
+
+        .status-dot.offline {
+            background: var(--k3k3-danger);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: var(--radius-full);
+            background: rgba(255, 255, 255, 0.1);
+            transition: var(--transition-normal);
+        }
+
+        .notification-bell:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--k3k3-danger);
+            color: var(--k3k3-white);
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 10px;
+            min-width: 18px;
+            text-align: center;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: var(--transition-normal);
+        }
+
+        .user-menu:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--k3k3-white);
+        }
+
+        /* Main Menu Styles */
+        .main-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .main-menu-overlay.show {
+            display: block;
+            opacity: 1;
+        }
+
+        .main-menu {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100%;
+            background: var(--k3k3-white);
+            z-index: 1001;
+            transition: left 0.3s ease;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .main-menu.show {
+            left: 0;
+        }
+
+        .menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--k3k3-primary) 0%, var(--k3k3-gray-900) 100%);
+            border-bottom: 1px solid var(--k3k3-gray-200);
+        }
+
+        .menu-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .menu-logo {
+            width: 35px;
+            height: 35px;
+            object-fit: contain;
+        }
+
+        .menu-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--k3k3-white);
+        }
+
+        .close-menu {
+            width: 35px;
+            height: 35px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-normal);
+        }
+
+        .close-menu:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .menu-content {
+            padding: 1rem 0;
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
+        }
+
+        .menu-section {
+            margin-bottom: 2rem;
+        }
+
+        .menu-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .menu-section-title {
+            padding: 0 1.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--k3k3-gray-500);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .menu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.25rem;
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            transition: var(--transition-normal);
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            font-size: 0.95rem;
+            color: var(--k3k3-gray-700);
+        }
+
+        .menu-item:hover {
+            background: var(--k3k3-gray-50);
+            padding-left: 2rem;
+            transform: translateX(4px);
+        }
+
+        .menu-item.danger {
+            color: var(--k3k3-danger);
+        }
+
+        .menu-item.danger:hover {
+            background: #fef2f2;
+        }
+
+        .menu-item-description {
+            font-size: 0.75rem;
+            color: var(--k3k3-gray-500);
+            font-weight: 400;
+            line-height: 1.3;
+            margin-top: 0.25rem;
+        }
+
+        .menu-item:hover .menu-item-description {
+            color: var(--k3k3-gray-600);
+        }
+
+        .menu-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Professional Dashboard Container */
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            background: var(--k3k3-gray-50);
+            min-height: 100vh;
+        }
+
+        /* Professional Status Overview */
+        .status-overview {
+            background: var(--k3k3-white);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            gap: 2rem;
+        }
+
+        .welcome-section {
+            flex: 1;
+        }
+
+        .welcome-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--k3k3-gray-900);
+            margin: 0 0 0.5rem 0;
+            line-height: 1.2;
+        }
+
+        .welcome-subtitle {
+            font-size: 1rem;
+            color: var(--k3k3-gray-600);
+            margin: 0;
+            font-weight: 400;
+        }
+
+        .online-status-card {
+            background: linear-gradient(135deg, var(--k3k3-gray-900), var(--k3k3-gray-800));
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            min-width: 280px;
+        }
+
+        .status-toggle-wrapper {
+            margin-bottom: 1rem;
+        }
+
+        .status-toggle {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+        }
+
+        .status-toggle input {
+            display: none;
+        }
+
+        .status-slider {
+            width: 48px;
+            height: 24px;
+            background: var(--k3k3-gray-600);
+            border-radius: 24px;
+            position: relative;
+            transition: var(--transition-normal);
+        }
+
+        .status-slider:before {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--k3k3-white);
+            top: 2px;
+            left: 2px;
+            transition: var(--transition-normal);
+        }
+
+        .status-toggle input:checked + .status-slider {
+            background: var(--k3k3-success);
+        }
+
+        .status-toggle input:checked + .status-slider:before {
+            transform: translateX(24px);
+        }
+
+        .status-indicator-text {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--k3k3-white);
+            letter-spacing: 1px;
+        }
+
+        .status-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .status-location {
+            font-size: 0.875rem;
+            color: var(--k3k3-gray-300);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-earnings {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--k3k3-white);
+        }
+
+        /* Professional Stats Grid */
+        .professional-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .stat-card.professional {
+            background: var(--k3k3-white);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--k3k3-gray-200);
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card.professional:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--k3k3-secondary);
+        }
+
+        .stat-card.professional.primary {
+            background: linear-gradient(135deg, var(--k3k3-secondary), var(--k3k3-accent));
+            border: none;
+        }
+
+        .stat-card.professional.primary .stat-value,
+        .stat-card.professional.primary .stat-label,
+        .stat-card.professional.primary .stat-subtitle {
+            color: var(--k3k3-gray-900);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon-wrapper {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-icon-wrapper.trips {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .stat-icon-wrapper.rating {
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .stat-icon-wrapper.time {
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .stat-icon-wrapper.earnings {
+            background: rgba(255, 214, 10, 0.1);
+        }
+
+        .stat-trend {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-sm);
+        }
+
+        .stat-trend.positive {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--k3k3-success);
+        }
+
+        .stat-trend.neutral {
+            background: rgba(107, 114, 128, 0.1);
+            color: var(--k3k3-gray-500);
+        }
+
+        .trend-arrow {
+            font-weight: 700;
+        }
+
+        .stat-content {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--k3k3-gray-900);
+            margin-bottom: 0.25rem;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--k3k3-gray-600);
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-subtitle {
+            font-size: 0.75rem;
+            color: var(--k3k3-gray-500);
+            font-weight: 400;
+        }
+
+        /* Professional Quick Actions */
+        .professional-quick-actions {
+            background: var(--k3k3-white);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--k3k3-gray-900);
+            margin: 0;
+        }
+
+        .view-all-link {
+            background: none;
+            border: none;
+            color: var(--k3k3-secondary);
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: var(--transition-normal);
+            text-decoration: none;
+        }
+
+        .view-all-link:hover {
+            color: var(--k3k3-accent);
+        }
+
+        .professional-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .professional-action-btn {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem;
+            border: 1px solid var(--k3k3-gray-200);
+            background: var(--k3k3-white);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            text-align: left;
+            width: 100%;
+        }
+
+        .professional-action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--k3k3-secondary);
+        }
+
+        .professional-action-btn.primary {
+            background: linear-gradient(135deg, var(--k3k3-secondary), var(--k3k3-accent));
+            border: none;
+        }
+
+        .professional-action-btn.primary .action-title,
+        .professional-action-btn.primary .action-subtitle {
+            color: var(--k3k3-gray-900);
+        }
+
+        .action-icon-wrapper {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--k3k3-gray-100);
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .professional-action-btn.primary .action-icon-wrapper {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .action-content {
+            flex: 1;
+        }
+
+        .action-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--k3k3-gray-900);
+            margin-bottom: 0.25rem;
+        }
+
+        .action-subtitle {
+            font-size: 0.75rem;
+            color: var(--k3k3-gray-600);
+            font-weight: 400;
+        }
+
+        .action-arrow {
+            font-size: 1.25rem;
+            color: var(--k3k3-gray-400);
+            transition: var(--transition-normal);
+        }
+
+        .professional-action-btn:hover .action-arrow {
+            color: var(--k3k3-secondary);
+            transform: translateX(4px);
+        }
+
+        /* Professional Recent Activity */
+        .professional-recent-activity {
+            background: var(--k3k3-white);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+
+        .professional-activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .professional-activity-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.25rem;
+            background: var(--k3k3-gray-50);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--k3k3-gray-200);
+            transition: var(--transition-normal);
+        }
+
+        .professional-activity-item:hover {
+            background: var(--k3k3-white);
+            box-shadow: var(--shadow-md);
+            transform: translateX(4px);
+        }
+
+        .activity-icon-wrapper {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .activity-icon-wrapper.completed {
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .activity-icon-wrapper.rating {
+            background: rgba(255, 214, 10, 0.1);
+        }
+
+        .activity-icon-wrapper.payment {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-header-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .activity-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--k3k3-gray-900);
+        }
+
+        .activity-time {
+            font-size: 0.75rem;
+            color: var(--k3k3-gray-500);
+        }
+
+        .activity-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .activity-route {
+            font-size: 0.875rem;
+            color: var(--k3k3-gray-700);
+        }
+
+        .activity-rating {
+            font-size: 0.875rem;
+            color: var(--k3k3-gray-700);
+        }
+
+        .activity-description {
+            font-size: 0.875rem;
+            color: var(--k3k3-gray-700);
+        }
+
+        .activity-earnings,
+        .activity-bonus {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .activity-earnings.positive,
+        .activity-bonus {
+            color: var(--k3k3-success);
+        }
+
+        /* Professional Earnings Overview */
+        .professional-earnings-overview {
+            background: var(--k3k3-white);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .period-selector {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--k3k3-gray-100);
+            padding: 0.25rem;
+            border-radius: var(--radius-md);
+        }
+
+        .period-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            background: transparent;
+            color: var(--k3k3-gray-600);
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition-normal);
+        }
+
+        .period-btn:hover {
+            background: var(--k3k3-white);
+            color: var(--k3k3-gray-900);
+        }
+
+        .period-btn.active {
+            background: var(--k3k3-white);
+            color: var(--k3k3-gray-900);
+            font-weight: 600;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .professional-earnings-card {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .earnings-header {
+            text-align: center;
+        }
+
+        .earnings-amount {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--k3k3-gray-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .earnings-period {
+            font-size: 1rem;
+            color: var(--k3k3-gray-600);
+            font-weight: 500;
+        }
+
+        .earnings-chart-placeholder {
+            background: var(--k3k3-gray-50);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            border: 1px solid var(--k3k3-gray-200);
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .chart-bars {
+            display: flex;
+            align-items: end;
+            gap: 0.5rem;
+            height: 160px;
+        }
+
+        .chart-bar {
+            flex: 1;
+            background: linear-gradient(135deg, var(--k3k3-secondary), var(--k3k3-accent));
+            border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+            min-height: 20px;
+            transition: var(--transition-normal);
+        }
+
+        .chart-bar:hover {
+            opacity: 0.8;
+        }
+
+        .chart-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--k3k3-gray-500);
+        }
+
+        .earnings-breakdown {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: var(--k3k3-gray-50);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--k3k3-gray-200);
+        }
+
+        .breakdown-item.total {
+            background: linear-gradient(135deg, var(--k3k3-secondary), var(--k3k3-accent));
+            border: none;
+        }
+
+        .breakdown-item.total .breakdown-label,
+        .breakdown-item.total .breakdown-description,
+        .breakdown-item.total .breakdown-value {
+            color: var(--k3k3-gray-900);
+        }
+
+        .breakdown-info {
+            flex: 1;
+        }
+
+        .breakdown-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--k3k3-gray-900);
+            margin-bottom: 0.25rem;
+        }
+
+        .breakdown-description {
+            font-size: 0.75rem;
+            color: var(--k3k3-gray-600);
+        }
+
+        .breakdown-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--k3k3-gray-900);
+        }
+
+        /* User Menu Dropdown */
+        .user-menu-dropdown {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: var(--k3k3-white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            z-index: 1002;
+            display: none;
+            min-width: 200px;
+            overflow: hidden;
+        }
+
+        .user-menu-dropdown.show {
+            display: block;
+        }
+
+        .user-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: var(--transition-normal);
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            font-size: 0.875rem;
+            color: var(--k3k3-gray-700);
+        }
+
+        .user-menu-item:hover {
+            background: var(--k3k3-gray-50);
+        }
+
+        .user-menu-item.danger {
+            color: var(--k3k3-danger);
+        }
+
+        .user-menu-item.danger:hover {
+            background: #fef2f2;
+        }
+
+        .user-menu-divider {
+            height: 1px;
+            background: var(--k3k3-gray-200);
+            margin: 0.5rem 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 1rem;
+            }
+
+            .header-center {
+                display: none;
+            }
+
+            .dashboard-container {
+                padding: 1rem;
+            }
+
+            .status-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+
+            .professional-stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .professional-actions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .professional-earnings-card {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .section-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .welcome-title {
+                font-size: 1.5rem;
+            }
+
+            .earnings-amount {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .professional-stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .online-status-card {
+                min-width: auto;
+            }
+
+            .stat-value {
+                font-size: 2rem;
+            }
+
+            .earnings-amount {
+                font-size: 2rem;
+            }
+        }
+    </style>
+    
+    <!-- Professional Ride Request Modal Styles -->
+    <style>
+        /* Ride Request Modal */
+        .ride-request-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            z-index: 10000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .ride-request-modal.show {
+            display: block;
+        }
+
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+        }
+
+        .ride-request-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 400px;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.4s ease;
+        }
+
+        /* Request Header */
+        .ride-request-header {
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .request-pulse {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 12px;
+            background: #00C851;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: translateX(-50%) scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: translateX(-50%) scale(1.2);
+                opacity: 0.7;
+            }
+        }
+
+        .request-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 1rem 0 0 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .request-timer {
+            margin-top: 1.5rem;
+        }
+
+        .timer-circle {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+        }
+
+        .timer-svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .timer-progress {
+            animation: countdown 30s linear forwards;
+        }
+
+        @keyframes countdown {
+            from {
+                stroke-dashoffset: 0;
+            }
+            to {
+                stroke-dashoffset: 100;
+            }
+        }
+
+        .timer-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* Request Content */
+        .ride-request-content {
+            padding: 1.5rem;
+        }
+
+        .passenger-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .passenger-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .avatar-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #FFD60A 0%, #FFB800 100%);
+            color: #000;
+        }
+
+        .avatar-placeholder i {
+            font-size: 1.5rem;
+        }
+
+        .passenger-details h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0 0 0.25rem 0;
+            color: #333;
+        }
+
+        .passenger-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .rating-stars {
+            color: #FFD700;
+            font-size: 0.9rem;
+        }
+
+        .rating-score {
+            color: #666;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Action Buttons */
+        .ride-request-actions {
+            display: flex;
+            gap: 1rem;
+            padding: 1.5rem;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .action-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .action-btn.reject {
+            background: #f0f0f0;
+            color: #666;
+        }
+
+        .action-btn.reject:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+
+        .action-btn.accept {
+            background: linear-gradient(135deg, #00C851 0%, #00A846 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 200, 81, 0.3);
+        }
+
+        .action-btn.accept:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 200, 81, 0.4);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translate(-50%, -40%);
+                opacity: 0;
+            }
+            to {
+                transform: translate(-50%, -50%);
+                opacity: 1;
+            }
+        }
+    </style>
+    
+    <!-- Include Rider Dashboard JavaScript -->
+    <script src="../js/rider-dashboard.js"></script>
+    
+    <!-- Professional Ride Request Modal -->
+    <div id="rideRequestModal" class="ride-request-modal">
+        <div class="modal-overlay" onclick="rejectRide()"></div>
+        <div class="ride-request-container">
+            <div class="ride-request-header">
+                <div class="request-pulse"></div>
+                <h3 class="request-title">New Ride Request</h3>
+                <div class="request-timer">
+                    <div class="timer-circle">
+                        <svg class="timer-svg" viewBox="0 0 36 36">
+                            <path class="timer-background" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="3"/>
+                            <path class="timer-progress" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                fill="none" stroke="white" stroke-width="3" stroke-dasharray="100" stroke-dashoffset="0"/>
+                        </svg>
+                        <div class="timer-text">30</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ride-request-content">
+                <div class="passenger-info">
+                    <div class="passenger-avatar">
+                        <div class="avatar-placeholder">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                    <div class="passenger-details">
+                        <h4 class="passenger-name" id="passengerName">Sarah Johnson</h4>
+                        <div class="passenger-rating">
+                            <span class="rating-stars">★★★★★</span>
+                            <span class="rating-score" id="passengerRating">4.8</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="ride-details">
+                    <div class="route-info">
+                        <div class="route-point pickup">
+                            <div class="point-icon pickup-icon">
+                                <i class="fas fa-circle"></i>
+                            </div>
+                            <div class="point-details">
+                                <div class="point-label">Pickup</div>
+                                <div class="point-address" id="pickupAddress">Accra Mall, Oxford Street</div>
+                            </div>
+                        </div>
+                        
+                        <div class="route-line">
+                            <div class="route-dots"></div>
+                        </div>
+                        
+                        <div class="route-point destination">
+                            <div class="point-icon destination-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="point-details">
+                                <div class="point-label">Destination</div>
+                                <div class="point-address" id="destinationAddress">Kotoka International Airport</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="ride-info">
+                        <div class="info-item">
+                            <i class="fas fa-route"></i>
+                            <span class="info-label">Distance</span>
+                            <span class="info-value" id="rideDistance">8.5 km</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-clock"></i>
+                            <span class="info-label">Est. Time</span>
+                            <span class="info-value" id="rideTime">25 mins</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-users"></i>
+                            <span class="info-label">Passengers</span>
+                            <span class="info-value" id="passengerCount">1</span>
+                        </div>
+                        <div class="info-item price">
+                            <i class="fas fa-tag"></i>
+                            <span class="info-label">Fare</span>
+                            <span class="info-value" id="rideFare">₵45.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ride-request-actions">
+                <button class="action-btn reject" onclick="rejectRide()">
+                    <i class="fas fa-times"></i>
+                    <span>Reject</span>
+                </button>
+                <button class="action-btn accept" onclick="acceptRide()">
+                    <i class="fas fa-check"></i>
+                    <span>Accept</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

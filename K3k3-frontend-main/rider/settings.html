@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - K3K3 Rider</title>
+    <link rel="icon" type="image/png" href="../assets/k3k3.png">
+    <link rel="stylesheet" href="../css/k3k3-theme.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Local Icons Implementation -->
+    <style>
+        /* Basic Icon Replacements */
+        .fa-search::before { content: "🔍"; }
+        .fa-map-marker-alt::before { content: "📍"; }
+        .fa-flag-checkered::before { content: "🏁"; }
+        .fa-users::before { content: "👥"; }
+        .fa-cog::before { content: "⚙️"; }
+        .fa-headset::before { content: "🎧"; }
+        .fa-history::before { content: "📋"; }
+        .fa-share-alt::before { content: "📤"; }
+        .fa-times::before { content: "❌"; }
+        .fa-check::before { content: "✅"; }
+        .fa-spinner::before { content: "⏳"; }
+        .fa-location-arrow::before { content: "🧭"; }
+        .fa-plus-circle::before { content: "➕"; }
+        .fa-graduation-cap::before { content: "🎓"; }
+        .fa-building::before { content: "🏢"; }
+        .fa-shopping-bag::before { content: "🛍️"; }
+        .fa-coffee::before { content: "☕"; }
+        .fa-circle::before { content: "⚫"; }
+        .fa-credit-card::before { content: "💳"; }
+        .fa-lock::before { content: "🔒"; }
+        .fa-star::before { content: "⭐"; }
+        .fa-question-circle::before { content: "❓"; }
+        .fa-info-circle::before { content: "ℹ️"; }
+        .fa-trash::before { content: "🗑️"; }
+        .fa-user-times::before { content: "🚫👤"; }
+        .fa-sign-out-alt::before { content: "🚪"; }
+        .fa-edit::before { content: "✏️"; }
+        .fa-check-circle::before { content: "✅"; }
+        .fa-clock::before { content: "⏰"; }
+        .fa-shield-alt::before { content: "🛡️"; }
+        .fa-home::before { content: "🏠"; }
+        .fa-motorcycle::before { content: "🏍️"; }
+        .fa-chart-line::before { content: "📈"; }
+        .fa-wallet::before { content: "💼"; }
+        .fa-bell::before { content: "🔔"; }
+        .fa-user::before { content: "👤"; }
+        .fa-envelope::before { content: "✉️"; }
+        .fa-phone::before { content: "📞"; }
+        .fa-calendar::before { content: "📅"; }
+        .fa-tachometer-alt::before { content: "📊"; }
+        .fa-bars::before { content: "☰"; }
+        .fa-chevron-down::before { content: "👇"; }
+        .fa-power-off::before { content: "🔴"; }
+        .fa-route::before { content: "🛣️"; }
+        .fa-money-bill-wave::before { content: "💵"; }
+        .fa-camera::before { content: "📷"; }
+        .fa-id-card::before { content: "🆔"; }
+        .fa-arrow-left::before { content: "←"; }
+        .fa-upload::before { content: "📤"; }
+        .fa-download::before { content: "📥"; }
+        .fa-plus::before { content: "➕"; }
+        .fa-minus::before { content: "➖"; }
+        .fa-exchange-alt::before { content: "🔄"; }
+        .fa-piggy-bank::before { content: "🐷"; }
+        .fa-hand-holding-usd::before { content: "💵"; }
+        .fa-chart-pie::before { content: "📊"; }
+        .fa-moon::before { content: "🌙"; }
+        .fa-sun::before { content: "☀️"; }
+        .fa-bell-slash::before { content: "🔕"; }
+        .fa-volume-up::before { content: "🔊"; }
+        .fa-volume-down::before { content: "🔉"; }
+        .fa-volume-mute::before { content: "🔇"; }
+        .fa-wifi::before { content: "📶"; }
+        .fa-bluetooth::before { content: "📻"; }
+        .fa-mobile-alt::before { content: "📱"; }
+        .fa-globe::before { content: "🌐"; }
+        .fa-lock-open::before { content: "🔓"; }
+        .fa-key::before { content: "🔑"; }
+        .fa-fingerprint::before { content: "👆"; }
+        .fa-shield-alt::before { content: "🛡️"; }
+        .fa-user-shield::before { content: "🛡️👤"; }
+        .fa-eye::before { content: "👁️"; }
+        .fa-eye-slash::before { content: "👁️🙈"; }
+        
+        /* Icon styling */
+        [class*="fa-"] {
+            display: inline-block;
+            font-style: normal;
+            font-variant: normal;
+            text-rendering: auto;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body>
+    <script src="../js/rider-dashboard.js"></script>
+    
+    <!-- Additional Functions -->
+    <script>
+        function goBackToDashboard() {
+            window.location.href = 'dashboard.html';
+        }
+        
+        function showNotifications() {
+            showNotification('Opening notifications...', 'info');
+        }
+        
+        function toggleUserMenu() {
+            // Toggle user menu dropdown
+        }
+        
+        function changeEmail() {
+            showNotification('Opening email change form...', 'info');
+        }
+        
+        function changePhone() {
+            showNotification('Opening phone change form...', 'info');
+        }
+        
+        function changePassword() {
+            showNotification('Opening password change form...', 'info');
+        }
+        
+        function configure2FA() {
+            showNotification('Opening 2FA configuration...', 'info');
+        }
+        
+        function manageNotifications() {
+            showNotification('Opening notification settings...', 'info');
+        }
+        
+        function setupBiometric() {
+            showNotification('Opening biometric setup...', 'info');
+        }
+        
+        function clearCache() {
+            if (confirm('Are you sure you want to clear cache?')) {
+                showNotification('Clearing cache...', 'info');
+                setTimeout(() => {
+                    showNotification('Cache cleared successfully!', 'success');
+                }, 1000);
+            }
+        }
+        
+        function exportData() {
+            showNotification('Preparing data export...', 'info');
+        }
+        
+        function deleteAccount() {
+            if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                showNotification('Processing account deletion...', 'info');
+            }
+        }
+    </script>
+
+    <!-- Professional Header -->
+    <header class="rider-header">
+        <div class="header-content">
+            <div class="header-left">
+                <!-- Back Button -->
+                <div class="back-button" onclick="goBackToDashboard()">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back</span>
+                </div>
+                
+                <div class="header-brand">
+                    <img src="../assets/k3k3.png" alt="K3K3" class="brand-logo">
+                    <span class="brand-text">K3K3</span>
+                </div>
+            </div>
+            
+            <div class="header-center">
+                <h1 class="page-title">Settings</h1>
+            </div>
+            
+            <div class="header-right">
+                <div class="notification-bell" onclick="showNotifications()">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </div>
+                <div class="user-menu" onclick="toggleUserMenu()">
+                    <div class="user-avatar">JD</div>
+                    <span class="user-name">John</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Settings Container -->
+    <main class="settings-container">
+        <!-- Account Settings -->
+        <section class="settings-section">
+            <div class="section-header">
+                <h2 class="section-title">Account Settings</h2>
+                <i class="fas fa-user section-icon"></i>
+            </div>
+            
+            <div class="settings-grid">
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <label class="setting-label">Email Address</label>
+                        <div class="setting-description">Your primary email for account notifications</div>
+                    </div>
+                    <div class="setting-control">
+                        <input type="email" class="setting-input" value="john.doe@k3k3.com" readonly>
+                        <button class="setting-action-btn" onclick="changeEmail()">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <label class="setting-label">Phone Number</label>
+                        <div class="setting-description">Mobile number for trip notifications</div>
+                    </div>
+                    <div class="setting-control">
+                        <input type="tel" class="setting-input" value="+233 50 123 4567" readonly>
+                        <button class="setting-action-btn" onclick="changePhone()">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <label class="setting-label">Password</label>
+                        <div class="setting-description">Change your account password</div>
+                    </div>
+                    <div class="setting-control">
+                        <input type="password" class="setting-input" value="••••••••••" readonly>
+                        <button class="setting-action-btn" onclick="changePassword()">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <label class="setting-label">Two-Factor Authentication</label>
+                        <div class="setting-description">Extra security for your account</div>
+                    </div>
+                    <div class="setting-control">
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <button class="setting-action-btn" onclick="configure2FA()">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- App Preferences -->
+        <section class="settings-section">
+            <div class="section-header">
+                <h2 class="section-title">App Preferences</h2>
+                <i class="fas fa-mobile-alt section-icon"></i>
+            </div>
+            
+            <div class="settings-grid">
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <label class="setting-label">Language</label>
+                        <div class="setting-description">Choose your preferred language</div>
+                    </div>
+                    <div class="setting-control">
+                        <select class="setting-select">
+                            <option value="en">English</option>
+                            <option value="tw">Twi</option>
+                            <option value="fr">French</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <label class="setting-label">Dark Mode</label>
+                        <div class="setting-description">Reduce eye strain in low light</div>
+                    </div>
+                    <div class="setting-control">
+                        <label class="toggle-switch">
+                            <input type="checkbox">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <label class="setting-label">Notifications</label>
+                        <div class="setting-description">Push notifications for trips and earnings</div>
+                    </div>
+                    <div class="setting-control">
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <button class="setting-action-btn" onclick="manageNotifications()">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <label class="setting-label">Sound Effects</label>
+                        <div class="setting-description">App sounds and haptic feedback</div>
+                    </div>
+                    <div class="setting-control">
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Privacy & Security -->
+        <section class="settings-section">
+            <div class="section-header">
+                <h2 class="section-title">Privacy & Security</h2>
+                <i class="fas fa-shield-alt section-icon"></i>
+            </div>
+            
+            <div class="settings-grid">
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <label class="setting-label">Location Sharing</label>
+                        <div class="setting-description">Share your location while online</div>
+                    </div>
+                    <div class="setting-control">
+                        <select class="setting-select">
+                            <option value="always">Always</option>
+                            <option value="while-using">While Using App</option>
+                            <option value="never">Never</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <label class="setting-label">Profile Visibility</label>
+                        <div class="setting-description">Who can see your profile information</div>
+                    </div>
+                    <div class="setting-control">
+                        <select class="setting-select">
+                            <option value="public">Public</option>
+                            <option value="riders">Riders Only</option>
+                            <option value="private">Private</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <label class="setting-label">Data Collection</label>
+                        <div class="setting-description">Help improve K3K3 services</div>
+                    </div>
+                    <div class="setting-control">
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <label class="setting-label">Face ID / Fingerprint</label>
+                        <div class="setting-description">Biometric authentication for quick access</div>
+                    </div>
+                    <div class="setting-control">
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <button class="setting-action-btn" onclick="setupBiometric()">
+                            <i class="fas fa-fingerprint"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Payment Settings -->
+        <section class="settings-section">
+            <div class="section-header">
+                <h2 class="section-title">Payment Settings</h2>
+                <i class="fas fa-credit-card section-icon"></i>
+            </div>
+            
+            <div class="settings-grid">
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <label class="setting-label">Default Payment Method</label>
+                        <div class="setting-description">Primary method for withdrawals</div>
+                    </div>
+                    <div class="setting-control">
+                        <select class="setting-select">
+                            <option value="mobile">Mobile Money</option>
+                            <option value="bank">Bank Transfer</option>
+                            <option value="card">Bank Card</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <label class="setting-label">Auto Withdraw</label>
+                        <div class="setting-description">Automatically transfer earnings weekly</div>
+                    </div>
+                    <div class="setting-control">
+                        <label class="toggle-switch">
+                            <input type="checkbox">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <label class="setting-label">Withdrawal Schedule</label>
+                        <div class="setting-description">Day of week for auto transfers</div>
+                    </div>
+                    <div class="setting-control">
+                        <select class="setting-select">
+                            <option value="monday">Monday</option>
+                            <option value="friday">Friday</option>
+                            <option value="sunday">Sunday</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Advanced Settings -->
+        <section class="settings-section">
+            <div class="section-header">
+                <h2 class="section-title">Advanced</h2>
+                <i class="fas fa-cog section-icon"></i>
+            </div>
+            
+            <div class="settings-grid">
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <label class="setting-label">Clear Cache</label>
+                        <div class="setting-description">Free up storage space</div>
+                    </div>
+                    <div class="setting-control">
+                        <button class="setting-action-btn danger" onclick="clearCache()">
+                            <i class="fas fa-trash"></i>
+                            <span>Clear</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <label class="setting-label">Export Data</label>
+                        <div class="setting-description">Download your ride history and data</div>
+                    </div>
+                    <div class="setting-control">
+                        <button class="setting-action-btn" onclick="exportData()">
+                            <i class="fas fa-download"></i>
+                            <span>Export</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <label class="setting-label">Delete Account</label>
+                        <div class="setting-description">Permanently remove your account</div>
+                    </div>
+                    <div class="setting-control">
+                        <button class="setting-action-btn danger" onclick="deleteAccount()">
+                            <i class="fas fa-user-times"></i>
+                            <span>Delete</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Professional Styling -->
+    <style>
+        /* Header Styles */
+        .rider-header {
+            background: linear-gradient(135deg, var(--k3k3-primary) 0%, var(--k3k3-gray-900) 100%);
+            color: var(--k3k3-white);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            max-width: 100%;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--k3k3-white);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition-normal);
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .brand-logo {
+            width: 35px;
+            height: 35px;
+            object-fit: contain;
+        }
+
+        .brand-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--k3k3-white);
+        }
+
+        .header-center {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--k3k3-white);
+            margin: 0;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: var(--radius-full);
+            background: rgba(255, 255, 255, 0.1);
+            transition: var(--transition-normal);
+        }
+
+        .notification-bell:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--k3k3-danger);
+            color: var(--k3k3-white);
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 10px;
+            min-width: 18px;
+            text-align: center;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: var(--transition-normal);
+        }
+
+        .user-menu:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--k3k3-white);
+        }
+
+        /* Settings Container */
+        .settings-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            background: var(--k3k3-gray-50);
+            min-height: 100vh;
+        }
+
+        /* Settings Sections */
+        .settings-section {
+            background: var(--k3k3-white);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--k3k3-gray-200);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--k3k3-gray-900);
+            margin: 0;
+            flex: 1;
+        }
+
+        .section-icon {
+            font-size: 1.5rem;
+            color: var(--k3k3-secondary);
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--k3k3-gray-100);
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-info {
+            flex: 1;
+            margin-right: 2rem;
+        }
+
+        .setting-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--k3k3-gray-900);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .setting-description {
+            font-size: 0.875rem;
+            color: var(--k3k3-gray-600);
+            line-height: 1.4;
+        }
+
+        .setting-control {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .setting-input {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--k3k3-gray-300);
+            border-radius: var(--radius-md);
+            background: var(--k3k3-gray-50);
+            font-size: 0.875rem;
+            color: var(--k3k3-gray-700);
+            min-width: 200px;
+        }
+
+        .setting-select {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--k3k3-gray-300);
+            border-radius: var(--radius-md);
+            background: var(--k3k3-gray-50);
+            font-size: 0.875rem;
+            color: var(--k3k3-gray-700);
+            min-width: 150px;
+            cursor: pointer;
+        }
+
+        .setting-action-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            border: none;
+            background: var(--k3k3-secondary);
+            color: var(--k3k3-gray-900);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition-normal);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .setting-action-btn:hover {
+            background: var(--k3k3-accent);
+        }
+
+        .setting-action-btn.danger {
+            background: var(--k3k3-danger);
+            color: var(--k3k3-white);
+        }
+
+        .setting-action-btn.danger:hover {
+            background: #dc2626;
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--k3k3-gray-300);
+            transition: 0.3s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 2px;
+            bottom: 2px;
+            background-color: var(--k3k3-white);
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--k3k3-success);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .settings-container {
+                padding: 1rem;
+            }
+
+            .settings-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .setting-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+                padding: 1rem 0;
+            }
+
+            .setting-info {
+                margin-right: 0;
+            }
+
+            .setting-control {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .section-header {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</body>
+</html>

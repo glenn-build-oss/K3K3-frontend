@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ride History - K3K3</title>
+    <link rel="icon" type="image/png" href="../assets/k3k3.png">
+    <link rel="stylesheet" href="../css/k3k3-theme.css">
+    <link rel="stylesheet" href="../css/passenger-dashboard.css">
+    <link rel="stylesheet" href="ride-history.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <script src="../js/passenger-dashboard.js"></script>
+    <script src="ride-history.js"></script>
+
+    <!-- Professional Header -->
+    <header class="passenger-header">
+        <div class="header-content">
+            <div class="header-brand">
+                <img src="../assets/k3k3.png" alt="K3K3" class="brand-logo">
+                <span class="brand-text">K3K3</span>
+            </div>
+            
+            <div class="header-nav">
+                <!-- Uber-style Hamburger Menu -->
+                <div class="hamburger-menu" onclick="toggleMainMenu()">
+                    <div class="hamburger-line"></div>
+                    <div class="hamburger-line"></div>
+                    <div class="hamburger-line"></div>
+                </div>
+                
+                <!-- User Profile (Compact) -->
+                <div class="user-profile-compact" onclick="goToProfile()">
+                    <div class="profile-avatar">
+                        <img src="https://picsum.photos/seed/user-avatar/40/40.jpg" alt="Profile" class="profile-img">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Professional Dropdown Menu -->
+    <div class="main-dropdown-menu" id="mainDropdownMenu">
+        <div class="menu-header">
+            <div class="menu-user-info">
+                <div class="menu-avatar">
+                    <img src="https://picsum.photos/seed/user-avatar/50/50.jpg" alt="User" class="menu-avatar-img">
+                </div>
+                <div class="menu-user-details">
+                    <div class="menu-user-name">John Doe</div>
+                    <div class="menu-user-phone">+233 50 123 4567</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="menu-section">
+            <div class="menu-section-title">Ride Options</div>
+            <div class="menu-item" onclick="goToDashboard()">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </div>
+            <div class="menu-item" onclick="goToRideStatus()">
+                <i class="fas fa-car"></i>
+                <span>Ride Status</span>
+            </div>
+            <div class="menu-item active" onclick="goToRideHistory()">
+                <i class="fas fa-history"></i>
+                <span>Ride History</span>
+            </div>
+            <div class="menu-item" onclick="goToCancellations()">
+                <i class="fas fa-times-circle"></i>
+                <span>Recent Cancellations</span>
+            </div>
+        </div>
+        
+        <div class="menu-section">
+            <div class="menu-section-title">Account</div>
+            <div class="menu-item" onclick="goToProfile()">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </div>
+            <div class="menu-item" onclick="showPaymentMethods()">
+                <i class="fas fa-credit-card"></i>
+                <span>Payment Methods</span>
+            </div>
+            <div class="menu-item" onclick="showNotifications()">
+                <i class="fas fa-bell"></i>
+                <span>Notifications</span>
+            </div>
+            <div class="menu-item" onclick="showSupport()">
+                <i class="fas fa-headset"></i>
+                <span>Support</span>
+            </div>
+            <div class="menu-item" onclick="showSettings()">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </div>
+        </div>
+        
+        <div class="menu-section">
+            <div class="menu-item logout-item" onclick="handleLogout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="ride-history-main">
+        <div class="container">
+            <div class="ride-history-container">
+                
+                <!-- Page Header -->
+                <section class="page-header">
+                    <div class="header-content">
+                        <div class="header-icon">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <div class="header-text">
+                            <h1>Ride History</h1>
+                            <p class="header-subtitle">View your complete ride history and details</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Stats Cards -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon total-rides">
+                                <i class="fas fa-route"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="totalRides">0</div>
+                                <div class="stat-label">Total Rides</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon completed">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="completedRides">0</div>
+                                <div class="stat-label">Completed</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon total-spent">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="totalSpent">₵0</div>
+                                <div class="stat-label">Total Spent</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon this-month">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="thisMonthRides">0</div>
+                                <div class="stat-label">This Month</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Filters Section -->
+                <section class="filters-section">
+                    <div class="filters-header">
+                        <h3>Filter Rides</h3>
+                        <button class="clear-filters-btn" onclick="clearAllFilters()">
+                            <i class="fas fa-times"></i>
+                            <span>Clear All</span>
+                        </button>
+                    </div>
+                    
+                    <div class="filters-content">
+                        <div class="filter-group">
+                            <label for="dateFilter">Date Range</label>
+                            <select id="dateFilter" onchange="applyFilters()">
+                                <option value="all">All Time</option>
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                                <option value="quarter">Last 3 Months</option>
+                                <option value="year">This Year</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label for="statusFilter">Ride Status</label>
+                            <select id="statusFilter" onchange="applyFilters()">
+                                <option value="all">All Status</option>
+                                <option value="completed">Completed</option>
+                                <option value="cancelled">Cancelled</option>
+                                <option value="no-show">No Show</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label for="searchFilter">Search</label>
+                            <div class="search-input">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="searchFilter" placeholder="Search by location, driver...">
+                            </div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label for="sortBy">Sort By</label>
+                            <select id="sortBy" onchange="applyFilters()">
+                                <option value="date-desc">Most Recent</option>
+                                <option value="date-asc">Oldest First</option>
+                                <option value="fare-desc">Highest Fare</option>
+                                <option value="fare-asc">Lowest Fare</option>
+                            </select>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Rides List Section -->
+                <section class="rides-list-section">
+                    <div class="list-header">
+                        <h3>Your Rides</h3>
+                        <div class="view-options">
+                            <button class="view-btn active" onclick="setView('list')">
+                                <i class="fas fa-list"></i>
+                                <span>List</span>
+                            </button>
+                            <button class="view-btn" onclick="setView('cards')">
+                                <i class="fas fa-th-large"></i>
+                                <span>Cards</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="rides-content" id="ridesContent">
+                        <!-- Loading State -->
+                        <div class="loading-state">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Loading your ride history...</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Empty State -->
+                    <div class="empty-state" id="emptyState" style="display: none;">
+                        <div class="empty-icon">
+                            <i class="fas fa-route"></i>
+                        </div>
+                        <h3>No rides found</h3>
+                        <p>We couldn't find any rides matching your criteria.</p>
+                        <button class="btn-primary" onclick="clearAllFilters()">
+                            <i class="fas fa-redo"></i>
+                            <span>Clear Filters</span>
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Ride Details Modal -->
+    <div class="modal" id="rideModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Ride Details</h3>
+                <button class="close-btn" onclick="closeRideModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body" id="rideModalBody">
+                <!-- Content will be dynamically inserted -->
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeRideModal()">
+                    <i class="fas fa-times"></i>
+                    <span>Close</span>
+                </button>
+                <button class="btn-primary" onclick="rebookRide()">
+                    <i class="fas fa-redo"></i>
+                    <span>Book Similar Ride</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Download Receipt Modal -->
+    <div class="modal" id="receiptModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Download Receipt</h3>
+                <button class="close-btn" onclick="closeReceiptModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="receipt-options">
+                    <div class="option-group">
+                        <label>Email Receipt</label>
+                        <input type="email" id="receiptEmail" placeholder="Enter your email address">
+                    </div>
+                    
+                    <div class="option-group">
+                        <label>Format</label>
+                        <div class="format-options">
+                            <label class="radio-option">
+                                <input type="radio" name="format" value="pdf" checked>
+                                <span>PDF</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="format" value="csv">
+                                <span>CSV</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeReceiptModal()">
+                    <i class="fas fa-times"></i>
+                    <span>Cancel</span>
+                </button>
+                <button class="btn-primary" onclick="downloadReceipt()">
+                    <i class="fas fa-download"></i>
+                    <span>Download</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

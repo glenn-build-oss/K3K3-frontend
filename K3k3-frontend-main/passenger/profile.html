@@ -1,0 +1,2371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - K3K3 Passenger</title>
+    <link rel="icon" type="image/png" href="../assets/k3k3.png">
+    <link rel="stylesheet" href="../css/k3k3-theme.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Professional Header -->
+    <header class="passenger-header">
+        <div class="header-content">
+            <div class="header-brand">
+                <img src="../assets/k3k3.png" alt="K3K3" class="brand-logo">
+                <span class="brand-text">K3K3 Passenger</span>
+            </div>
+            
+            <div class="header-nav">
+                <a href="dashboard.html" class="nav-link">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to Dashboard</span>
+                </a>
+                
+                <button class="logout-btn" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="profile-main">
+        <div class="profile-container">
+            <div class="profile-grid">
+                <!-- Profile Card -->
+                <section class="profile-card">
+                    <div class="section-header">
+                        <h2>
+                            <i class="fas fa-user"></i>
+                            My Profile
+                        </h2>
+                        <span class="section-subtitle">Manage your account information</span>
+                    </div>
+
+                    <!-- Profile Picture Section -->
+                    <div class="profile-picture-section">
+                        <div class="profile-picture-container">
+                            <div class="profile-picture-large">
+                                <div class="whatsapp-profile">
+                                    <div class="profile-avatar" id="currentProfileAvatar">
+                                        <img src="https://picsum.photos/seed/male-avatar/150/150.jpg" alt="Profile Picture" class="profile-img" id="profileImage">
+                                    </div>
+                                    <div class="profile-switcher">
+                                        <button class="profile-btn male-btn active" onclick="switchProfile('male')" id="maleBtn">
+                                            <i class="fas fa-male"></i>
+                                            Male
+                                        </button>
+                                        <button class="profile-btn female-btn" onclick="switchProfile('female')" id="femaleBtn">
+                                            <i class="fas fa-female"></i>
+                                            Female
+                                        </button>
+                                    </div>
+                                </div>
+                                <button class="change-picture-btn" onclick="changePicture()">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Personal Information -->
+                    <div class="info-section">
+                        <div class="section-header">
+                            <h3 class="section-title">
+                                <i class="fas fa-info-circle"></i>
+                                Personal Information
+                            </h3>
+                        </div>
+                        
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label class="info-label">Full Name</label>
+                                <input type="text" class="info-input editable" id="passengerName" value="John Doe">
+                            </div>
+                            <div class="info-item">
+                                <label class="info-label">Email</label>
+                                <input type="email" class="info-input editable" id="passengerEmail" value="john.doe@example.com">
+                            </div>
+                            <div class="info-item">
+                                <label class="info-label">Phone</label>
+                                <input type="tel" class="info-input editable" id="passengerPhone" value="+234 123 456 7890">
+                            </div>
+                            <div class="info-item">
+                                <label class="info-label">Member Since</label>
+                                <input type="text" class="info-input" id="memberSince" value="January 2024" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Account Settings -->
+                    <div class="settings-section">
+                        <div class="section-header">
+                            <h3 class="section-title">
+                                <i class="fas fa-cog"></i>
+                                Account Settings
+                            </h3>
+                        </div>
+                        
+                        <div class="settings-list">
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <i class="fas fa-bell"></i>
+                                    <div>
+                                        <div class="setting-title">Push Notifications</div>
+                                        <div class="setting-description">Receive ride updates and alerts</div>
+                                    </div>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="pushNotifications" checked onchange="togglePushNotifications()">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <i class="fas fa-envelope"></i>
+                                    <div>
+                                        <div class="setting-title">Email Notifications</div>
+                                        <div class="setting-description">Get trip receipts and updates</div>
+                                    </div>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="emailNotifications" checked onchange="toggleEmailNotifications()">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <div>
+                                        <div class="setting-title">Location Services</div>
+                                        <div class="setting-description">Allow app to access your location</div>
+                                    </div>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="locationServices" checked onchange="toggleLocationServices()">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <button class="btn-primary" onclick="editProfile()">
+                            <i class="fas fa-edit"></i>
+                            Edit Profile
+                        </button>
+                        <button class="btn-secondary" onclick="changePassword()">
+                            <i class="fas fa-key"></i>
+                            Change Password
+                        </button>
+                        <button class="btn-analytics" onclick="window.location.href='analytics.html'">
+                            <i class="fas fa-chart-line"></i>
+                            Analytics
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Stats Card -->
+                <div class="side-cards">
+                    <div class="stats-card">
+                        <div class="section-header">
+                            <h3 class="section-title">
+                                <i class="fas fa-chart-line"></i>
+                                Travel History
+                            </h3>
+                            <span class="section-subtitle">Your journey summary</span>
+                        </div>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <i class="fas fa-route"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="stat-value" id="passengerTotalTrips">0</div>
+                                    <div class="stat-label">Total Trips</div>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="stat-value" id="favoritePlaces">0</div>
+                                    <div class="stat-label">Favorite Places</div>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <i class="fas fa-leaf"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="stat-value" id="co2Saved">0 kg</div>
+                                    <div class="stat-label">CO₂ Saved</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Links -->
+                    <div class="links-card">
+                        <div class="section-header">
+                            <h3 class="section-title">
+                                <i class="fas fa-link"></i>
+                                Quick Links
+                            </h3>
+                        </div>
+                        
+                        <div class="links-list">
+                            <a href="#" class="link-item" onclick="showTripHistory(); return false;">
+                                <i class="fas fa-history"></i>
+                                <span>Trip History</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <i class="fas fa-credit-card"></i>
+                                <span>Payment Methods</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <i class="fas fa-headset"></i>
+                                <span>Support</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Privacy Policy</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Trip History Popup -->
+    <div class="popup-overlay" id="tripHistoryPopup">
+        <div class="popup-content">
+            <div class="popup-header">
+                <h3><i class="fas fa-history"></i> Your Trip History</h3>
+                <button class="popup-close" onclick="closeTripHistory()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="popup-body">
+                <div class="trips-list" id="tripsList">
+                    <!-- Trips will be dynamically loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rebook Confirmation Popup -->
+    <div class="popup-overlay" id="rebookPopup">
+        <div class="popup-content">
+            <div class="popup-header">
+                <h3><i class="fas fa-redo"></i> Rebook Trip</h3>
+                <button class="popup-close" onclick="closeRebookPopup()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="popup-body">
+                <div class="rebook-info">
+                    <p>Would you like to rebook this trip?</p>
+                    <div class="trip-details" id="rebookTripDetails">
+                        <!-- Trip details will be shown here -->
+                    </div>
+                </div>
+                <div class="popup-actions">
+                    <button class="btn-secondary" onclick="closeRebookPopup()">Cancel</button>
+                    <button class="btn-primary" onclick="confirmRebook()">
+                        <i class="fas fa-check"></i> Rebook Trip
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="notification" id="notification"></div>
+
+    <style>
+        /* Popup Styles */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+
+        .popup-overlay.active {
+            display: flex;
+        }
+
+        .popup-content {
+            background: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            animation: popupSlideIn 0.3s ease-out;
+        }
+
+        @keyframes popupSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .popup-header {
+            background: linear-gradient(135deg, #00d95f 0%, #00b847 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .popup-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .popup-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .popup-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .popup-body {
+            padding: 20px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .trips-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .trip-item {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .trip-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .trip-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .trip-date {
+            font-weight: 600;
+            color: #00d95f;
+        }
+
+        .trip-price {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .trip-route {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .trip-route i {
+            color: #00d95f;
+        }
+
+        .rebook-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .rebook-info p {
+            margin-bottom: 15px;
+            color: #666;
+        }
+
+        .trip-details {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .popup-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .popup-actions button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-primary {
+            background: #00d95f;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #00b847;
+            transform: translateY(-2px);
+        }
+
+        .no-trips {
+            text-align: center;
+            color: #666;
+            padding: 40px;
+        }
+
+        .no-trips i {
+            font-size: 3rem;
+            color: #ddd;
+            margin-bottom: 15px;
+        }
+
+        /* Enhanced Professional Header */
+        .passenger-header {
+            background: #000000;
+            color: #000000;
+            border-bottom: 1px solid #e5e5e5;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .passenger-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 107, 0, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            pointer-events: none;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .header-brand:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .brand-logo {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            filter: none;
+            transition: all 0.3s ease;
+        }
+
+        .brand-logo:hover {
+            transform: rotate(5deg) scale(1.1);
+        }
+
+        .brand-text {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.875rem;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .nav-link i {
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover i {
+            transform: translateX(-3px);
+        }
+
+        /* Profile Page Styles */
+        .profile-main {
+            padding: 2rem 0;
+            min-height: calc(100vh - 80px);
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            animation: slideUp 0.6s ease-out;
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .profile-card {
+            background: var(--k3k3-white);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            padding: 2.5rem;
+            border: 1px solid var(--k3k3-gray-100);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--k3k3-primary), var(--k3k3-secondary));
+        }
+
+        .profile-card h2 {
+            color: var(--k3k3-gray-900);
+            margin-bottom: 2.5rem;
+            font-size: 1.75rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        .profile-card h2 i {
+            color: var(--k3k3-secondary);
+            font-size: 1.5rem;
+        }
+
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--k3k3-gray-100);
+        }
+
+        .section-title {
+            color: var(--k3k3-gray-800);
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-subtitle {
+            color: var(--k3k3-gray-500);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        /* Profile Picture */
+        .profile-picture-section {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .profile-picture-container {
+            display: inline-block;
+            position: relative;
+        }
+
+        .profile-picture-large {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid var(--k3k3-secondary);
+            box-shadow: var(--shadow-lg);
+            background: var(--k3k3-gray-100);
+        }
+
+        .whatsapp-profile {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .profile-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition-normal);
+        }
+
+        .profile-switcher {
+            position: absolute;
+            bottom: -45px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            background: var(--k3k3-white);
+            border-radius: var(--radius-xl);
+            padding: 4px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--k3k3-gray-200);
+        }
+
+        .profile-btn {
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: var(--transition-normal);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--k3k3-gray-600);
+        }
+
+        .profile-btn:hover {
+            background: var(--k3k3-gray-50);
+        }
+
+        .profile-btn.active {
+            background: var(--k3k3-primary);
+            color: var(--k3k3-white);
+        }
+
+        .profile-btn.male-btn.active {
+            background: linear-gradient(135deg, var(--k3k3-primary), var(--k3k3-gray-800));
+        }
+
+        .profile-btn.female-btn.active {
+            background: linear-gradient(135deg, var(--k3k3-secondary), #FFB700);
+        }
+
+        .profile-btn i {
+            font-size: 1rem;
+        }
+
+        .change-picture-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--k3k3-secondary);
+            color: var(--k3k3-white);
+            border: 3px solid var(--k3k3-white);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-normal);
+            z-index: 3;
+        }
+
+        .change-picture-btn:hover {
+            background: var(--k3k3-primary);
+            transform: scale(1.1);
+        }
+
+        /* Information Section */
+        .info-section, .settings-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            color: var(--k3k3-gray-600);
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-input {
+            padding: 1rem;
+            border: 2px solid var(--k3k3-gray-200);
+            border-radius: var(--radius-lg);
+            font-size: 1rem;
+            font-weight: 500;
+            background: var(--k3k3-gray-50);
+            color: var(--k3k3-gray-700);
+            transition: var(--transition-normal);
+        }
+
+        .info-input:focus {
+            outline: none;
+            border-color: var(--k3k3-secondary);
+            background: var(--k3k3-white);
+        }
+
+        .info-input.editable {
+            cursor: pointer;
+            border-color: var(--k3k3-gray-300);
+        }
+
+        .info-input.editable:hover {
+            border-color: var(--k3k3-secondary);
+            background: var(--k3k3-white);
+        }
+
+        .info-input.editable:focus {
+            cursor: text;
+            border-color: var(--k3k3-secondary);
+            background: var(--k3k3-white);
+            box-shadow: 0 0 0 3px rgba(0, 217, 95, 0.1);
+        }
+
+        /* Settings */
+        .settings-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem;
+            background: var(--k3k3-gray-50);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--k3k3-gray-200);
+            transition: var(--transition-normal);
+        }
+
+        .setting-item:hover {
+            background: var(--k3k3-white);
+            box-shadow: var(--shadow-md);
+        }
+
+        .setting-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .setting-info i {
+            color: var(--k3k3-secondary);
+            font-size: 1.25rem;
+            width: 24px;
+        }
+
+        .setting-title {
+            font-weight: 600;
+            color: var(--k3k3-gray-800);
+            margin-bottom: 0.25rem;
+        }
+
+        .setting-description {
+            font-size: 0.875rem;
+            color: var(--k3k3-gray-600);
+        }
+
+        /* Toggle Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--k3k3-gray-300);
+            transition: var(--transition-normal);
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: var(--transition-normal);
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--k3k3-secondary);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 1rem 2rem;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition-normal);
+            letter-spacing: 0.5px;
+        }
+
+        .btn-analytics {
+            min-width: 200px;
+            padding: 1rem 2.5rem;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--k3k3-primary), var(--k3k3-gray-800));
+            color: var(--k3k3-white);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--k3k3-gray-800), var(--k3k3-primary));
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--k3k3-white);
+            color: var(--k3k3-gray-700);
+            border: 2px solid var(--k3k3-gray-200);
+        }
+
+        .btn-secondary:hover {
+            background: var(--k3k3-gray-50);
+            border-color: var(--k3k3-secondary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-analytics {
+            background: linear-gradient(145deg, #2d2d2d, #1a1a1a);
+            color: #ffffff;
+            border: 2px solid #404040;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-analytics::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.15), 
+                transparent
+            );
+            transition: left 0.6s ease;
+        }
+
+        .btn-analytics::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                135deg, 
+                rgba(255, 255, 255, 0.1) 0%, 
+                transparent 50%, 
+                rgba(255, 255, 255, 0.05) 100%
+            );
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn-analytics:hover::before {
+            left: 100%;
+        }
+
+        .btn-analytics:hover::after {
+            opacity: 1;
+        }
+
+        .btn-analytics:hover {
+            background: linear-gradient(145deg, #3d3d3d, #2a2a2a);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 
+                0 12px 40px rgba(0, 0, 0, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.4);
+            border-color: #606060;
+        }
+
+        .btn-analytics:active {
+            transform: translateY(-1px) scale(1.01);
+            box-shadow: 
+                0 6px 20px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+            transition: all 0.1s ease;
+        }
+
+        .btn-analytics i {
+            margin-right: 8px;
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-analytics:hover i {
+            transform: translateX(2px);
+        }
+
+        /* Side Cards */
+        .side-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .stats-card, .links-card {
+            background: var(--k3k3-white);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--k3k3-gray-100);
+            position: relative;
+        }
+
+        .stats-card::before, .links-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--k3k3-primary), var(--k3k3-secondary));
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--k3k3-gray-100);
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--k3k3-gray-50);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--k3k3-secondary);
+            font-size: 1.25rem;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--k3k3-gray-900);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--k3k3-gray-600);
+            font-weight: 500;
+        }
+
+        /* Links */
+        .links-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .link-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            color: var(--k3k3-gray-700);
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            transition: var(--transition-normal);
+            font-weight: 500;
+        }
+
+        .link-item:hover {
+            background: var(--k3k3-gray-50);
+            color: var(--k3k3-primary);
+            transform: translateX(4px);
+        }
+
+        .link-item i {
+            color: var(--k3k3-secondary);
+            width: 20px;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: #ffffff;
+            color: #000000;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            border-left: 4px solid #000000;
+            font-weight: 500;
+            font-size: 0.95rem;
+            z-index: 10000;
+            transform: translateX(400px);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            max-width: 350px;
+            border: 1px solid #e5e5e5;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+            animation: slideIn 0.4s ease-out;
+        }
+
+        .notification.error {
+            background: #ffffff;
+            color: #dc2626;
+            border-left: 4px solid #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        .notification.info {
+            background: #ffffff;
+            color: #1e40af;
+            border-left: 4px solid #1e40af;
+            border: 1px solid #dbeafe;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(100px) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0) translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .profile-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn-primary, .btn-secondary {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .profile-card h2 {
+                font-size: 1.5rem;
+            }
+
+            .profile-picture-large {
+                width: 120px;
+                height: 120px;
+            }
+        }
+    </style>
+
+    <script>
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = '../index.html';
+            }
+        }
+
+        function editProfile() {
+            // Create modal overlay
+            const modalOverlay = document.createElement('div');
+            modalOverlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10000;
+                backdrop-filter: blur(5px);
+            `;
+            
+            // Create modal content
+            const modalContent = document.createElement('div');
+            modalContent.style.cssText = `
+                background: white;
+                padding: 2rem;
+                border-radius: 1rem;
+                width: 90%;
+                max-width: 500px;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+                animation: modalSlideIn 0.3s ease-out;
+            `;
+            
+            // Add animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes modalSlideIn {
+                    from {
+                        opacity: 0;
+                        transform: translateY(-50px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Get current values
+            const currentName = document.getElementById('profileName').textContent;
+            const currentEmail = document.getElementById('profileEmail').textContent;
+            const currentPhone = document.getElementById('profilePhone').textContent;
+            
+            modalContent.innerHTML = `
+                <h2 style="margin: 0 0 1.5rem 0; color: var(--k3k3-primary); font-size: 1.5rem;">
+                    <i class="fas fa-edit"></i> Edit Profile
+                </h2>
+                
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; color: var(--k3k3-gray-700); font-weight: 600;">
+                            Full Name
+                        </label>
+                        <input type="text" id="editName" value="${currentName}" style="
+                            width: 100%;
+                            padding: 0.75rem;
+                            border: 2px solid var(--k3k3-gray-200);
+                            border-radius: 0.5rem;
+                            font-size: 1rem;
+                            transition: border-color 0.3s;
+                        " onfocus="this.style.borderColor='var(--k3k3-primary)'" onblur="this.style.borderColor='var(--k3k3-gray-200)'">
+                    </div>
+                    
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; color: var(--k3k3-gray-700); font-weight: 600;">
+                            Email Address
+                        </label>
+                        <input type="email" id="editEmail" value="${currentEmail}" style="
+                            width: 100%;
+                            padding: 0.75rem;
+                            border: 2px solid var(--k3k3-gray-200);
+                            border-radius: 0.5rem;
+                            font-size: 1rem;
+                            transition: border-color 0.3s;
+                        " onfocus="this.style.borderColor='var(--k3k3-primary)'" onblur="this.style.borderColor='var(--k3k3-gray-200)'">
+                    </div>
+                    
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; color: var(--k3k3-gray-700); font-weight: 600;">
+                            Phone Number
+                        </label>
+                        <input type="tel" id="editPhone" value="${currentPhone}" style="
+                            width: 100%;
+                            padding: 0.75rem;
+                            border: 2px solid var(--k3k3-gray-200);
+                            border-radius: 0.5rem;
+                            font-size: 1rem;
+                            transition: border-color 0.3s;
+                        " onfocus="this.style.borderColor='var(--k3k3-primary)'" onblur="this.style.borderColor='var(--k3k3-gray-200)'">
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; margin-top: 2rem; justify-content: flex-end;">
+                    <button onclick="this.closest('[style*=\"position: fixed\"]').remove()" style="
+                        padding: 0.75rem 1.5rem;
+                        border: 2px solid var(--k3k3-gray-300);
+                        background: white;
+                        color: var(--k3k3-gray-700);
+                        border-radius: 0.5rem;
+                        cursor: pointer;
+                        font-weight: 600;
+                        transition: all 0.3s;
+                    " onmouseover="this.style.background='var(--k3k3-gray-50)'" onmouseout="this.style.background='white'">
+                        Cancel
+                    </button>
+                    <button onclick="saveProfileChanges()" style="
+                        padding: 0.75rem 1.5rem;
+                        border: none;
+                        background: linear-gradient(135deg, var(--k3k3-primary), var(--k3k3-secondary));
+                        color: white;
+                        border-radius: 0.5rem;
+                        cursor: pointer;
+                        font-weight: 600;
+                        transition: all 0.3s;
+                    " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                </div>
+            `;
+            
+            modalOverlay.appendChild(modalContent);
+            document.body.appendChild(modalOverlay);
+            
+            // Close on backdrop click
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) {
+                    modalOverlay.remove();
+                }
+            });
+            
+            // Add save function to window
+            window.saveProfileChanges = function() {
+                const newName = document.getElementById('editName').value.trim();
+                const newEmail = document.getElementById('editEmail').value.trim();
+                const newPhone = document.getElementById('editPhone').value.trim();
+                
+                // Validation
+                if (!newName) {
+                    showNotification('Please enter your name', 'error');
+                    return;
+                }
+                
+                if (!newEmail || !newEmail.includes('@')) {
+                    showNotification('Please enter a valid email', 'error');
+                    return;
+                }
+                
+                if (!newPhone || newPhone.length < 10) {
+                    showNotification('Please enter a valid phone number', 'error');
+                    return;
+                }
+                
+                // Update profile display
+                document.getElementById('profileName').textContent = newName;
+                document.getElementById('profileEmail').textContent = newEmail;
+                document.getElementById('profilePhone').textContent = newPhone;
+                
+                // Update dashboard if elements exist
+                const userNameElement = document.querySelector('.user-name');
+                if (userNameElement) {
+                    userNameElement.textContent = newName;
+                }
+                
+                // Save to localStorage
+                try {
+                    localStorage.setItem('profileName', newName);
+                    localStorage.setItem('profileEmail', newEmail);
+                    localStorage.setItem('profilePhone', newPhone);
+                } catch (error) {
+                    console.error('Failed to save profile to localStorage:', error);
+                }
+                
+                // Close modal
+                modalOverlay.remove();
+                
+                // Show success message
+                showNotification('Profile updated successfully!', 'success');
+            };
+        }
+
+        function changePassword() {
+            showNotification('Change password feature coming soon!', 'info');
+        }
+
+        function checkStorage() {
+            try {
+                // Calculate storage usage
+                let totalSize = 0;
+                let itemCount = 0;
+                
+                for (let key in localStorage) {
+                    if (localStorage.hasOwnProperty(key)) {
+                        totalSize += localStorage[key].length;
+                        itemCount++;
+                    }
+                }
+                
+                // Check specific profile images
+                const maleImage = localStorage.getItem('profileImage_male');
+                const femaleImage = localStorage.getItem('profileImage_female');
+                
+                const maleSize = maleImage ? maleImage.length : 0;
+                const femaleSize = femaleImage ? femaleImage.length : 0;
+                
+                const totalSizeKB = (totalSize / 1024).toFixed(2);
+                const maleSizeKB = (maleSize / 1024).toFixed(2);
+                const femaleSizeKB = (femaleSize / 1024).toFixed(2);
+                
+                let message = `Storage Info:\n`;
+                message += `Total items: ${itemCount}\n`;
+                message += `Total size: ${totalSizeKB} KB\n`;
+                message += `Male image: ${maleSizeKB} KB\n`;
+                message += `Female image: ${femaleSizeKB} KB\n\n`;
+                message += `Note: Images disappear on refresh if storage is full or cleared.`;
+                
+                showNotification(message, 'info');
+                console.log('Storage details:', {
+                    totalItems: itemCount,
+                    totalSizeKB: totalSizeKB,
+                    maleImageSizeKB: maleSizeKB,
+                    femaleImageSizeKB: femaleSizeKB
+                });
+                
+            } catch (error) {
+                console.error('Error checking storage:', error);
+                showNotification('Error checking storage', 'error');
+            }
+        }
+
+        function changePicture() {
+            // Create a file input element
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*';
+            fileInput.style.display = 'none';
+            
+            // Add change event listener
+            fileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    // Validate file type
+                    if (!file.type.startsWith('image/')) {
+                        showNotification('Please select an image file', 'error');
+                        return;
+                    }
+                    
+                    // Validate file size (max 3MB for better quality while maintaining reliability)
+                    if (file.size > 3 * 1024 * 1024) {
+                        showNotification('Image size should be less than 3MB', 'error');
+                        return;
+                    }
+                    
+                    // Read and display the image
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const profileImage = document.getElementById('profileImage');
+                        const miniProfileImage = document.getElementById('miniProfileImage');
+                        
+                        try {
+                            // Update profile page image
+                            profileImage.src = e.target.result;
+                            
+                            // Save to localStorage with multiple methods
+                            const currentProfile = localStorage.getItem('selectedProfile') || 'male';
+                            const imageData = e.target.result;
+                            
+                            console.log('Attempting to save image, size:', imageData.length);
+                            
+                            // Method 1: Direct localStorage
+                            try {
+                                localStorage.setItem(`profileImage_${currentProfile}`, imageData);
+                                console.log('Method 1: Direct localStorage success');
+                            } catch (error) {
+                                console.error('Method 1 failed:', error);
+                                
+                                // Method 2: Compressed storage
+                                try {
+                                    // Create a smaller version for storage
+                                    const canvas = document.createElement('canvas');
+                                    const ctx = canvas.getContext('2d');
+                                    const img = new Image();
+                                    
+                                    img.onload = function() {
+                                        // Resize to 100x100 for storage
+                                        canvas.width = 100;
+                                        canvas.height = 100;
+                                        ctx.drawImage(img, 0, 0, 100, 100);
+                                        
+                                        const compressedData = canvas.toDataURL('image/jpeg', 0.7);
+                                        localStorage.setItem(`profileImage_${currentProfile}`, compressedData);
+                                        console.log('Method 2: Compressed storage success');
+                                        
+                                        showNotification('Profile picture saved (compressed)', 'success');
+                                    };
+                                    
+                                    img.src = imageData;
+                                    
+                                } catch (compressError) {
+                                    console.error('Method 2 failed:', compressError);
+                                    
+                                    // Method 3: Session storage fallback
+                                    try {
+                                        sessionStorage.setItem(`profileImage_${currentProfile}`, imageData);
+                                        console.log('Method 3: Session storage success');
+                                        showNotification('Profile picture saved for this session only', 'info');
+                                    } catch (sessionError) {
+                                        console.error('Method 3 failed:', sessionError);
+                                        showNotification('All storage methods failed. Image will show during this session only.', 'error');
+                                    }
+                                }
+                            }
+                            
+                            // Update dashboard if open
+                            if (miniProfileImage) {
+                                miniProfileImage.src = imageData;
+                            }
+                            
+                            // Notify dashboard
+                            try {
+                                localStorage.setItem('profileImageUpdate', imageData);
+                                setTimeout(() => localStorage.removeItem('profileImageUpdate'), 100);
+                            } catch (error) {
+                                console.error('Dashboard notification failed:', error);
+                            }
+                            
+                            if (!error) {
+                                showNotification('Profile picture updated successfully!', 'success');
+                            }
+                            
+                        } catch (error) {
+                            console.error('Error processing image:', error);
+                            showNotification('Error processing image. Please try again.', 'error');
+                        }
+                    };
+                    
+                    reader.onerror = function() {
+                        showNotification('Error reading image file', 'error');
+                    };
+                    
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // Trigger file selection
+            document.body.appendChild(fileInput);
+            fileInput.click();
+            document.body.removeChild(fileInput);
+        }
+
+        function switchProfile(gender) {
+            const profileImage = document.getElementById('profileImage');
+            const maleBtn = document.getElementById('maleBtn');
+            const femaleBtn = document.getElementById('femaleBtn');
+            
+            // Remove active class from both buttons
+            maleBtn.classList.remove('active');
+            femaleBtn.classList.remove('active');
+            
+            // Add active class to selected button
+            if (gender === 'male') {
+                maleBtn.classList.add('active');
+                
+                // Check for custom image in multiple storage locations
+                let customImage = null;
+                
+                try {
+                    customImage = localStorage.getItem('profileImage_male');
+                    if (customImage && customImage.length > 100) {
+                        profileImage.src = customImage;
+                        console.log('Loaded male custom image from localStorage');
+                    } else {
+                        throw new Error('localStorage image invalid');
+                    }
+                } catch (error) {
+                    console.log('localStorage failed, trying sessionStorage');
+                    try {
+                        customImage = sessionStorage.getItem('profileImage_male');
+                        if (customImage && customImage.length > 100) {
+                            profileImage.src = customImage;
+                            console.log('Loaded male custom image from sessionStorage');
+                        } else {
+                            throw new Error('sessionStorage image invalid');
+                        }
+                    } catch (sessionError) {
+                        console.log('Using default male image');
+                        profileImage.src = 'https://picsum.photos/seed/male-avatar/150/150.jpg';
+                    }
+                }
+            } else {
+                femaleBtn.classList.add('active');
+                
+                // Check for custom image in multiple storage locations
+                let customImage = null;
+                
+                try {
+                    customImage = localStorage.getItem('profileImage_female');
+                    if (customImage && customImage.length > 100) {
+                        profileImage.src = customImage;
+                        console.log('Loaded female custom image from localStorage');
+                    } else {
+                        throw new Error('localStorage image invalid');
+                    }
+                } catch (error) {
+                    console.log('localStorage failed, trying sessionStorage');
+                    try {
+                        customImage = sessionStorage.getItem('profileImage_female');
+                        if (customImage && customImage.length > 100) {
+                            profileImage.src = customImage;
+                            console.log('Loaded female custom image from sessionStorage');
+                        } else {
+                            throw new Error('sessionStorage image invalid');
+                        }
+                    } catch (sessionError) {
+                        console.log('Using default female image');
+                        profileImage.src = 'https://picsum.photos/seed/female-avatar/150/150.jpg';
+                    }
+                }
+            }
+            
+            // Save selected profile to localStorage
+            try {
+                localStorage.setItem('selectedProfile', gender);
+            } catch (error) {
+                console.error('Error saving profile selection:', error);
+                try {
+                    sessionStorage.setItem('selectedProfile', gender);
+                } catch (sessionError) {
+                    console.error('Error saving profile selection to sessionStorage:', sessionError);
+                }
+            }
+            
+            // Update dashboard if it's open (using localStorage event)
+            try {
+                localStorage.setItem('profileUpdate', gender);
+                setTimeout(() => localStorage.removeItem('profileUpdate'), 100);
+                
+                // Also send the current image for dashboard
+                let currentImage = null;
+                try {
+                    currentImage = localStorage.getItem(`profileImage_${gender}`);
+                } catch (error) {
+                    try {
+                        currentImage = sessionStorage.getItem(`profileImage_${gender}`);
+                    } catch (sessionError) {
+                        console.log('No current image found');
+                    }
+                }
+                
+                if (currentImage && currentImage.length > 100) {
+                    localStorage.setItem('profileImageUpdate', currentImage);
+                    setTimeout(() => localStorage.removeItem('profileImageUpdate'), 100);
+                }
+            } catch (error) {
+                console.error('Error updating dashboard:', error);
+            }
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = 'notification show';
+            
+            if (type === 'error') {
+                notification.classList.add('error');
+            } else if (type === 'info') {
+                notification.classList.add('info');
+            }
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize profile page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Profile page loaded');
+            
+            // Load saved profile data
+            try {
+                const savedName = localStorage.getItem('profileName');
+                const savedEmail = localStorage.getItem('profileEmail');
+                const savedPhone = localStorage.getItem('profilePhone');
+                
+                if (savedName) {
+                    document.getElementById('profileName').textContent = savedName;
+                    // Update dashboard if available
+                    const userNameElement = document.querySelector('.user-name');
+                    if (userNameElement) {
+                        userNameElement.textContent = savedName;
+                    }
+                }
+                
+                if (savedEmail) {
+                    document.getElementById('profileEmail').textContent = savedEmail;
+                }
+                
+                if (savedPhone) {
+                    document.getElementById('profilePhone').textContent = savedPhone;
+                }
+                
+                console.log('Profile data loaded from localStorage');
+            } catch (error) {
+                console.error('Error loading profile data:', error);
+            }
+            
+            // Debug localStorage on load
+            console.log('localStorage available:', typeof localStorage !== 'undefined');
+            console.log('localStorage keys:', Object.keys(localStorage));
+            console.log('selectedProfile:', localStorage.getItem('selectedProfile'));
+            console.log('profileImage_male:', localStorage.getItem('profileImage_male') ? 'exists' : 'missing');
+            console.log('profileImage_female:', localStorage.getItem('profileImage_female') ? 'exists' : 'missing');
+            
+            // Load saved profile
+            const savedProfile = localStorage.getItem('selectedProfile');
+            if (savedProfile) {
+                console.log('Loading saved profile:', savedProfile);
+                switchProfile(savedProfile);
+            } else {
+                console.log('No saved profile, using default');
+                switchProfile('male');
+            }
+            
+            // Listen for profile updates from other tabs
+            window.addEventListener('storage', (e) => {
+                console.log('Storage event:', e.key, e.newValue);
+                
+                if (e.key === 'profileUpdate' && e.newValue) {
+                    const gender = e.newValue;
+                    const profileImage = document.getElementById('profileImage');
+                    const maleBtn = document.getElementById('maleBtn');
+                    const femaleBtn = document.getElementById('femaleBtn');
+                    
+                    maleBtn.classList.remove('active');
+                    femaleBtn.classList.remove('active');
+                    
+                    if (gender === 'male') {
+                        maleBtn.classList.add('active');
+                        const customImage = localStorage.getItem('profileImage_male');
+                        profileImage.src = customImage || 'https://picsum.photos/seed/male-avatar/150/150.jpg';
+                    } else {
+                        femaleBtn.classList.add('active');
+                        const customImage = localStorage.getItem('profileImage_female');
+                        profileImage.src = customImage || 'https://picsum.photos/seed/female-avatar/150/150.jpg';
+                    }
+                }
+                
+                // Listen for profile image updates
+                if (e.key === 'profileImageUpdate' && e.newValue) {
+                    const profileImage = document.getElementById('profileImage');
+                    if (profileImage) {
+                        profileImage.src = e.newValue;
+                    }
+                }
+                
+                // Listen for profile data updates
+                if (e.key === 'profileName' && e.newValue) {
+                    document.getElementById('profileName').textContent = e.newValue;
+                    const userNameElement = document.querySelector('.user-name');
+                    if (userNameElement) {
+                        userNameElement.textContent = e.newValue;
+                    }
+                }
+                
+                if (e.key === 'profileEmail' && e.newValue) {
+                    document.getElementById('profileEmail').textContent = e.newValue;
+                }
+                
+                if (e.key === 'profilePhone' && e.newValue) {
+                    document.getElementById('profilePhone').textContent = e.newValue;
+                }
+            });
+        });
+
+        // Load passenger profile data on page load
+        function loadPassengerProfile() {
+            // Load saved passenger data from localStorage
+            const savedName = localStorage.getItem('passengerName');
+            const savedEmail = localStorage.getItem('passengerEmail');
+            const savedPhone = localStorage.getItem('passengerPhone');
+            const savedMemberSince = localStorage.getItem('memberSince');
+            
+            // Update input fields
+            const nameField = document.getElementById('passengerName');
+            const emailField = document.getElementById('passengerEmail');
+            const phoneField = document.getElementById('passengerPhone');
+            const memberSinceField = document.getElementById('memberSince');
+            
+            if (nameField && savedName) nameField.value = savedName;
+            if (emailField && savedEmail) emailField.value = savedEmail;
+            if (phoneField && savedPhone) phoneField.value = savedPhone;
+            
+            // Handle member since date
+            if (memberSinceField) {
+                if (savedMemberSince) {
+                    memberSinceField.value = savedMemberSince;
+                } else {
+                    // First time user - record current date
+                    const currentDate = new Date();
+                    const formattedDate = currentDate.toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'long' 
+                    });
+                    memberSinceField.value = formattedDate;
+                    localStorage.setItem('memberSince', formattedDate);
+                }
+            }
+        }
+
+        // Save passenger profile data
+        function savePassengerProfile() {
+            const nameField = document.getElementById('passengerName');
+            const emailField = document.getElementById('passengerEmail');
+            const phoneField = document.getElementById('passengerPhone');
+            
+            if (nameField) localStorage.setItem('passengerName', nameField.value.trim());
+            if (emailField) localStorage.setItem('passengerEmail', emailField.value.trim());
+            if (phoneField) localStorage.setItem('passengerPhone', phoneField.value.trim());
+            
+            // Update display elements
+            const profileNameElement = document.getElementById('profileName');
+            const profileEmailElement = document.getElementById('profileEmail');
+            const profilePhoneElement = document.getElementById('profilePhone');
+            
+            if (nameField && profileNameElement) profileNameElement.textContent = nameField.value.trim();
+            if (emailField && profileEmailElement) profileEmailElement.textContent = emailField.value.trim();
+            if (phoneField && profilePhoneElement) profilePhoneElement.textContent = phoneField.value.trim();
+            
+            showNotification('Profile updated successfully!', 'success');
+        }
+
+        // Load profile on page initialization
+        loadPassengerProfile();
+
+        // Add save functionality to existing save button
+        const saveBtn = document.querySelector('.save-btn');
+        if (saveBtn) {
+            saveBtn.addEventListener('click', savePassengerProfile);
+        }
+
+        // Push Notifications Toggle Function
+        function togglePushNotifications() {
+            const pushNotificationsCheckbox = document.getElementById('pushNotifications');
+            const isEnabled = pushNotificationsCheckbox.checked;
+            
+            // Save to localStorage
+            localStorage.setItem('passengerPushNotifications', isEnabled);
+            
+            // Show notification
+            if (isEnabled) {
+                showNotification('Push notifications enabled', 'success');
+                // Request notification permission (for real implementation)
+                if ('Notification' in window && Notification.permission === 'default') {
+                    Notification.requestPermission().then(permission => {
+                        if (permission === 'granted') {
+                            console.log('Notification permission granted');
+                        }
+                    });
+                }
+            } else {
+                showNotification('Push notifications disabled', 'info');
+            }
+        }
+
+        // Email Notifications Toggle Function
+        function toggleEmailNotifications() {
+            const emailNotificationsCheckbox = document.getElementById('emailNotifications');
+            const isEnabled = emailNotificationsCheckbox.checked;
+            
+            // Save to localStorage
+            localStorage.setItem('passengerEmailNotifications', isEnabled);
+            
+            // Show notification
+            if (isEnabled) {
+                showNotification('Email notifications enabled', 'success');
+                // Simulate email preference update
+                console.log('Email notifications preference updated');
+            } else {
+                showNotification('Email notifications disabled', 'info');
+                console.log('Email notifications preference updated');
+            }
+        }
+
+        // Location Services Toggle Function
+        function toggleLocationServices() {
+            const locationServicesCheckbox = document.getElementById('locationServices');
+            const isEnabled = locationServicesCheckbox.checked;
+            
+            // Save to localStorage
+            localStorage.setItem('passengerLocationServices', isEnabled);
+            
+            // Show notification
+            if (isEnabled) {
+                showNotification('Location services enabled', 'success');
+                // Request geolocation permission (for real implementation)
+                if ('geolocation' in navigator) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            console.log('Location access granted:', position.coords.latitude, position.coords.longitude);
+                        },
+                        (error) => {
+                            console.log('Location access denied:', error.message);
+                            showNotification('Location access denied', 'error');
+                            // Revert checkbox if permission denied
+                            locationServicesCheckbox.checked = false;
+                            localStorage.setItem('passengerLocationServices', false);
+                        }
+                    );
+                }
+            } else {
+                showNotification('Location services disabled', 'info');
+                console.log('Location services disabled');
+            }
+        }
+
+        // Load notification settings on page load
+        function loadNotificationSettings() {
+            // Load Push Notifications
+            const savedPushNotifications = localStorage.getItem('passengerPushNotifications');
+            const pushNotificationsCheckbox = document.getElementById('pushNotifications');
+            
+            if (pushNotificationsCheckbox) {
+                const isEnabled = savedPushNotifications !== null ? savedPushNotifications === 'true' : true;
+                pushNotificationsCheckbox.checked = isEnabled;
+            }
+
+            // Load Email Notifications
+            const savedEmailNotifications = localStorage.getItem('passengerEmailNotifications');
+            const emailNotificationsCheckbox = document.getElementById('emailNotifications');
+            
+            if (emailNotificationsCheckbox) {
+                const isEnabled = savedEmailNotifications !== null ? savedEmailNotifications === 'true' : true;
+                emailNotificationsCheckbox.checked = isEnabled;
+            }
+
+            // Load Location Services
+            const savedLocationServices = localStorage.getItem('passengerLocationServices');
+            const locationServicesCheckbox = document.getElementById('locationServices');
+            
+            if (locationServicesCheckbox) {
+                const isEnabled = savedLocationServices !== null ? savedLocationServices === 'true' : true;
+                locationServicesCheckbox.checked = isEnabled;
+            }
+        }
+
+        // Load notification settings on page initialization
+        loadNotificationSettings();
+
+        // Travel History Functions
+        function loadTravelHistory() {
+            // Check if passenger has any trips
+            const hasTrips = localStorage.getItem('passengerTotalTrips') && 
+                             parseInt(localStorage.getItem('passengerTotalTrips')) > 0;
+            
+            if (!hasTrips) {
+                // Show "0" for new passengers
+                document.getElementById('passengerTotalTrips').textContent = '0';
+                document.getElementById('favoritePlaces').textContent = '0';
+                document.getElementById('co2Saved').textContent = '0 kg';
+            } else {
+                // Load saved travel history for active passengers
+                const savedTrips = localStorage.getItem('passengerTotalTrips');
+                const savedPlaces = localStorage.getItem('favoritePlaces');
+                const savedCO2 = localStorage.getItem('co2Saved');
+                
+                if (savedTrips) document.getElementById('passengerTotalTrips').textContent = savedTrips;
+                if (savedPlaces) document.getElementById('favoritePlaces').textContent = savedPlaces;
+                if (savedCO2) document.getElementById('co2Saved').textContent = `${savedCO2} kg`;
+            }
+        }
+
+        function updateTravelHistory() {
+            // Simulate travel history updates (in real app, this would come from backend)
+            const tripsElement = document.getElementById('passengerTotalTrips');
+            const placesElement = document.getElementById('favoritePlaces');
+            const co2Element = document.getElementById('co2Saved');
+            
+            // Get current values or check if still showing "0"
+            let currentTrips = parseInt(tripsElement.textContent) || 0;
+            let currentPlaces = parseInt(placesElement.textContent) || 0;
+            let currentCO2 = parseFloat(co2Element.textContent.replace(' kg', '')) || 0;
+            
+            // Check if this is the first trip (transitioning from "0")
+            const isFirstTrip = tripsElement.textContent === '0';
+            
+            if (isFirstTrip) {
+                // First trip - set initial values
+                currentTrips = 1;
+                currentPlaces = 1;
+                currentCO2 = 2.5; // Average CO2 saved per trip
+            } else {
+                // Increment existing values
+                currentTrips += 1;
+                
+                // Occasionally add new favorite places (30% chance)
+                if (Math.random() < 0.3) {
+                    currentPlaces += 1;
+                }
+                
+                // Add CO2 saved (1.5-4 kg per trip)
+                currentCO2 += Math.random() * 2.5 + 1.5;
+            }
+            
+            // Update display
+            tripsElement.textContent = currentTrips;
+            placesElement.textContent = currentPlaces;
+            co2Element.textContent = `${currentCO2.toFixed(1)} kg`;
+            
+            // Save to localStorage
+            localStorage.setItem('passengerTotalTrips', currentTrips.toString());
+            localStorage.setItem('favoritePlaces', currentPlaces.toString());
+            localStorage.setItem('co2Saved', currentCO2.toFixed(1));
+        }
+
+        function simulateTravelGrowth() {
+            // Simulate periodic travel updates
+            setInterval(() => {
+                // Random chance of travel update (15% chance every 20 seconds)
+                if (Math.random() < 0.15) {
+                    updateTravelHistory();
+                }
+            }, 20000); // Check every 20 seconds
+        }
+
+        // Initialize travel history
+        loadTravelHistory();
+        simulateTravelGrowth();
+
+        // Simulate push notifications when enabled
+        function simulatePushNotifications() {
+            setInterval(() => {
+                const isEnabled = localStorage.getItem('passengerPushNotifications') === 'true';
+                
+                if (isEnabled && 'Notification' in window && Notification.permission === 'granted') {
+                    // Simulate random ride updates
+                    const messages = [
+                        'Your ride is arriving in 2 minutes',
+                        'New ride request nearby!',
+                        'Your driver has started the trip',
+                        'Payment processed successfully',
+                        'Rate your recent trip'
+                    ];
+                    
+                    // 10% chance of notification every 30 seconds when enabled
+                    if (Math.random() < 0.1) {
+                        const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                        
+                        // Show browser notification
+                        new Notification('K3K3 Ride Update', {
+                            body: randomMessage,
+                            icon: '../assets/k3k3.png',
+                            tag: 'ride-update'
+                        });
+                        
+                        // Also show in-app notification
+                        showNotification(randomMessage, 'info');
+                    }
+                }
+            }, 30000); // Check every 30 seconds
+        }
+
+        // Start notification simulation
+        simulatePushNotifications();
+
+        // Simulate email notifications when enabled
+        function simulateEmailNotifications() {
+            setInterval(() => {
+                const isEnabled = localStorage.getItem('passengerEmailNotifications') === 'true';
+                
+                if (isEnabled) {
+                    // 5% chance of email notification every 2 minutes when enabled
+                    if (Math.random() < 0.05) {
+                        const emailTypes = [
+                            'Trip receipt sent to your email',
+                            'Weekly ride summary available',
+                            'Promotional code sent to email',
+                            'Account update notification sent'
+                        ];
+                        
+                        const randomEmail = emailTypes[Math.floor(Math.random() * emailTypes.length)];
+                        showNotification(randomEmail, 'info');
+                        console.log('Email notification simulated:', randomEmail);
+                    }
+                }
+            }, 120000); // Check every 2 minutes
+        }
+
+        // Simulate location services when enabled
+        function simulateLocationServices() {
+            setInterval(() => {
+                const isEnabled = localStorage.getItem('passengerLocationServices') === 'true';
+                
+                if (isEnabled && 'geolocation' in navigator) {
+                    // Get current position (simulate location tracking)
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            // Log location data (in real app, this would be sent to backend)
+                            console.log('Location tracked:', {
+                                lat: position.coords.latitude,
+                                lng: position.coords.longitude,
+                                accuracy: position.coords.accuracy
+                            });
+                        },
+                        (error) => {
+                            console.log('Location tracking error:', error.message);
+                        }
+                    );
+                }
+            }, 60000); // Check every minute
+        }
+
+        // Start all simulations
+        simulateEmailNotifications();
+        simulateLocationServices();
+
+        // Trip History Functions
+        function showTripHistory() {
+            const popup = document.getElementById('tripHistoryPopup');
+            const tripsList = document.getElementById('tripsList');
+            
+            // Load trips from localStorage or generate sample data
+            const trips = getPassengerTrips();
+            
+            if (trips.length === 0) {
+                tripsList.innerHTML = `
+                    <div class="no-trips">
+                        <i class="fas fa-route"></i>
+                        <p>No trips yet</p>
+                        <small>Your trip history will appear here once you start riding</small>
+                    </div>
+                `;
+            } else {
+                tripsList.innerHTML = trips.map(trip => `
+                    <div class="trip-item" onclick="showRebookPopup('${trip.id}')">
+                        <div class="trip-header">
+                            <span class="trip-date">${trip.date}</span>
+                            <span class="trip-price">₵${trip.price}</span>
+                        </div>
+                        <div class="trip-route">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>${trip.pickup} → ${trip.dropoff}</span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            popup.classList.add('active');
+        }
+
+        function closeTripHistory() {
+            const popup = document.getElementById('tripHistoryPopup');
+            popup.classList.remove('active');
+        }
+
+        function getPassengerTrips() {
+            // Check if passenger has trips in localStorage
+            const savedTrips = localStorage.getItem('passengerTrips');
+            if (savedTrips) {
+                return JSON.parse(savedTrips);
+            }
+            
+            // Check if passenger has any trips (from travel history)
+            const totalTrips = localStorage.getItem('passengerTotalTrips');
+            if (totalTrips && parseInt(totalTrips) > 0) {
+                // Generate sample trips based on total trips
+                const trips = [];
+                const tripCount = parseInt(totalTrips);
+                const locations = [
+                    'Accra Mall', 'Kotoka Airport', 'University of Ghana', 'Labone Beach',
+                    'Osu Oxford Street', 'Aburi Botanical Gardens', 'Makola Market', 'Independence Square'
+                ];
+                
+                for (let i = 0; i < Math.min(tripCount, 10); i++) {
+                    const date = new Date();
+                    date.setDate(date.getDate() - (i * 3)); // Every 3 days
+                    
+                    const pickup = locations[Math.floor(Math.random() * locations.length)];
+                    let dropoff = locations[Math.floor(Math.random() * locations.length)];
+                    while (dropoff === pickup) {
+                        dropoff = locations[Math.floor(Math.random() * locations.length)];
+                    }
+                    
+                    trips.push({
+                        id: `trip-${i + 1}`,
+                        date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+                        pickup: pickup,
+                        dropoff: dropoff,
+                        price: (Math.random() * 50 + 15).toFixed(2)
+                    });
+                }
+                
+                // Save to localStorage
+                localStorage.setItem('passengerTrips', JSON.stringify(trips));
+                return trips;
+            }
+            
+            return [];
+        }
+
+        function showRebookPopup(tripId) {
+            const trips = getPassengerTrips();
+            const trip = trips.find(t => t.id === tripId);
+            
+            if (trip) {
+                const rebookPopup = document.getElementById('rebookPopup');
+                const tripDetails = document.getElementById('rebookTripDetails');
+                
+                tripDetails.innerHTML = `
+                    <div style="margin-bottom: 10px;">
+                        <strong>Route:</strong> ${trip.pickup} → ${trip.dropoff}
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <strong>Original Price:</strong> ₵${trip.price}
+                    </div>
+                    <div>
+                        <strong>Date:</strong> ${trip.date}
+                    </div>
+                `;
+                
+                // Store current trip for rebooking
+                rebookPopup.setAttribute('data-trip-id', tripId);
+                
+                rebookPopup.classList.add('active');
+            }
+        }
+
+        function closeRebookPopup() {
+            const popup = document.getElementById('rebookPopup');
+            popup.classList.remove('active');
+        }
+
+        function confirmRebook() {
+            const popup = document.getElementById('rebookPopup');
+            const tripId = popup.getAttribute('data-trip-id');
+            const trips = getPassengerTrips();
+            const trip = trips.find(t => t.id === tripId);
+            
+            if (trip) {
+                // Close popup
+                closeRebookPopup();
+                closeTripHistory();
+                
+                // Show success notification
+                showNotification(`Rebooking trip from ${trip.pickup} to ${trip.dropoff}`, 'success');
+                
+                // Store rebook data in sessionStorage for dashboard to use
+                sessionStorage.setItem('rebookData', JSON.stringify({
+                    pickup: trip.pickup,
+                    dropoff: trip.dropoff,
+                    originalPrice: trip.price,
+                    originalDate: trip.date
+                }));
+                
+                // Navigate to dashboard with rebook parameter
+                setTimeout(() => {
+                    showNotification('Redirecting to booking...', 'info');
+                    window.location.href = 'dashboard.html?rebook=true';
+                }, 1500);
+            }
+        }
+
+        // Close popups when clicking outside
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('popup-overlay')) {
+                event.target.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

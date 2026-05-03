@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ride Confirmation - K3K3</title>
+    <link rel="icon" type="image/png" href="../assets/k3k3.png">
+    <link rel="stylesheet" href="../css/k3k3-theme.css">
+    <link rel="stylesheet" href="ride-confirmation.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <script src="../js/passenger-dashboard.js"></script>
+    <script src="ride-confirmation.js"></script>
+
+    <!-- Confirmation Modal -->
+    <div class="confirmation-modal" id="confirmationModal">
+        <div class="modal-overlay" onclick="closeConfirmation()"></div>
+        <div class="modal-content">
+            
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h2>Confirm Your Ride</h2>
+                <button class="close-btn" onclick="closeConfirmation()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Ride Details -->
+            <div class="ride-details">
+                <div class="route-section">
+                    <div class="route-point pickup">
+                        <div class="point-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="point-info">
+                            <label>Pickup</label>
+                            <span id="confirmPickup">HTU Main Campus, Ho</span>
+                        </div>
+                    </div>
+                    
+                    <div class="route-line">
+                        <div class="line-dots"></div>
+                    </div>
+                    
+                    <div class="route-point destination">
+                        <div class="point-icon">
+                            <i class="fas fa-flag-checkered"></i>
+                        </div>
+                        <div class="point-info">
+                            <label>Destination</label>
+                            <span id="confirmDestination">Ho Central Market, Ho</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ride Info -->
+                <div class="ride-info-grid">
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="info-content">
+                            <label>Seats</label>
+                            <span id="confirmSeats">2</span>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-route"></i>
+                        </div>
+                        <div class="info-content">
+                            <label>Distance</label>
+                            <span id="confirmDistance">3.2 km</span>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="info-content">
+                            <label>Est. Time</label>
+                            <span id="confirmTime">15 mins</span>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="info-content">
+                            <label>Est. Fare</label>
+                            <span id="confirmFare">₵15.50</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Method -->
+            <div class="payment-section">
+                <h3>Payment Method</h3>
+                <div class="payment-options">
+                    <div class="payment-option active" onclick="selectPayment('mobile-money')">
+                        <div class="payment-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="payment-info">
+                            <span class="payment-name">Mobile Money</span>
+                            <span class="payment-detail">MTN, Vodafone, AirtelTigo</span>
+                        </div>
+                        <div class="payment-radio">
+                            <input type="radio" name="payment" value="mobile-money" checked>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-option" onclick="selectPayment('cash')">
+                        <div class="payment-icon">
+                            <i class="fas fa-money-bill"></i>
+                        </div>
+                        <div class="payment-info">
+                            <span class="payment-name">Cash</span>
+                            <span class="payment-detail">Pay driver directly</span>
+                        </div>
+                        <div class="payment-radio">
+                            <input type="radio" name="payment" value="cash">
+                        </div>
+                    </div>
+                    
+                    <div class="payment-option" onclick="selectPayment('card')">
+                        <div class="payment-icon">
+                            <i class="fas fa-credit-card"></i>
+                        </div>
+                        <div class="payment-info">
+                            <span class="payment-name">Credit/Debit Card</span>
+                            <span class="payment-detail">Visa, Mastercard, etc.</span>
+                        </div>
+                        <div class="payment-radio">
+                            <input type="radio" name="payment" value="card">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Promo Code -->
+            <div class="promo-section">
+                <div class="promo-input-group">
+                    <input type="text" id="promoCode" placeholder="Enter promo code">
+                    <button class="apply-btn" onclick="applyPromo()">Apply</button>
+                </div>
+                <div class="promo-discount" id="promoDiscount" style="display: none;">
+                    <i class="fas fa-tag"></i>
+                    <span id="discountText">₵2.00 discount applied!</span>
+                </div>
+            </div>
+
+            <!-- Fare Breakdown -->
+            <div class="fare-breakdown">
+                <div class="breakdown-row">
+                    <span>Base Fare</span>
+                    <span id="baseFare">₵10.00</span>
+                </div>
+                <div class="breakdown-row">
+                    <span>Distance (3.2 km × ₵2.50)</span>
+                    <span id="distanceFare">₵8.00</span>
+                </div>
+                <div class="breakdown-row discount" id="discountRow" style="display: none;">
+                    <span>Discount</span>
+                    <span id="discountAmount">-₵2.00</span>
+                </div>
+                <div class="breakdown-row total">
+                    <span>Total</span>
+                    <span id="totalFare">₵18.00</span>
+                </div>
+            </div>
+
+            <!-- Safety Features -->
+            <div class="safety-features">
+                <div class="safety-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Share trip details with emergency contacts</span>
+                </div>
+                <div class="safety-item">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Driver background check verified</span>
+                </div>
+                <div class="safety-item">
+                    <i class="fas fa-phone-alt"></i>
+                    <span>24/7 support available</span>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="closeConfirmation()">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back</span>
+                </button>
+                <button class="btn-primary" onclick="confirmRide()">
+                    <i class="fas fa-check"></i>
+                    <span>Confirm Ride</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loading-content">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+            </div>
+            <p>Finding your driver...</p>
+            <div class="loading-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

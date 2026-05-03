@@ -1,0 +1,1699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Analytics - K3K3</title>
+    <link rel="icon" type="image/png" href="../assets/k3k3.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Driver Analytics Page Styles */
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #1a1a1a;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .driver-header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+            color: #ffffff;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .brand-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #FFD700;
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: #ffffff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: linear-gradient(135deg, #b91c1c, #991b1b);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
+        }
+
+        /* Main Content */
+        .analytics-main {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+
+        /* Date Filter */
+        .date-filter {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.9rem;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .filter-group select:focus,
+        .filter-group input:focus {
+            outline: none;
+            border-color: #FFD700;
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+        }
+
+        .apply-filter-btn {
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+            color: #000000;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            align-self: flex-end;
+        }
+
+        .apply-filter-btn:hover {
+            background: linear-gradient(135deg, #FFC107, #FFB300);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .export-all-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #ffffff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            align-self: flex-end;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .export-all-btn:hover {
+            background: linear-gradient(135deg, #059669, #047857);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Stats Overview */
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-title {
+            font-size: 0.9rem;
+            color: #6b7280;
+            font-weight: 600;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: #000000;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-change {
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .stat-change.positive {
+            color: #10b981;
+        }
+
+        .stat-change.negative {
+            color: #dc2626;
+        }
+
+        /* Charts Section */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .chart-period {
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        .chart-container {
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .chart-placeholder {
+            text-align: center;
+            color: #6b7280;
+        }
+
+        .chart-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #FFD700;
+        }
+
+        /* Data Tables */
+        .table-card {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+            margin-bottom: 2rem;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .table-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .export-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #ffffff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .export-btn:hover {
+            background: linear-gradient(135deg, #059669, #047857);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            background: #f8f9fa;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #374151;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .data-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-badge.completed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-badge.cancelled {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-badge.pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        /* Performance Metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+        }
+
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .metric-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #FFD700;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-description {
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            color: #ffffff;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .footer-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #FFD700;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 0 1rem;
+            }
+
+            .analytics-main {
+                padding: 0 1rem;
+            }
+
+            .filter-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .stats-overview {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-card {
+                overflow-x: auto;
+            }
+
+            .data-table {
+                min-width: 600px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-overview {
+                grid-template-columns: 1fr;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Professional Header -->
+    <header class="driver-header">
+        <div class="header-content">
+            <div class="header-brand">
+                <img src="../assets/k3k3.png" alt="K3K3" class="brand-logo">
+                <span class="brand-text">K3K3 Driver</span>
+            </div>
+            
+            <div class="header-nav">
+                <a href="dashboard.html" class="nav-link">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to Dashboard</span>
+                </a>
+                
+                <button class="logout-btn" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="analytics-main">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>Driver Analytics</h1>
+            <p>Track your performance, earnings, and customer requests</p>
+        </div>
+
+        <!-- Date Filter -->
+        <div class="date-filter">
+            <div class="filter-controls">
+                <div class="filter-group">
+                    <label for="dateRange">Date Range</label>
+                    <select id="dateRange">
+                        <option value="today">Today</option>
+                        <option value="week" selected>This Week</option>
+                        <option value="month">This Month</option>
+                        <option value="quarter">This Quarter</option>
+                        <option value="year">This Year</option>
+                        <option value="custom">Custom Range</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="startDate">Start Date</label>
+                    <input type="date" id="startDate">
+                </div>
+                
+                <div class="filter-group">
+                    <label for="endDate">End Date</label>
+                    <input type="date" id="endDate">
+                </div>
+                
+                <button class="apply-filter-btn" onclick="applyFilter()">
+                    <i class="fas fa-filter"></i>
+                    Apply Filter
+                </button>
+                
+                <button class="export-all-btn" onclick="exportAllAnalytics()">
+                    <i class="fas fa-file-excel"></i>
+                    Export All Analytics
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="stats-overview">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Total Rides</span>
+                    <div class="stat-icon">
+                        <i class="fas fa-route"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="totalRides">247</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    12% from last period
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Total Earnings</span>
+                    <div class="stat-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="totalEarnings">₵2,450</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    8% from last period
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Average Rating</span>
+                    <div class="stat-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="avgRating">4.8</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    0.2 from last period
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Online Hours</span>
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="onlineHours">156</div>
+                <div class="stat-change negative">
+                    <i class="fas fa-arrow-down"></i>
+                    5% from last period
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Acceptance Rate</span>
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="acceptanceRate">92%</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    3% from last period
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Completion Rate</span>
+                    <div class="stat-icon">
+                        <i class="fas fa-flag-checkered"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="completionRate">96%</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    2% from last period
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-grid">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3 class="chart-title">Earnings Trend</h3>
+                    <span class="chart-period">Last 7 days</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="earningsChart" width="400" height="300"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3 class="chart-title">Ride Requests</h3>
+                    <span class="chart-period">Last 7 days</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="requestsChart" width="400" height="300"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3 class="chart-title">Customer Demographics</h3>
+                    <span class="chart-period">Last 7 days</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="demographicsChart" width="400" height="300"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3 class="chart-title">Payment Methods</h3>
+                    <span class="chart-period">Last 7 days</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="paymentChart" width="400" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Metrics -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-header">
+                    <h3 class="metric-title">Average Trip Distance</h3>
+                    <div class="stat-icon">
+                        <i class="fas fa-road"></i>
+                    </div>
+                </div>
+                <div class="metric-value">8.5 km</div>
+                <div class="metric-description">Average distance per completed ride</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 75%"></div>
+                </div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-header">
+                    <h3 class="metric-title">Average Trip Duration</h3>
+                    <div class="stat-icon">
+                        <i class="fas fa-stopwatch"></i>
+                    </div>
+                </div>
+                <div class="metric-value">22 mins</div>
+                <div class="metric-description">Average time per completed ride</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 65%"></div>
+                </div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-header">
+                    <h3 class="metric-title">Earnings per Hour</h3>
+                    <div class="stat-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                </div>
+                <div class="metric-value">₵15.70</div>
+                <div class="metric-description">Average earnings per online hour</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 85%"></div>
+                </div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-header">
+                    <h3 class="metric-title">Customer Retention</h3>
+                    <div class="stat-icon">
+                        <i class="fas fa-user-friends"></i>
+                    </div>
+                </div>
+                <div class="metric-value">78%</div>
+                <div class="metric-description">Repeat customer rate</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 78%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Rides Table -->
+        <div class="table-card">
+            <div class="table-header">
+                <h3 class="table-title">Recent Rides</h3>
+                <button class="export-btn" onclick="exportRidesData()">
+                    <i class="fas fa-download"></i>
+                    Export
+                </button>
+            </div>
+            <div style="overflow-x: auto;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Ride ID</th>
+                            <th>Date</th>
+                            <th>Customer</th>
+                            <th>Pickup</th>
+                            <th>Drop-off</th>
+                            <th>Distance</th>
+                            <th>Duration</th>
+                            <th>Fare</th>
+                            <th>Rating</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentRidesTable">
+                        <tr>
+                            <td>#RIDE001</td>
+                            <td>02/03/2026</td>
+                            <td>John Doe</td>
+                            <td>Accra Mall</td>
+                            <td>Kotoka Airport</td>
+                            <td>12.5 km</td>
+                            <td>35 mins</td>
+                            <td>₵45.00</td>
+                            <td>⭐ 5.0</td>
+                            <td><span class="status-badge completed">Completed</span></td>
+                        </tr>
+                        <tr>
+                            <td>#RIDE002</td>
+                            <td>02/03/2026</td>
+                            <td>Jane Smith</td>
+                            <td>Labone</td>
+                            <td>Osu</td>
+                            <td>5.2 km</td>
+                            <td>18 mins</td>
+                            <td>₵25.00</td>
+                            <td>⭐ 4.5</td>
+                            <td><span class="status-badge completed">Completed</span></td>
+                        </tr>
+                        <tr>
+                            <td>#RIDE003</td>
+                            <td>02/03/2026</td>
+                            <td>Mike Johnson</td>
+                            <td>Tema</td>
+                            <td>Ashaiman</td>
+                            <td>8.7 km</td>
+                            <td>28 mins</td>
+                            <td>₵35.00</td>
+                            <td>⭐ 4.8</td>
+                            <td><span class="status-badge completed">Completed</span></td>
+                        </tr>
+                        <tr>
+                            <td>#RIDE004</td>
+                            <td>02/03/2026</td>
+                            <td>Sarah Wilson</td>
+                            <td>Madina</td>
+                            <td>Adenta</td>
+                            <td>6.3 km</td>
+                            <td>22 mins</td>
+                            <td>₵30.00</td>
+                            <td>-</td>
+                            <td><span class="status-badge cancelled">Cancelled</span></td>
+                        </tr>
+                        <tr>
+                            <td>#RIDE005</td>
+                            <td>01/03/2026</td>
+                            <td>David Brown</td>
+                            <td>Kaneshie</td>
+                            <td>Abbosey Okai</td>
+                            <td>4.8 km</td>
+                            <td>15 mins</td>
+                            <td>₵20.00</td>
+                            <td>⭐ 4.7</td>
+                            <td><span class="status-badge completed">Completed</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Customer Requests Analysis -->
+        <div class="table-card">
+            <div class="table-header">
+                <h3 class="table-title">Customer Request Patterns</h3>
+                <button class="export-btn" onclick="exportRequestsData()">
+                    <i class="fas fa-download"></i>
+                    Export
+                </button>
+            </div>
+            <div style="overflow-x: auto;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Time Period</th>
+                            <th>Total Requests</th>
+                            <th>Accepted</th>
+                            <th>Rejected</th>
+                            <th>Cancelled</th>
+                            <th>Completed</th>
+                            <th>Acceptance Rate</th>
+                            <th>Completion Rate</th>
+                            <th>Avg Response Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="requestsTable">
+                        <tr>
+                            <td>Morning (6AM-12PM)</td>
+                            <td>45</td>
+                            <td>42</td>
+                            <td>3</td>
+                            <td>2</td>
+                            <td>40</td>
+                            <td>93%</td>
+                            <td>95%</td>
+                            <td>2.3 mins</td>
+                        </tr>
+                        <tr>
+                            <td>Afternoon (12PM-6PM)</td>
+                            <td>68</td>
+                            <td>62</td>
+                            <td>6</td>
+                            <td>4</td>
+                            <td>58</td>
+                            <td>91%</td>
+                            <td>94%</td>
+                            <td>1.8 mins</td>
+                        </tr>
+                        <tr>
+                            <td>Evening (6PM-12AM)</td>
+                            <td>82</td>
+                            <td>75</td>
+                            <td>7</td>
+                            <td>5</td>
+                            <td>70</td>
+                            <td>91%</td>
+                            <td>93%</td>
+                            <td>1.5 mins</td>
+                        </tr>
+                        <tr>
+                            <td>Night (12AM-6AM)</td>
+                            <td>28</td>
+                            <td>25</td>
+                            <td>3</td>
+                            <td>2</td>
+                            <td>23</td>
+                            <td>89%</td>
+                            <td>92%</td>
+                            <td>3.1 mins</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 K3K3 Rides. All Rights Reserved.</p>
+        <div class="footer-links">
+            <a href="../legal/terms-of-service.html">Terms of Service</a>
+            <a href="../legal/privacy-policy.html">Privacy Policy</a>
+            <a href="../legal/terms-of-service.html#contact">Contact Support</a>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize analytics data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Driver analytics page loaded');
+            loadAnalyticsData();
+            setDefaultDateRange();
+        });
+
+        // Load analytics data from localStorage
+        function loadAnalyticsData() {
+            try {
+                // Load basic stats
+                const totalRides = localStorage.getItem('driverTotalRides') || '247';
+                const totalEarnings = localStorage.getItem('driverTotalEarnings') || '2450';
+                const avgRating = localStorage.getItem('driverAverageRating') || '4.8';
+                const onlineHours = localStorage.getItem('driverOnlineHours') || '156';
+                const acceptanceRate = localStorage.getItem('driverAcceptanceRate') || '92';
+                const completionRate = localStorage.getItem('driverCompletionRate') || '96';
+                
+                // Update UI
+                document.getElementById('totalRides').textContent = totalRides;
+                document.getElementById('totalEarnings').textContent = '₵' + parseFloat(totalEarnings).toLocaleString();
+                document.getElementById('avgRating').textContent = avgRating;
+                document.getElementById('onlineHours').textContent = onlineHours;
+                document.getElementById('acceptanceRate').textContent = acceptanceRate + '%';
+                document.getElementById('completionRate').textContent = completionRate + '%';
+                
+                // Load ride history
+                loadRideHistory();
+                
+                // Load request patterns
+                loadRequestPatterns();
+                
+            } catch (error) {
+                console.error('Error loading analytics data:', error);
+            }
+        }
+
+        // Load ride history from localStorage
+        function loadRideHistory() {
+            try {
+                const rideHistory = JSON.parse(localStorage.getItem('driverRideHistory') || '[]');
+                const tableBody = document.getElementById('recentRidesTable');
+                
+                if (rideHistory.length === 0) {
+                    // Use demo data if no history exists
+                    return;
+                }
+                
+                // Clear existing rows
+                tableBody.innerHTML = '';
+                
+                // Add rides from history (most recent first)
+                rideHistory.slice(-10).reverse().forEach(ride => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>#${ride.id}</td>
+                        <td>${ride.date}</td>
+                        <td>${ride.customer}</td>
+                        <td>${ride.pickup}</td>
+                        <td>${ride.dropoff}</td>
+                        <td>${ride.distance} km</td>
+                        <td>${ride.duration}</td>
+                        <td>₵${ride.fare}</td>
+                        <td>${ride.rating ? '⭐ ' + ride.rating : '-'}</td>
+                        <td><span class="status-badge ${ride.status.toLowerCase()}">${ride.status}</span></td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+                
+            } catch (error) {
+                console.error('Error loading ride history:', error);
+            }
+        }
+
+        // Load request patterns from localStorage
+        function loadRequestPatterns() {
+            try {
+                const requestPatterns = JSON.parse(localStorage.getItem('driverRequestPatterns') || '{}');
+                
+                // Update request patterns table with real data if available
+                if (Object.keys(requestPatterns).length > 0) {
+                    updateRequestPatternsTable(requestPatterns);
+                }
+                
+            } catch (error) {
+                console.error('Error loading request patterns:', error);
+            }
+        }
+
+        // Update request patterns table
+        function updateRequestPatternsTable(patterns) {
+            const tableBody = document.getElementById('requestsTable');
+            
+            // Clear existing rows
+            tableBody.innerHTML = '';
+            
+            // Add pattern data
+            Object.entries(patterns).forEach(([period, data]) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${period}</td>
+                    <td>${data.total}</td>
+                    <td>${data.accepted}</td>
+                    <td>${data.rejected}</td>
+                    <td>${data.cancelled}</td>
+                    <td>${data.completed}</td>
+                    <td>${data.acceptanceRate}%</td>
+                    <td>${data.completionRate}%</td>
+                    <td>${data.avgResponseTime} mins</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Set default date range
+        function setDefaultDateRange() {
+            const today = new Date();
+            const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+            
+            document.getElementById('startDate').value = weekAgo.toISOString().split('T')[0];
+            document.getElementById('endDate').value = today.toISOString().split('T')[0];
+        }
+
+        // Apply date filter
+        function applyFilter() {
+            const dateRange = document.getElementById('dateRange').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            
+            if (dateRange === 'custom' && (!startDate || !endDate)) {
+                showNotification('Please select start and end dates for custom range', 'error');
+                return;
+            }
+            
+            // Filter analytics data based on selected range
+            filterAnalyticsData(dateRange, startDate, endDate);
+            
+            showNotification('Filter applied successfully', 'success');
+        }
+
+        // Filter analytics data
+        function filterAnalyticsData(range, startDate, endDate) {
+            // This would typically make an API call to get filtered data
+            // For now, we'll simulate filtering
+            console.log('Filtering data:', { range, startDate, endDate });
+            
+            // Update charts and tables based on filter
+            updateCharts(range);
+            updateTables(range);
+        }
+
+        // Update charts based on filter
+        function updateCharts(range) {
+            // This would update chart data
+            console.log('Updating charts for range:', range);
+        }
+
+        // Update tables based on filter
+        function updateTables(range) {
+            // This would update table data
+            console.log('Updating tables for range:', range);
+        }
+
+        // Export rides data to Excel
+        function exportRidesData() {
+            try {
+                const rideHistory = JSON.parse(localStorage.getItem('driverRideHistory') || '[]');
+                
+                if (rideHistory.length === 0) {
+                    showNotification('No ride data available to export', 'info');
+                    return;
+                }
+                
+                // Create enhanced CSV content with BOM for Excel compatibility
+                const BOM = '\uFEFF';
+                const headers = ['Ride ID', 'Date', 'Time', 'Customer', 'Pickup Location', 'Drop-off Location', 'Distance (km)', 'Duration (mins)', 'Fare (₵)', 'Rating', 'Payment Method', 'Status', 'Driver Notes'];
+                const csvContent = [
+                    BOM + headers.join(','),
+                    ...rideHistory.map((ride, index) => [
+                        `RIDE${String(index + 1).padStart(4, '0')}`,
+                        ride.date,
+                        ride.time || '12:00',
+                        ride.customer,
+                        ride.pickup,
+                        ride.dropoff,
+                        ride.distance,
+                        ride.duration,
+                        ride.fare,
+                        ride.rating || 'N/A',
+                        ride.paymentMethod || 'Cash',
+                        ride.status,
+                        ride.notes || ''
+                    ].join(','))
+                ].join('\n');
+                
+                // Create and download Excel-compatible CSV file
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', `driver_rides_analytics_${new Date().toISOString().split('T')[0]}.csv`);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                showNotification('Rides data exported successfully to Excel', 'success');
+                
+            } catch (error) {
+                console.error('Error exporting rides data:', error);
+                showNotification('Error exporting rides data', 'error');
+            }
+        }
+
+        // Export requests data to Excel
+        function exportRequestsData() {
+            try {
+                const requestPatterns = JSON.parse(localStorage.getItem('driverRequestPatterns') || '{}');
+                
+                if (Object.keys(requestPatterns).length === 0) {
+                    showNotification('No request data available to export', 'info');
+                    return;
+                }
+                
+                // Create enhanced CSV content with BOM for Excel compatibility
+                const BOM = '\uFEFF';
+                const headers = ['Time Period', 'Total Requests', 'Accepted', 'Rejected', 'Cancelled', 'Completed', 'Acceptance Rate (%)', 'Completion Rate (%)', 'Avg Response Time (mins)', 'Peak Hours', 'Customer Satisfaction Score'];
+                const csvContent = [
+                    BOM + headers.join(','),
+                    ...Object.entries(requestPatterns).map(([period, data]) => [
+                        period,
+                        data.total,
+                        data.accepted,
+                        data.rejected,
+                        data.cancelled,
+                        data.completed,
+                        data.acceptanceRate,
+                        data.completionRate,
+                        data.avgResponseTime,
+                        data.peakHours || 'N/A',
+                        data.satisfactionScore || 'N/A'
+                    ].join(','))
+                ].join('\n');
+                
+                // Create and download Excel-compatible CSV file
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', `driver_requests_analytics_${new Date().toISOString().split('T')[0]}.csv`);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                showNotification('Requests data exported successfully to Excel', 'success');
+                
+            } catch (error) {
+                console.error('Error exporting requests data:', error);
+                showNotification('Error exporting requests data', 'error');
+            }
+        }
+
+        // Handle logout
+        function handleLogout() {
+            showNotification('Logging out...', 'info');
+            
+            // Clear driver data
+            localStorage.removeItem('driverName');
+            localStorage.removeItem('driverFirstName');
+            localStorage.removeItem('driverLastName');
+            localStorage.removeItem('driverPhone');
+            localStorage.removeItem('driverEmail');
+            localStorage.removeItem('driverDOB');
+            localStorage.removeItem('driverAddress');
+            localStorage.removeItem('driverProfileImage');
+            localStorage.removeItem('driverTotalRides');
+            localStorage.removeItem('driverAverageRating');
+            localStorage.removeItem('driverTotalEarnings');
+            localStorage.removeItem('driverOnlineHours');
+            localStorage.removeItem('driverMemberSince');
+            localStorage.removeItem('driverToken');
+            localStorage.removeItem('driverLoggedIn');
+            
+            // Clear session data
+            sessionStorage.clear();
+            
+            // Redirect to login page after short delay
+            setTimeout(() => {
+                window.location.href = 'driver-login.html';
+            }, 1000);
+        }
+
+        // Show notification
+        function showNotification(message, type, title) {
+            type = type || 'success';
+            title = title || '';
+            
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                color: #000000;
+                font-weight: 600;
+                z-index: 10000;
+                animation: slideInRight 0.3s ease;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            `;
+            
+            if (type === 'success') {
+                notification.style.background = 'linear-gradient(135deg, #FFD700, #FFC107)';
+            } else if (type === 'error') {
+                notification.style.background = 'linear-gradient(135deg, #dc2626, #b91c1c)';
+                notification.style.color = '#ffffff';
+            } else {
+                notification.style.background = 'linear-gradient(135deg, #1a1a1a, #000000)';
+                notification.style.color = '#ffffff';
+            }
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            // Auto remove
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Add slide animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            
+            @keyframes slideOutRight {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize charts on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCharts();
+        });
+
+        // Initialize all charts
+        function initializeCharts() {
+            try {
+                // Load data for charts
+                loadChartData();
+                
+                // Initialize earnings trend chart
+                initializeEarningsChart();
+                
+                // Initialize requests chart
+                initializeRequestsChart();
+                
+                // Initialize demographics chart
+                initializeDemographicsChart();
+                
+                // Initialize payment methods chart
+                initializePaymentChart();
+                
+            } catch (error) {
+                console.error('Error initializing charts:', error);
+            }
+        }
+
+        // Load chart data from localStorage
+        function loadChartData() {
+            try {
+                // Generate sample data for demonstration
+                const earningsData = generateEarningsData();
+                const requestsData = generateRequestsData();
+                const demographicsData = generateDemographicsData();
+                const paymentData = generatePaymentData();
+                
+                // Store chart data
+                localStorage.setItem('chartEarningsData', JSON.stringify(earningsData));
+                localStorage.setItem('chartRequestsData', JSON.stringify(requestsData));
+                localStorage.setItem('chartDemographicsData', JSON.stringify(demographicsData));
+                localStorage.setItem('chartPaymentData', JSON.stringify(paymentData));
+                
+            } catch (error) {
+                console.error('Error loading chart data:', error);
+            }
+        }
+
+        // Generate earnings data
+        function generateEarningsData() {
+            const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+            const data = [];
+            let baseEarnings = 150;
+            
+            for (let i = 0; i < 7; i++) {
+                baseEarnings += Math.random() * 50;
+                data.push({
+                    day: days[i],
+                    earnings: baseEarnings + Math.random() * 20
+                });
+            }
+            
+            return data;
+        }
+
+        // Generate requests data
+        function generateRequestsData() {
+            return [
+                { hour: '6AM', requests: 5 },
+                { hour: '9AM', requests: 12 },
+                { hour: '12PM', requests: 18 },
+                { hour: '3PM', requests: 25 },
+                { hour: '6PM', requests: 15 },
+                { hour: '9PM', requests: 8 }
+            ];
+        }
+
+        // Generate demographics data
+        function generateDemographicsData() {
+            return [
+                { age: '18-25', percentage: 35 },
+                { age: '26-35', percentage: 40 },
+                { age: '36-45', percentage: 20 },
+                { age: '46+', percentage: 5 }
+            ];
+        }
+
+        // Generate payment data
+        function generatePaymentData() {
+            return [
+                { method: 'Cash', percentage: 65 },
+                { method: 'Mobile Money', percentage: 25 },
+                { method: 'Card', percentage: 10 }
+            ];
+        }
+
+        // Initialize earnings chart
+        function initializeEarningsChart() {
+            const canvas = document.getElementById('earningsChart');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const data = JSON.parse(localStorage.getItem('chartEarningsData') || '[]');
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map(d => d.day),
+                    datasets: [{
+                        label: 'Daily Earnings (₵)',
+                        data: data.map(d => d.earnings),
+                        borderColor: '#FFD700',
+                        backgroundColor: 'rgba(255, 215, 0, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '₵' + value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize requests chart
+        function initializeRequestsChart() {
+            const canvas = document.getElementById('requestsChart');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const data = JSON.parse(localStorage.getItem('chartRequestsData') || '[]');
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.map(d => d.hour),
+                    datasets: [{
+                        label: 'Ride Requests',
+                        data: data.map(d => d.requests),
+                        backgroundColor: 'rgba(255, 215, 0, 0.8)',
+                        borderColor: '#FFD700',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize demographics chart
+        function initializeDemographicsChart() {
+            const canvas = document.getElementById('demographicsChart');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const data = JSON.parse(localStorage.getItem('chartDemographicsData') || '[]');
+            
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: data.map(d => d.age + ' years'),
+                    datasets: [{
+                        data: data.map(d => d.percentage),
+                        backgroundColor: [
+                            '#FFD700',
+                            '#FFC107',
+                            '#10b981',
+                            '#059669'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.parsed + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize payment chart
+        function initializePaymentChart() {
+            const canvas = document.getElementById('paymentChart');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const data = JSON.parse(localStorage.getItem('chartPaymentData') || '[]');
+            
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: data.map(d => d.method),
+                    datasets: [{
+                        data: data.map(d => d.percentage),
+                        backgroundColor: [
+                            '#FFD700',
+                            '#10b981',
+                            '#059669'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.parsed + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Update charts based on filter
+        function updateCharts(range) {
+            try {
+                // Load filtered data based on range
+                const filteredData = getFilteredData(range);
+                
+                // Update each chart with new data
+                updateEarningsChart(filteredData.earnings);
+                updateRequestsChart(filteredData.requests);
+                updateDemographicsChart(filteredData.demographics);
+                updatePaymentChart(filteredData.payments);
+                
+                console.log('Charts updated for range:', range);
+                
+            } catch (error) {
+                console.error('Error updating charts:', error);
+            }
+        }
+
+        // Get filtered data based on date range
+        function getFilteredData(range) {
+            // This would typically filter data based on selected date range
+            // For now, return generated data
+            return {
+                earnings: generateEarningsData(),
+                requests: generateRequestsData(),
+                demographics: generateDemographicsData(),
+                payments: generatePaymentData()
+            };
+        }
+
+        // Update individual charts
+        function updateEarningsChart(data) {
+            const chart = Chart.getChart('earningsChart');
+            if (chart) {
+                chart.data.labels = data.map(d => d.day);
+                chart.data.datasets[0].data = data.map(d => d.earnings);
+                chart.update();
+            }
+        }
+
+        function updateRequestsChart(data) {
+            const chart = Chart.getChart('requestsChart');
+            if (chart) {
+                chart.data.labels = data.map(d => d.hour);
+                chart.data.datasets[0].data = data.map(d => d.requests);
+                chart.update();
+            }
+        }
+
+        function updateDemographicsChart(data) {
+            const chart = Chart.getChart('demographicsChart');
+            if (chart) {
+                chart.data.labels = data.map(d => d.age + ' years');
+                chart.data.datasets[0].data = data.map(d => d.percentage);
+                chart.update();
+            }
+        }
+
+        function updatePaymentChart(data) {
+            const chart = Chart.getChart('paymentChart');
+            if (chart) {
+                chart.data.labels = data.map(d => d.method);
+                chart.data.datasets[0].data = data.map(d => d.percentage);
+                chart.update();
+            }
+        }
+
+        // Simulate real-time updates
+        setInterval(() => {
+            // Update earnings periodically
+            const currentEarnings = parseFloat(localStorage.getItem('driverTotalEarnings') || '2450');
+            const newEarnings = currentEarnings + Math.random() * 5;
+            localStorage.setItem('driverTotalEarnings', newEarnings.toFixed(2));
+            
+            const earningsElement = document.getElementById('totalEarnings');
+            if (earningsElement) {
+                earningsElement.textContent = '₵' + parseFloat(newEarnings).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            }
+        }, 30000); // Update every 30 seconds
+    </script>
+
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rider Management - K3K3 Admin</title>
+    <link rel="icon" type="image/png" href="../assets/k3k3.png">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="rider-management.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="k3k3-sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <img src="../assets/k3k3.png" alt="K3K3" class="logo">
+                    <div class="logo-text">
+                        <strong>K3K3</strong>
+                        <span>Admin</span>
+                    </div>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-title">Operations</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="dashboard.html" class="nav-link">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item active">
+                            <a href="rider-management.html" class="nav-link">
+                                <i class="fas fa-users"></i>
+                                <span>Riders</span>
+                                <div class="nav-indicator"></div>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="ride-monitoring.html" class="nav-link">
+                                <i class="fas fa-map-marked-alt"></i>
+                                <span>Live Rides</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="payment-management.html" class="nav-link">
+                                <i class="fas fa-credit-card"></i>
+                                <span>Payments</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="system-settings.html" class="nav-link">
+                                <i class="fas fa-cog"></i>
+                                <span>Settings</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="k3k3-main-content">
+            <!-- Top Navigation Bar -->
+            <header class="k3k3-topbar">
+                <div class="topbar-left">
+                    <button class="sidebar-toggle" id="sidebarToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <button class="action-btn back-btn" id="backBtn" title="Back to Dashboard" onclick="window.location.href='dashboard.html'">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <div class="breadcrumb">
+                        <span>Admin</span>
+                        <i class="fas fa-chevron-right"></i>
+                        <span>Rider Management</span>
+                    </div>
+                </div>
+                
+                <div class="topbar-right">
+                    <div class="topbar-actions">
+                        <span id="lastRefreshTime" class="last-refresh-time">Last updated: Never</span>
+                        <button class="action-btn" title="Sync from Rider App" id="syncBtn" onclick="riderManagement.forceSyncFromRiderApp()">
+                            <i class="fas fa-sync"></i>
+                        </button>
+                        <button class="action-btn" title="Refresh" id="refreshBtn">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                        <button class="action-btn" title="Export" id="exportBtn">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Rider Management Content -->
+            <div class="dashboard-content">
+                <!-- Stats Overview -->
+                <section class="stats-overview">
+                    <div class="stats-grid">
+                        <div class="stat-card primary">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-number" id="totalRiders">0</div>
+                                <div class="stat-label">Total Riders</div>
+                            </div>
+                        </div>
+                        <div class="stat-card success">
+                            <div class="stat-icon">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-number" id="activeRiders">0</div>
+                                <div class="stat-label">Active Riders</div>
+                            </div>
+                        </div>
+                        <div class="stat-card warning">
+                            <div class="stat-icon">
+                                <i class="fas fa-user-clock"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-number" id="pendingRiders">0</div>
+                                <div class="stat-label">Pending Approval</div>
+                            </div>
+                        </div>
+                        <div class="stat-card info">
+                            <div class="stat-icon">
+                                <i class="fas fa-user-times"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-number" id="suspendedRiders">0</div>
+                                <div class="stat-label">Suspended Riders</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Filter and Search -->
+                <section class="filter-section">
+                    <div class="filter-header">
+                        <h2>Filter Riders</h2>
+                        <div class="filter-controls">
+                            <input type="text" id="searchRiders" placeholder="Search by name, email, or ID..." class="search-input">
+                            <select id="statusFilter" class="filter-select">
+                                <option value="all">All Status</option>
+                                <option value="active">Active</option>
+                                <option value="pending">Pending</option>
+                                <option value="suspended">Suspended</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                            <button id="clearFilters" class="btn-secondary">Clear Filters</button>
+                        </div>
+                    </div>
+                    <div id="filterInfo" class="filter-info" style="display: none;"></div>
+                </section>
+
+                <!-- Riders Table -->
+                <section class="riders-table-section">
+                    <div class="table-header">
+                        <h2>Rider List</h2>
+                        <div class="table-actions">
+                            <button class="btn-primary" id="addRiderBtn">
+                                <i class="fas fa-plus"></i>
+                                Add New Rider
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table class="riders-table" id="ridersTable">
+                            <thead>
+                                <tr>
+                                    <th>Rider ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Status</th>
+                                    <th>Join Date</th>
+                                    <th>Trips</th>
+                                    <th>Rating</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ridersTableBody">
+                                <!-- Riders will be populated here -->
+                            </tbody>
+                        </table>
+                        
+                        <!-- Data Source Statistics -->
+                        <div class="data-source-stats" id="dataSourceStats">
+                            <div class="stat-item">
+                                <span class="stat-label">From Applications:</span>
+                                <span class="stat-value" id="applicationCount">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Existing Riders:</span>
+                                <span class="stat-value" id="existingCount">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Total:</span>
+                                <span class="stat-value" id="totalCount">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rider Details Modal -->
+    <div id="riderModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Rider Details</h3>
+                <button class="modal-close" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Content will be populated dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="rider-management.js"></script>
+</body>
+</html>

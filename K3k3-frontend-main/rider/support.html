@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support - K3K3 Rider</title>
+    <link rel="icon" type="image/png" href="../assets/k3k3.png">
+    <link rel="stylesheet" href="../css/k3k3-theme.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Local Icons Implementation -->
+    <style>
+        /* Basic Icon Replacements */
+        .fa-search::before { content: "🔍"; }
+        .fa-map-marker-alt::before { content: "📍"; }
+        .fa-flag-checkered::before { content: "🏁"; }
+        .fa-users::before { content: "👥"; }
+        .fa-cog::before { content: "⚙️"; }
+        .fa-headset::before { content: "🎧"; }
+        .fa-history::before { content: "📋"; }
+        .fa-share-alt::before { content: "📤"; }
+        .fa-times::before { content: "❌"; }
+        .fa-check::before { content: "✅"; }
+        .fa-spinner::before { content: "⏳"; }
+        .fa-location-arrow::before { content: "🧭"; }
+        .fa-plus-circle::before { content: "➕"; }
+        .fa-graduation-cap::before { content: "🎓"; }
+        .fa-building::before { content: "🏢"; }
+        .fa-shopping-bag::before { content: "🛍️"; }
+        .fa-coffee::before { content: "☕"; }
+        .fa-circle::before { content: "⚫"; }
+        .fa-credit-card::before { content: "💳"; }
+        .fa-lock::before { content: "🔒"; }
+        .fa-star::before { content: "⭐"; }
+        .fa-question-circle::before { content: "❓"; }
+        .fa-info-circle::before { content: "ℹ️"; }
+        .fa-trash::before { content: "🗑️"; }
+        .fa-user-times::before { content: "🚫👤"; }
+        .fa-sign-out-alt::before { content: "🚪"; }
+        .fa-edit::before { content: "✏️"; }
+        .fa-check-circle::before { content: "✅"; }
+        .fa-clock::before { content: "⏰"; }
+        .fa-shield-alt::before { content: "🛡️"; }
+        .fa-home::before { content: "🏠"; }
+        .fa-motorcycle::before { content: "🏍️"; }
+        .fa-chart-line::before { content: "📈"; }
+        .fa-wallet::before { content: "💼"; }
+        .fa-bell::before { content: "🔔"; }
+        .fa-user::before { content: "👤"; }
+        .fa-envelope::before { content: "✉️"; }
+        .fa-phone::before { content: "📞"; }
+        .fa-calendar::before { content: "📅"; }
+        .fa-tachometer-alt::before { content: "📊"; }
+        .fa-bars::before { content: "☰"; }
+        .fa-chevron-down::before { content: "👇"; }
+        .fa-power-off::before { content: "🔴"; }
+        .fa-route::before { content: "🛣️"; }
+        .fa-money-bill-wave::before { content: "💵"; }
+        .fa-camera::before { content: "📷"; }
+        .fa-id-card::before { content: "🆔"; }
+        .fa-arrow-left::before { content: "←"; }
+        .fa-upload::before { content: "📤"; }
+        .fa-download::before { content: "📥"; }
+        .fa-plus::before { content: "➕"; }
+        .fa-minus::before { content: "➖"; }
+        .fa-exchange-alt::before { content: "🔄"; }
+        .fa-piggy-bank::before { content: "🐷"; }
+        .fa-hand-holding-usd::before { content: "💵"; }
+        .fa-chart-pie::before { content: "📊"; }
+        .fa-comments::before { content: "💬"; }
+        .fa-book::before { content: "📖"; }
+        .fa-video::before { content: "📹"; }
+        .fa-file-alt::before { content: "📄"; }
+        .fa-life-ring::before { content: "🆘"; }
+        .fa-map::before { content: "🗺️"; }
+        .fa-car::before { content: "🚗"; }
+        .fa-tools::before { content: "🛠️"; }
+        .fa-wrench::before { content: "🔧"; }
+        .fa-ambulance::before { content: "🚑"; }
+        .fa-shield-alt::before { content: "🛡️"; }
+        .fa-exclamation-triangle::before { content: "⚠️"; }
+        .fa-info-circle::before { content: "ℹ️"; }
+        .fa-question-circle::before { content: "❓"; }
+        .fa-paper-plane::before { content: "✈️"; }
+        
+        /* Icon styling */
+        [class*="fa-"] {
+            display: inline-block;
+            font-style: normal;
+            font-variant: normal;
+            text-rendering: auto;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body>
+    <script src="../js/rider-dashboard.js"></script>
+    
+    <!-- Additional Functions -->
+    <script>
+        function goBackToDashboard() {
+            window.location.href = 'dashboard.html';
+        }
+        
+        function showNotifications() {
+            showNotification('Opening notifications...', 'info');
+        }
+        
+        function toggleUserMenu() {
+            // Toggle user menu dropdown
+        }
+        
+        function openHelp(category) {
+            showNotification(`Opening ${category} help...`, 'info');
+        }
+        
+        function startLiveChat() {
+            showNotification('Starting live chat...', 'info');
+        }
+        
+        function callSupport() {
+            showNotification('Calling support...', 'info');
+        }
+        
+        function emailSupport() {
+            showNotification('Opening email client...', 'info');
+        }
+        
+        function openKnowledgeBase() {
+            showNotification('Opening knowledge base...', 'info');
+        }
+        
+        function openVideoTutorials() {
+            showNotification('Opening video tutorials...', 'info');
+        }
+        
+        function openFAQ() {
+            showNotification('Opening FAQ...', 'info');
+        }
+        
+        function openCommunity() {
+            showNotification('Opening community forum...', 'info');
+        }
+        
+        function callEmergency() {
+            if (confirm('Are you sure you want to call emergency support?')) {
+                showNotification('Calling emergency support...', 'info');
+            }
+        }
+        
+        function viewAllTickets() {
+            showNotification('Loading all support tickets...', 'info');
+        }
+        
+        function viewTicket(ticketId) {
+            showNotification(`Loading ticket ${ticketId}...`, 'info');
+        }
+    </script>
+
+    <!-- Professional Header -->
+    <header class="rider-header">
+        <div class="header-content">
+            <div class="header-left">
+                <!-- Back Button -->
+                <div class="back-button" onclick="goBackToDashboard()">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back</span>
+                </div>
+                
+                <div class="header-brand">
+                    <img src="../assets/k3k3.png" alt="K3K3" class="brand-logo">
+                    <span class="brand-text">K3K3</span>
+                </div>
+            </div>
+            
+            <div class="header-center">
+                <h1 class="page-title">Support</h1>
+            </div>
+            
+            <div class="header-right">
+                <div class="notification-bell" onclick="showNotifications()">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </div>
+                <div class="user-menu" onclick="toggleUserMenu()">
+                    <div class="user-avatar">JD</div>
+                    <span class="user-name">John</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Support Container -->
+    <main class="support-container">
+        <!-- Quick Help Section -->
+        <section class="quick-help">
+            <div class="section-header">
+                <h2 class="section-title">Quick Help</h2>
+                <i class="fas fa-question-circle section-icon"></i>
+            </div>
+            
+            <div class="help-grid">
+                <div class="help-card" onclick="openHelp('trips')">
+                    <div class="help-icon">
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <div class="help-content">
+                        <h3 class="help-title">Trip Issues</h3>
+                        <p class="help-description">Problems with trips, payments, or passengers</p>
+                    </div>
+                    <div class="help-arrow">→</div>
+                </div>
+                
+                <div class="help-card" onclick="openHelp('account')">
+                    <div class="help-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="help-content">
+                        <h3 class="help-title">Account Problems</h3>
+                        <p class="help-description">Login issues, profile updates, password reset</p>
+                    </div>
+                    <div class="help-arrow">→</div>
+                </div>
+                
+                <div class="help-card" onclick="openHelp('payment')">
+                    <div class="help-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <div class="help-content">
+                        <h3 class="help-title">Payment & Earnings</h3>
+                        <p class="help-description">Withdrawal issues, payment methods, earnings questions</p>
+                    </div>
+                    <div class="help-arrow">→</div>
+                </div>
+                
+                <div class="help-card" onclick="openHelp('app')">
+                    <div class="help-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="help-content">
+                        <h3 class="help-title">App Technical Issues</h3>
+                        <p class="help-description">App crashes, GPS problems, notification issues</p>
+                    </div>
+                    <div class="help-arrow">→</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Support -->
+        <section class="contact-support">
+            <div class="section-header">
+                <h2 class="section-title">Contact Support</h2>
+                <i class="fas fa-headset section-icon"></i>
+            </div>
+            
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <div class="contact-content">
+                        <h3 class="contact-title">Live Chat</h3>
+                        <p class="contact-description">Chat with our support team instantly</p>
+                        <div class="contact-status">
+                            <span class="status-badge online">Available Now</span>
+                            <span class="response-time">Avg response: 2 min</span>
+                        </div>
+                    </div>
+                    <button class="contact-btn primary" onclick="startLiveChat()">
+                        <span>Start Chat</span>
+                    </button>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div class="contact-content">
+                        <h3 class="contact-title">Phone Support</h3>
+                        <p class="contact-description">Call us for immediate assistance</p>
+                        <div class="contact-info">
+                            <div class="phone-number">+233 800 1234</div>
+                            <div class="availability">Mon-Fri: 8AM-8PM</div>
+                        </div>
+                    </div>
+                    <button class="contact-btn" onclick="callSupport()">
+                        <span>Call Now</span>
+                    </button>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-content">
+                        <h3 class="contact-title">Email Support</h3>
+                        <p class="contact-description">Send us detailed issues</p>
+                        <div class="contact-info">
+                            <div class="email-address">support@k3k3.com</div>
+                            <div class="response-time">Response within 24 hours</div>
+                        </div>
+                    </div>
+                    <button class="contact-btn" onclick="emailSupport()">
+                        <span>Send Email</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Self Service -->
+        <section class="self-service">
+            <div class="section-header">
+                <h2 class="section-title">Self Service</h2>
+                <i class="fas fa-book section-icon"></i>
+            </div>
+            
+            <div class="service-grid">
+                <div class="service-card" onclick="openKnowledgeBase()">
+                    <div class="service-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3 class="service-title">Knowledge Base</h3>
+                        <p class="service-description">Browse our comprehensive help articles</p>
+                        <div class="service-stats">500+ Articles</div>
+                    </div>
+                    <div class="service-arrow">→</div>
+                </div>
+                
+                <div class="service-card" onclick="openVideoTutorials()">
+                    <div class="service-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3 class="service-title">Video Tutorials</h3>
+                        <p class="service-description">Step-by-step video guides</p>
+                        <div class="service-stats">100+ Videos</div>
+                    </div>
+                    <div class="service-arrow">→</div>
+                </div>
+                
+                <div class="service-card" onclick="openFAQ()">
+                    <div class="service-icon">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3 class="service-title">FAQ</h3>
+                        <p class="service-description">Frequently asked questions</p>
+                        <div class="service-stats">Most common issues</div>
+                    </div>
+                    <div class="service-arrow">→</div>
+                </div>
+                
+                <div class="service-card" onclick="openCommunity()">
+                    <div class="service-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3 class="service-title">Community Forum</h3>
+                        <p class="service-description">Get help from other riders</p>
+                        <div class="service-stats">10,000+ Members</div>
+                    </div>
+                    <div class="service-arrow">→</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Emergency Support -->
+        <section class="emergency-support">
+            <div class="section-header">
+                <h2 class="section-title">Emergency Support</h2>
+                <i class="fas fa-exclamation-triangle section-icon"></i>
+            </div>
+            
+            <div class="emergency-card">
+                <div class="emergency-icon">
+                    <i class="fas fa-ambulance"></i>
+                </div>
+                <div class="emergency-content">
+                    <h3 class="emergency-title">24/7 Emergency Hotline</h3>
+                    <p class="emergency-description">For accidents, safety concerns, or urgent matters</p>
+                    <div class="emergency-number">+233 999 1234</div>
+                    <div class="emergency-note">Available 24 hours, 7 days a week</div>
+                </div>
+                <button class="emergency-btn" onclick="callEmergency()">
+                    <i class="fas fa-phone"></i>
+                    <span>Call Emergency</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Recent Tickets -->
+        <section class="recent-tickets">
+            <div class="section-header">
+                <h2 class="section-title">Recent Support Tickets</h2>
+                <button class="view-all-btn" onclick="viewAllTickets()">
+                    <span>View All</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+            
+            <div class="tickets-list">
+                <div class="ticket-item">
+                    <div class="ticket-status">
+                        <span class="status-badge resolved">Resolved</span>
+                    </div>
+                    <div class="ticket-content">
+                        <div class="ticket-header">
+                            <h4 class="ticket-title">Payment Issue</h4>
+                            <span class="ticket-id">#TICKET-2024-001</span>
+                            <span class="ticket-date">March 28, 2024</span>
+                        </div>
+                        <p class="ticket-description">Withdrawal not showing in wallet</p>
+                    </div>
+                    <div class="ticket-actions">
+                        <button class="ticket-action-btn" onclick="viewTicket('#TICKET-2024-001')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="ticket-item">
+                    <div class="ticket-status">
+                        <span class="status-badge in-progress">In Progress</span>
+                    </div>
+                    <div class="ticket-content">
+                        <div class="ticket-header">
+                            <h4 class="ticket-title">GPS Not Working</h4>
+                            <span class="ticket-id">#TICKET-2024-002</span>
+                            <span class="ticket-date">March 29, 2024</span>
+                        </div>
+                        <p class="ticket-description">Location services not updating in app</p>
+                    </div>
+                    <div class="ticket-actions">
+                        <button class="ticket-action-btn" onclick="viewTicket('#TICKET-2024-002')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="ticket-item">
+                    <div class="ticket-status">
+                        <span class="status-badge open">Open</span>
+                    </div>
+                    <div class="ticket-content">
+                        <div class="ticket-header">
+                            <h4 class="ticket-title">Account Verification</h4>
+                            <span class="ticket-id">#TICKET-2024-003</span>
+                            <span class="ticket-date">March 30, 2024</span>
+                        </div>
+                        <p class="ticket-description">Documents not verified after upload</p>
+                    </div>
+                    <div class="ticket-actions">
+                        <button class="ticket-action-btn" onclick="viewTicket('#TICKET-2024-003')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Professional Styling -->
+    <style>
+        /* Header Styles */
+        .rider-header {
+            background: linear-gradient(135deg, var(--k3k3-primary) 0%, var(--k3k3-gray-900) 100%);
+            color: var(--k3k3-white);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            max-width: 100%;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--k3k3-white);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition-normal);
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .brand-logo {
+            width: 35px;
+            height: 35px;
+            object-fit: contain;
+        }
+
+        .brand-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--k3k3-white);
+        }
+
+        .header-center {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--k3k3-white);
+            margin: 0;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: var(--radius-full);
+            background: rgba(255, 255, 255, 0.1);
+            transition: var(--transition-normal);
+        }
+
+        .notification-bell:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--k3k3-danger);
+            color: var(--k3k3-white);
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 10px;
+            min-width: 18px;
+            text-align: center;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: var(--transition-normal);
+        }
+
+        .user-menu:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--k3k3-white);
+        }
+
+        /* Support Container */
+        .support-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            background: var(--k3k3-gray-50);
+            min-height: 100vh;
+        }
+
+        /* Section Styles */
+        .quick-help,
+        .contact-support,
+        .self-service,
+        .emergency-support,
+        .recent-tickets {
+            background: var(--k3k3-white);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--k3k3-gray-200);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--k3k3-gray-900);
+            margin: 0;
+            flex: 1;
+        }
+
+        .section-icon {
+            font-size: 1.5rem;
+            color: var(--k3k3-secondary);
+        }
+
+        /* Help Grid */
+        .help-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .help-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--k3k3-gray-50);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--k3k3-gray-200);
+            cursor: pointer;
+            transition: var(--transition-normal);
+        }
+
+        .help-card:hover {
+            background: var(--k3k3-white);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .help-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--k3k3-secondary);
+            color: var(--k3k3-gray-900);
+            border-radius: var(--radius-lg);
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .help-content {
+            flex: 1;
+        }
+
+        .help-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--k3k3-gray-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .help-description {
+            font-size: 0.875rem;
+            color: var(--k3k3-gray-600);
+            line-height: 1.4;
+        }
+
+        .help-arrow {
+            font-size: 1.5rem;
+            color: var(--k3k3-secondary);
+            transition: var(--transition-normal);
+        }
+
+        .help-card:hover .help-arrow {
+            transform: translateX(4px);
+        }
+
+        /* Contact Grid */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .contact-card {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--k3k3-gray-50);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--k3k3-gray-200);
+        }
+
+        .contact-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--k3k3-success);
+            color: var(--k3k3-white);
+            border-radius: var(--radius-lg);
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .contact-content {
+            flex: 1;
+        }
+
+        .contact-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--k3k3-gray-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-description {
+            font-size: 0.875rem;
+            color: var(--k3k3-gray-600);
+            line-height: 1.4;
+            margin-bottom: 1rem;
+        }
+
+        .contact-status,
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge.online {
+            background: var(--k3k3-success);
+            color: var(--k3k3-white);
+        }
+
+        .status-badge.resolved {
+            background: var(--k3k3-success);
+            color: var(--k3k3-white);
+        }
+
+        .status-badge.in-progress {
+            background: var(--k3k3-secondary);
+            color: var(--k3k3-gray-900);
+        }
+
+        .status-badge.open {
+            background: var(--k3k3-danger);
+            color: var(--k3k3-white);
+        }
+
+        .response-time {
+            font-size: 0.75rem;
+            color: var(--k3k3-gray-500);
+        }
+
+        .phone-number {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--k3k3-gray-900);
+        }
+
+        .availability {
+            font-size: 0.875rem;
+            color: var(--k3k3-gray-600);
+        }
+
+        .email-address {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--k3k3-gray-900);
+        }
+
+        .contact-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: var(--k3k3-secondary);
+            color: var(--k3k3-gray-900);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: var(--transition-normal);
+            font-weight: 500;
+        }
+
+        .contact-btn.primary {
+            background: var(--k3k3-success);
+            color: var(--k3k3-white);
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Service Grid */
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .service-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--k3k3-gray-50);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--k3k3-gray-200);
+            cursor: pointer;
+            transition: var(--transition-normal);
+        }
+
+        .service-card:hover {
+            background: var(--k3k3-white);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .service-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--k3k3-primary);
+            color: var(--k3k3-white);
+            border-radius: var(--radius-lg);
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .service-content {
+            flex: 1;
+        }
+
+        .service-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--k3k3-gray-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .service-description {
+            font-size: 0.875rem;
+            color: var(--k3k3-gray-600);
+            line-height: 1.4;
+            margin-bottom: 0.5rem;
+        }
+
+        .service-stats {
+            font-size: 0.75rem;
+            color: var(--k3k3-secondary);
+            font-weight: 600;
+        }
+
+        .service-arrow {
+            font-size: 1.5rem;
+            color: var(--k3k3-secondary);
+            transition: var(--transition-normal);
+        }
+
+        .service-card:hover .service-arrow {
+            transform: translateX(4px);
+        }
+
+        /* Emergency Support */
+        .emergency-card {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.05));
+            border-radius: var(--radius-xl);
+            border: 2px solid var(--k3k3-danger);
+        }
+
+        .emergency-icon {
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--k3k3-danger);
+            color: var(--k3k3-white);
+            border-radius: var(--radius-lg);
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .emergency-content {
+            flex: 1;
+        }
+
+        .emergency-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--k3k3-gray-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .emergency-description {
+            font-size: 1rem;
+            color: var(--k3k3-gray-700);
+            line-height: 1.4;
+            margin-bottom: 1rem;
+        }
+
+        .emergency-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--k3k3-danger);
+            margin-bottom: 0.5rem;
+        }
+
+        .emergency-note {
+            font-size: 0.875rem;
+            color: var(--k3k3-gray-600);
+        }
+
+        .emergency-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border: none;
+            background: var(--k3k3-danger);
+            color: var(--k3k3-white);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: var(--transition-normal);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .emergency-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Recent Tickets */
+        .view-all-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: none;
+            background: var(--k3k3-secondary);
+            color: var(--k3k3-gray-900);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition-normal);
+            font-weight: 500;
+        }
+
+        .view-all-btn:hover {
+            background: var(--k3k3-accent);
+        }
+
+        .tickets-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .ticket-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--k3k3-gray-50);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--k3k3-gray-200);
+            transition: var(--transition-normal);
+        }
+
+        .ticket-item:hover {
+            background: var(--k3k3-white);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .ticket-status {
+            flex-shrink: 0;
+        }
+
+        .ticket-content {
+            flex: 1;
+        }
+
+        .ticket-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .ticket-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--k3k3-gray-900);
+        }
+
+        .ticket-id {
+            font-size: 0.75rem;
+            color: var(--k3k3-gray-500);
+            font-family: monospace;
+        }
+
+        .ticket-date {
+            font-size: 0.75rem;
+            color: var(--k3k3-gray-500);
+        }
+
+        .ticket-description {
+            font-size: 0.875rem;
+            color: var(--k3k3-gray-700);
+            line-height: 1.4;
+        }
+
+        .ticket-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .ticket-action-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: var(--k3k3-gray-200);
+            color: var(--k3k3-gray-700);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-normal);
+        }
+
+        .ticket-action-btn:hover {
+            background: var(--k3k3-gray-300);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .support-container {
+                padding: 1rem;
+            }
+
+            .help-grid,
+            .contact-grid,
+            .service-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .emergency-card {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .section-header {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</body>
+</html>

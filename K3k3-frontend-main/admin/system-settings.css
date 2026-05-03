@@ -1,0 +1,281 @@
+/* K3K3 Admin - System Settings Styles */
+
+/* Settings Sections */
+.settings-section {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 32px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.section-header h2 {
+    margin: 0;
+    color: #1a1a1a;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.settings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 24px;
+}
+
+.setting-card {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    border: 1px solid #e5e7eb;
+}
+
+.setting-card h3 {
+    margin: 0 0 16px 0;
+    color: #1a1a1a;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.setting-group {
+    margin-bottom: 16px;
+}
+
+.setting-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #374151;
+    font-size: 0.9rem;
+}
+
+.setting-input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: border-color 0.3s ease;
+}
+
+.setting-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.setting-input[readonly] {
+    background: #f8f9fa;
+    color: #6c757d;
+    cursor: not-allowed;
+}
+
+.setting-checkbox {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    accent-color: #007bff;
+}
+
+.setting-help {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.8rem;
+    color: #6c757d;
+    font-style: italic;
+}
+
+/* API Key Group */
+.api-key-group {
+    display: flex;
+    gap: 8px;
+}
+
+.api-key-group .setting-input {
+    flex: 1;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.copy-btn {
+    padding: 12px 16px;
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 0 6px 6px 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.copy-btn:hover {
+    background: #5a6268;
+}
+
+/* Backup Status */
+.backup-status {
+    background: #fafbfc;
+    border-radius: 8px;
+    padding: 16px;
+    border: 1px solid #e5e7eb;
+}
+
+.status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.status-item:last-child {
+    border-bottom: none;
+}
+
+.status-label {
+    font-weight: 600;
+    color: #495057;
+}
+
+.status-value {
+    color: #28a745;
+    font-weight: 500;
+}
+
+/* Progress Indicators */
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #28a745, #20c997);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+/* Status Indicators */
+.status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.status-enabled {
+    background: #28a745;
+    color: white;
+}
+
+.status-disabled {
+    background: #6c757d;
+    color: white;
+}
+
+.status-warning {
+    background: #ffc107;
+    color: #212529;
+}
+
+.status-error {
+    background: #dc3545;
+    color: white;
+}
+
+/* Alert Boxes */
+.alert-box {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.alert-box.warning {
+    background: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.alert-box.error {
+    background: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.alert-box.info {
+    background: #d1ecf1;
+    border-color: #bee5eb;
+}
+
+.alert-icon {
+    font-size: 1.2rem;
+    margin-right: 8px;
+}
+
+.alert-content {
+    flex: 1;
+}
+
+.alert-title {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 4px;
+}
+
+.alert-message {
+    font-size: 0.9rem;
+    color: #6c757d;
+    line-height: 1.4;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .settings-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .setting-card {
+        padding: 16px;
+    }
+    
+    .setting-group {
+        margin-bottom: 12px;
+    }
+    
+    .api-key-group {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .api-key-group .setting-input {
+        border-top-right-radius: 6px;
+        border-bottom-right-radius: 6px;
+    }
+    
+    .copy-btn {
+        border-top-right-radius: 6px;
+        border-bottom-right-radius: 6px;
+        border-top-left-radius: 6px;
+        border-bottom-left-radius: 6px;
+        margin-top: 8px;
+        width: auto;
+    }
+}

@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Professional Analytics Dashboard - K3K3</title>
+  <link rel="icon" type="image/png" href="../assets/k3k3.png">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="analytics.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.0/dist/chartjs-plugin-zoom.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+  <div class="k3k3-enterprise-wrapper">
+    <!-- Sidebar -->
+    <aside class="k3k3-sidebar">
+      <div class="logo-container">
+        <img src="../assets/k3k3.png" alt="K3K3" class="logo">
+        <div class="logo-text">
+          <strong>K3K3</strong>
+          <span>Analytics</span>
+        </div>
+        <div class="universal-time" id="universalTime">
+          <div class="date-display" id="dateDisplay">
+            <span class="date-value" id="dateValue">Loading...</span>
+          </div>
+          <div class="time-display">
+            <span class="time-value" id="hours">00</span>
+            <span class="time-separator">:</span>
+            <span class="time-value" id="minutes">00</span>
+            <span class="time-separator">:</span>
+            <span class="time-value" id="seconds">00</span>
+          </div>
+          <div class="time-label" id="timeLabel">GMT</div>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-title">Main</div>
+          <ul class="nav-list">
+            <li class="nav-item">
+              <a href="dashboard.html" class="nav-link">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+                <div class="nav-indicator"></div>
+              </a>
+            </li>
+            <li class="nav-item active">
+              <a href="analytics.html" class="nav-link">
+                <i class="fas fa-chart-pie"></i>
+                <span>Analytics</span>
+                <div class="nav-indicator"></div>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="ride-monitoring.html" class="nav-link">
+                <i class="fas fa-map-marked-alt"></i>
+                <span>Live Tracking</span>
+                <div class="nav-indicator"></div>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="rider-management.html" class="nav-link">
+                <i class="fas fa-route"></i>
+                <span>Trips</span>
+                <div class="nav-indicator"></div>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="rider-management.html" class="nav-link">
+                <i class="fas fa-users"></i>
+                <span>Customers</span>
+                <div class="nav-indicator"></div>
+              </a>
+            </li>
+          </ul>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-title">Operations</div>
+          <ul class="nav-list">
+            <li class="nav-item">
+              <a href="rider-management.html" class="nav-link">
+                <i class="fas fa-users"></i>
+                <span>Riders</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="rider-applications.html" class="nav-link">
+                <i class="fas fa-user-plus"></i>
+                <span>Rider Applications</span>
+                <span class="notification-badge" id="applicationCount">0</span>
+              </a>
+              <button class="refresh-btn" onclick="refreshApplications()" title="Refresh Applications">
+                <i class="fas fa-sync-alt"></i>
+              </button>
+            </li>
+            <li class="nav-item">
+              <a href="ride-monitoring.html" class="nav-link">
+                <i class="fas fa-map-marked-alt"></i>
+                <span>Live Rides</span>
+                <div class="nav-indicator"></div>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="rider-management.html" class="nav-link">
+                <i class="fas fa-id-card"></i>
+                <span>Riders</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="payment-management.html" class="nav-link">
+                <i class="fas fa-credit-card"></i>
+                <span>Payments</span>
+                <div class="nav-indicator"></div>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="system-settings.html" class="nav-link">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+                <div class="nav-indicator"></div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <div class="user-profile">
+          <div class="user-avatar">
+            <i class="fas fa-user-shield"></i>
+          </div>
+          <div class="user-info">
+            <div class="user-name">Admin User</div>
+            <div class="user-role">Super Admin</div>
+          </div>
+        </div>
+        <button class="logout-btn" id="sidebarLogoutBtn">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <!-- Main Content -->
+    <main class="k3k3-main-content">
+      <!-- Top Navigation Bar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-menu-toggle" id="mobileMenuToggle" title="Toggle Mobile Menu">
+            <i class="fas fa-bars"></i>
+          </button>
+          <button class="action-btn back-btn" id="backBtn" title="Back to Dashboard" onclick="window.location.href='dashboard.html'">
+            <i class="fas fa-arrow-left"></i>
+          </button>
+          <div class="breadcrumb">
+            <span class="breadcrumb-item">Analytics</span>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-item active">Comprehensive Dashboard</span>
+          </div>
+        </div>
+        
+        <div class="topbar-right">
+          <div class="notification-section">
+            <button class="notification-bell" id="notificationBell">
+              <i class="fas fa-bell"></i>
+              <span class="notification-badge" id="notificationBadge">0</span>
+            </button>
+          </div>
+          
+          <div class="admin-profile">
+            <div class="admin-info">
+              <div class="admin-avatar">
+                <i class="fas fa-user-shield"></i>
+              </div>
+              <div class="admin-details">
+                <div class="admin-name">Admin User</div>
+                <div class="admin-role">Super Admin</div>
+              </div>
+            </div>
+            <button class="logout-btn" id="logoutBtn">
+              <i class="fas fa-sign-out-alt"></i>
+              <span>Logout</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Analytics Content -->
+      <section class="analytics-dashboard">
+        <!-- Page Header -->
+        <div class="page-header">
+          <div class="header-content">
+            <div class="header-left">
+              <div class="header-icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <div class="header-text">
+                <h1 class="page-title">K3K3 Analytics Dashboard</h1>
+                <p class="page-subtitle">Real-time business intelligence and performance metrics</p>
+              </div>
+            </div>
+            <div class="header-right">
+              <div class="header-stats">
+                <div class="stat-item">
+                  <span class="stat-label">Live Status</span>
+                  <span class="stat-value online">
+                    <i class="fas fa-circle"></i> Online
+                  </span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">Last Updated</span>
+                  <span class="stat-value" id="lastUpdated">Just now</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Controls Section -->
+        <div class="analytics-controls">
+          <div class="control-group">
+            <label class="control-label">Date Range:</label>
+            <div class="date-range-container">
+              <input type="date" id="startDate" class="date-input">
+              <span class="date-separator">to</span>
+              <input type="date" id="endDate" class="date-input">
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Quick Periods:</label>
+            <div class="period-buttons">
+              <button class="period-btn" data-period="today">Today</button>
+              <button class="period-btn" data-period="7">This Week</button>
+              <button class="period-btn active" data-period="30">This Month</button>
+              <button class="period-btn" data-period="90">This Quarter</button>
+              <button class="period-btn" data-period="365">This Year</button>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Export Options:</label>
+            <div class="export-buttons">
+              <button class="export-btn" id="exportPDF">
+                <i class="fas fa-file-pdf"></i> Export PDF
+              </button>
+              <button class="export-btn" id="exportExcel">
+                <i class="fas fa-file-excel"></i> Export Excel
+              </button>
+              <button class="export-btn" id="exportCSV">
+                <i class="fas fa-file-csv"></i> Export CSV
+              </button>
+              <button class="export-btn" id="exportJSON">
+                <i class="fas fa-file-code"></i> Export JSON
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI Overview -->
+        <div class="kpi-overview">
+          <!-- User Growth KPIs -->
+          <div class="kpi-card users-kpi">
+            <div class="kpi-header">
+              <div class="kpi-icon">
+                <i class="fas fa-users"></i>
+              </div>
+              <div class="kpi-title">
+                <h3>Total Users</h3>
+                <p class="kpi-period">All time</p>
+              </div>
+            </div>
+            <div class="kpi-value" id="totalUsers">0</div>
+            <div class="kpi-change positive" id="totalUsersChange">
+              <i class="fas fa-arrow-up"></i> +0%
+            </div>
+          </div>
+
+          <div class="kpi-card new-users-kpi">
+            <div class="kpi-header">
+              <div class="kpi-icon">
+                <i class="fas fa-user-plus"></i>
+              </div>
+              <div class="kpi-title">
+                <h3>New Users</h3>
+                <p class="kpi-period" id="newUsersPeriod">This month</p>
+              </div>
+            </div>
+            <div class="kpi-value" id="newUsers">0</div>
+            <div class="kpi-change positive" id="newUsersChange">
+              <i class="fas fa-arrow-up"></i> +0%
+            </div>
+          </div>
+
+          <div class="kpi-card active-users-kpi">
+            <div class="kpi-header">
+              <div class="kpi-icon">
+                <i class="fas fa-user-check"></i>
+              </div>
+              <div class="kpi-title">
+                <h3>Active Users</h3>
+                <p class="kpi-period">Daily</p>
+              </div>
+            </div>
+            <div class="kpi-value" id="activeUsers">0</div>
+            <div class="kpi-change positive" id="activeUsersChange">
+              <i class="fas fa-arrow-up"></i> +0%
+            </div>
+          </div>
+
+          <div class="kpi-card user-growth-kpi">
+            <div class="kpi-header">
+              <div class="kpi-icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <div class="kpi-title">
+                <h3>User Growth Rate</h3>
+                <p class="kpi-period">Monthly</p>
+              </div>
+            </div>
+            <div class="kpi-value" id="userGrowthRate">0%</div>
+            <div class="kpi-change positive" id="userGrowthChange">
+              <i class="fas fa-arrow-up"></i> +0%
+            </div>
+          </div>
+
+          <!-- Driver Network KPIs -->
+          <div class="kpi-card drivers-kpi">
+            <div class="kpi-header">
+              <div class="kpi-icon">
+                <i class="fas fa-car"></i>
+              </div>
+              <div class="kpi-title">
+                <h3>Total Drivers</h3>
+                <p class="kpi-period">All time</p>
+              </div>
+            </div>
+            <div class="kpi-value" id="totalDrivers">0</div>
+            <div class="kpi-change positive" id="totalDriversChange">
+              <i class="fas fa-arrow-up"></i> +0%
+            </div>
+          </div>
+
+          <div class="kpi-card active-drivers-kpi">
+            <div class="kpi-header">
+              <div class="kpi-icon">
+                <i class="fas fa-road"></i>
+              </div>
+              <div class="kpi-title">
+                <h3>Active Drivers</h3>
+                <p class="kpi-period">Currently online</p>
+              </div>
+            </div>
+            <div class="kpi-value" id="activeDrivers">0</div>
+            <div class="kpi-change positive" id="activeDriversChange">
+              <i class="fas fa-arrow-up"></i> +0%
+            </div>
+          </div>
+
+          <div class="kpi-card new-drivers-kpi">
+            <div class="kpi-header">
+              <div class="kpi-icon">
+                <i class="fas fa-user-tie"></i>
+              </div>
+              <div class="kpi-title">
+                <h3>New Drivers</h3>
+                <p class="kpi-period" id="newDriversPeriod">This month</p>
+              </div>
+            </div>
+            <div class="kpi-value" id="newDrivers">0</div>
+            <div class="kpi-change positive" id="newDriversChange">
+              <i class="fas fa-arrow-up"></i> +0%
+            </div>
+          </div>
+
+          <div class="kpi-card driver-retention-kpi">
+            <div class="kpi-header">
+              <div class="kpi-icon">
+                <i class="fas fa-heart"></i>
+              </div>
+              <div class="kpi-title">
+                <h3>Driver Retention</h3>
+                <p class="kpi-period">Monthly</p>
+              </div>
+            </div>
+            <div class="kpi-value" id="driverRetention">0%</div>
+            <div class="kpi-change positive" id="driverRetentionChange">
+              <i class="fas fa-arrow-up"></i> +0%
+            </div>
+          </div>
+
+          <!-- Trip Activity KPIs -->
+          <div class="kpi-card trips-kpi">
+            <div class="kpi-header">
+              <div class="kpi-icon">
+                <i class="fas fa-route"></i>
+              </div>
+              <div class="kpi-title">
+                <h3>Total Rides</h3>
+                <p class="kpi-period" id="totalRidesPeriod">All time</p>
+              </div>
+            </div>
+            <div class="kpi-value" id="totalRides">0</div>
+            <div class="kpi-change positive" id="totalRidesChange">
+              <i class="fas fa-arrow-up"></i> +0%
+            </div>
+          </div>
+
+          <div class="kpi-card daily-rides-kpi">
+            <div class="kpi-header">
+              <div class="kpi-icon">
+                <i class="fas fa-calendar-day"></i>
+              </div>
+              <div class="kpi-title">
+                <h3>Daily Rides</h3>
+                <p class="kpi-period">Average</p>
+              </div>
+            </div>
+            <div class="kpi-value" id="dailyRides">0</div>
+            <div class="kpi-change positive" id="dailyRidesChange">
+              <i class="fas fa-arrow-up"></i> +0%
+            </div>
+          </div>
+
+          <div class="kpi-card cancelled-rides-kpi">
+            <div class="kpi-header">
+              <div class="kpi-icon">
+                <i class="fas fa-times-circle"></i>
+              </div>
+              <div class="kpi-title">
+                <h3>Cancelled Rides</h3>
+                <p class="kpi-period" id="cancelledRidesPeriod">This month</p>
+              </div>
+            </div>
+            <div class="kpi-value" id="cancelledRides">0</div>
+            <div class="kpi-change negative" id="cancelledRidesChange">
+              <i class="fas fa-arrow-down"></i> -0%
+            </div>
+          </div>
+
+          <div class="kpi-card avg-ride-time-kpi">
+            <div class="kpi-header">
+              <div class="kpi-icon">
+                <i class="fas fa-clock"></i>
+              </div>
+              <div class="kpi-title">
+                <h3>Avg Ride Time</h3>
+                <p class="kpi-period">Minutes</p>
+              </div>
+            </div>
+            <div class="kpi-value" id="avgRideTime">0m</div>
+            <div class="kpi-change positive" id="avgRideTimeChange">
+              <i class="fas fa-arrow-up"></i> +0%
+            </div>
+          </div>
+
+          <!-- Revenue Performance KPIs -->
+          <div class="kpi-card revenue-kpi">
+            <div class="kpi-header">
+              <div class="kpi-icon">
+                <i class="fas fa-money-bill-wave"></i>
+              </div>
+              <div class="kpi-title">
+                <h3>Total Revenue</h3>
+                <p class="kpi-period" id="totalRevenuePeriod">All time</p>
+              </div>
+            </div>
+            <div class="kpi-value" id="totalRevenue">₵0</div>
+            <div class="kpi-change positive" id="revenueChange">
+              <i class="fas fa-arrow-up"></i> +0%
+            </div>
+          </div>
+
+          <div class="kpi-card revenue-per-ride-kpi">
+            <div class="kpi-header">
+              <div class="kpi-icon">
+                <i class="fas fa-percentage"></i>
+              </div>
+              <div class="kpi-title">
+                <h3>Revenue Per Ride</h3>
+                <p class="kpi-period">Average</p>
+              </div>
+            </div>
+            <div class="kpi-value" id="revenuePerRide">₵0</div>
+            <div class="kpi-change positive" id="revenuePerRideChange">
+              <i class="fas fa-arrow-up"></i> +0%
+            </div>
+          </div>
+
+          <div class="kpi-card commission-kpi">
+            <div class="kpi-header">
+              <div class="kpi-icon">
+                <i class="fas fa-hand-holding-usd"></i>
+              </div>
+              <div class="kpi-title">
+                <h3>Commission Earned</h3>
+                <p class="kpi-period" id="commissionPeriod">This month</p>
+              </div>
+            </div>
+            <div class="kpi-value" id="commissionEarned">₵0</div>
+            <div class="kpi-change positive" id="commissionChange">
+              <i class="fas fa-arrow-up"></i> +0%
+            </div>
+          </div>
+
+          <div class="kpi-card monthly-revenue-growth-kpi">
+            <div class="kpi-header">
+              <div class="kpi-icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <div class="kpi-title">
+                <h3>Monthly Revenue Growth</h3>
+                <p class="kpi-period">Month over month</p>
+              </div>
+            </div>
+            <div class="kpi-value" id="monthlyRevenueGrowth">0%</div>
+            <div class="kpi-change positive" id="monthlyGrowthChange">
+              <i class="fas fa-arrow-up"></i> +0%
+            </div>
+          </div>
+
+          <!-- Customer Experience KPIs -->
+          <div class="kpi-card rating-kpi">
+            <div class="kpi-header">
+              <div class="kpi-icon">
+                <i class="fas fa-star"></i>
+              </div>
+              <div class="kpi-title">
+                <h3>Avg Rider Rating</h3>
+                <p class="kpi-period">All time</p>
+              </div>
+            </div>
+            <div class="kpi-value" id="avgRiderRating">0.0</div>
+            <div class="kpi-change positive" id="riderRatingChange">
+              <i class="fas fa-arrow-up"></i> +0.0
+            </div>
+          </div>
+
+          <div class="kpi-card driver-rating-kpi">
+            <div class="kpi-header">
+              <div class="kpi-icon">
+                <i class="fas fa-medal"></i>
+              </div>
+              <div class="kpi-title">
+                <h3>Avg Driver Rating</h3>
+                <p class="kpi-period">All time</p>
+              </div>
+            </div>
+            <div class="kpi-value" id="avgDriverRating">0.0</div>
+            <div class="kpi-change positive" id="driverRatingChange">
+              <i class="fas fa-arrow-up"></i> +0.0
+            </div>
+          </div>
+
+          <div class="kpi-card complaints-kpi">
+            <div class="kpi-header">
+              <div class="kpi-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+              </div>
+              <div class="kpi-title">
+                <h3>Customer Complaints</h3>
+                <p class="kpi-period" id="complaintsPeriod">This month</p>
+              </div>
+            </div>
+            <div class="kpi-value" id="customerComplaints">0</div>
+            <div class="kpi-change negative" id="complaintsChange">
+              <i class="fas fa-arrow-down"></i> -0%
+            </div>
+          </div>
+
+          <div class="kpi-card completion-rate-kpi">
+            <div class="kpi-header">
+              <div class="kpi-icon">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <div class="kpi-title">
+                <h3>Completion Rate</h3>
+                <p class="kpi-period" id="completionRatePeriod">This month</p>
+              </div>
+            </div>
+            <div class="kpi-value" id="completionRate">0%</div>
+            <div class="kpi-change positive" id="completionRateChange">
+              <i class="fas fa-arrow-up"></i> +0%
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Grid -->
+        <div class="charts-grid">
+          <!-- Revenue Chart -->
+          <div class="chart-card large-chart">
+            <div class="chart-header">
+              <h3 class="chart-title">Revenue Analytics</h3>
+              <div class="chart-controls">
+                <select class="chart-select" id="revenueChartType">
+                  <option value="line">Line Chart</option>
+                  <option value="bar">Bar Chart</option>
+                  <option value="area">Area Chart</option>
+                </select>
+                <button class="chart-btn" id="refreshRevenue" title="Refresh Revenue Chart">
+                  <i class="fas fa-sync-alt"></i>
+                </button>
+                <button class="chart-btn" id="downloadRevenue" title="Download Revenue Chart">
+                  <i class="fas fa-download"></i>
+                </button>
+                <button class="chart-btn" id="fullscreenRevenue" title="Fullscreen">
+                  <i class="fas fa-expand"></i>
+                </button>
+              </div>
+            </div>
+            <div class="chart-container">
+              <canvas id="revenueChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Trip Distribution Pie Chart -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3 class="chart-title">Trip Distribution</h3>
+              <div class="chart-controls">
+                <button class="chart-btn" id="refreshTrips" title="Refresh Trip Distribution">
+                  <i class="fas fa-sync-alt"></i>
+                </button>
+                <button class="chart-btn" id="downloadTrips" title="Download Trip Distribution">
+                  <i class="fas fa-download"></i>
+                </button>
+              </div>
+            </div>
+            <div class="chart-container">
+              <canvas id="tripDistributionChart"></canvas>
+            </div>
+          </div>
+
+          <!-- User Growth Chart -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3 class="chart-title">User Growth Trends</h3>
+              <div class="chart-controls">
+                <button class="chart-btn" id="refreshUsers" title="Refresh User Growth">
+                  <i class="fas fa-sync-alt"></i>
+                </button>
+                <button class="chart-btn" id="downloadUsers" title="Download User Growth">
+                  <i class="fas fa-download"></i>
+                </button>
+              </div>
+            </div>
+            <div class="chart-container">
+              <canvas id="userGrowthChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Peak Hours Analysis -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3 class="chart-title">Peak Hours Analysis</h3>
+              <div class="chart-controls">
+                <button class="chart-btn" id="refreshPeakHours" title="Refresh Peak Hours">
+                  <i class="fas fa-sync-alt"></i>
+                </button>
+                <button class="chart-btn" id="downloadPeakHours" title="Download Peak Hours">
+                  <i class="fas fa-download"></i>
+                </button>
+              </div>
+            </div>
+            <div class="chart-container">
+              <canvas id="peakHoursChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Service Areas Performance -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3 class="chart-title">Service Areas Performance</h3>
+              <div class="chart-controls">
+                <button class="chart-btn" id="refreshAreas" title="Refresh Service Areas">
+                  <i class="fas fa-sync-alt"></i>
+                </button>
+                <button class="chart-btn" id="downloadAreas" title="Download Service Areas">
+                  <i class="fas fa-download"></i>
+                </button>
+              </div>
+            </div>
+            <div class="chart-container">
+              <canvas id="serviceAreasChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Revenue vs Trips Correlation -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3 class="chart-title">Revenue vs Trips Correlation</h3>
+              <div class="chart-controls">
+                <button class="chart-btn" id="refreshCorrelation" title="Refresh Correlation">
+                  <i class="fas fa-sync-alt"></i>
+                </button>
+                <button class="chart-btn" id="downloadCorrelation" title="Download Correlation">
+                  <i class="fas fa-download"></i>
+                </button>
+              </div>
+            </div>
+            <div class="chart-container">
+              <canvas id="correlationChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Geographic Distribution -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3 class="chart-title">Geographic Distribution</h3>
+              <div class="chart-controls">
+                <button class="chart-btn" id="refreshGeo" title="Refresh Geographic">
+                  <i class="fas fa-sync-alt"></i>
+                </button>
+                <button class="chart-btn" id="downloadGeo" title="Download Geographic">
+                  <i class="fas fa-download"></i>
+                </button>
+              </div>
+            </div>
+            <div class="chart-container">
+              <canvas id="geoChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Customer Satisfaction Trends -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3 class="chart-title">Customer Satisfaction Trends</h3>
+              <div class="chart-controls">
+                <button class="chart-btn" id="refreshSatisfaction" title="Refresh Satisfaction">
+                  <i class="fas fa-sync-alt"></i>
+                </button>
+                <button class="chart-btn" id="downloadSatisfaction" title="Download Satisfaction">
+                  <i class="fas fa-download"></i>
+                </button>
+              </div>
+            </div>
+            <div class="chart-container">
+              <canvas id="satisfactionChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Detailed Metrics Table -->
+        <div class="metrics-table-section">
+          <div class="section-header">
+            <h2 class="section-title">Detailed Performance Metrics</h2>
+            <div class="table-controls">
+              <input type="text" id="tableSearch" placeholder="Search metrics..." class="search-input">
+              <button class="table-btn" id="refreshTable" title="Refresh Table">
+                <i class="fas fa-sync-alt"></i>
+              </button>
+              <button class="table-btn" id="exportTable" title="Export Table Data">
+                <i class="fas fa-download"></i>
+              </button>
+            </div>
+          </div>
+          <div class="table-container">
+            <table class="metrics-table" id="metricsTable">
+              <thead>
+                <tr>
+                  <th>Metric</th>
+                  <th>Current</th>
+                  <th>Previous</th>
+                  <th>Change</th>
+                  <th>Trend</th>
+                </tr>
+              </thead>
+              <tbody id="metricsTableBody">
+                <!-- Table rows will be populated by JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Real-time Activity Feed -->
+        <div class="activity-feed-section">
+          <div class="section-header">
+            <h2 class="section-title">Real-time Activity Feed</h2>
+            <div class="feed-controls">
+              <button class="feed-btn" id="refreshActivity" title="Refresh Activity Feed">
+                <i class="fas fa-sync-alt"></i> Refresh
+              </button>
+              <button class="feed-btn" id="pauseActivity" title="Pause/Resume Activity Feed">
+                <i class="fas fa-pause"></i> Pause
+              </button>
+              <button class="feed-btn" id="clearActivity" title="Clear Activity Feed">
+                <i class="fas fa-trash"></i> Clear
+              </button>
+            </div>
+          </div>
+          <div class="activity-feed" id="activityFeed">
+            <div class="loading">
+              <div class="spinner"></div>
+              <p>Loading real-time activities...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="analytics.js"></script>
+  
+  <!-- K3K3 Theme Integration -->
+  <script src="dashboard.js"></script>
+  
+  <!-- Authentication Check -->
+  <script>
+    // ENABLE AUTHENTICATION - Set to false to disable login check
+    const REQUIRE_AUTH = false;
+    
+    const token = localStorage.getItem("token");
+    if (REQUIRE_AUTH && !token) {
+      window.location.href = "adminlogin.html";
+    }
+    
+    // Handle logout functionality
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.removeItem("token");
+      localStorage.removeItem("activeUser");
+      localStorage.removeItem("username");
+      const toast = document.createElement('div');
+      toast.textContent = "Admin logout successful! Thank you for managing K3K3.";
+      toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #10b981;
+        color: white;
+        padding: 16px 24px;
+        border-radius: 8px;
+        z-index: 10000;
+        font-weight: 500;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      `;
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.remove();
+        window.location.href = "adminlogin.html";
+      }, 2000);
+    });
+    
+    // Handle sidebar logout
+    document.getElementById("sidebarLogoutBtn")?.addEventListener("click", () => {
+      localStorage.removeItem("token");
+      localStorage.removeItem("activeUser");
+      localStorage.removeItem("username");
+      window.location.href = "adminlogin.html";
+    });
+  </script>
+</body>
+</html>

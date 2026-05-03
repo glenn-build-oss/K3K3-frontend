@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ride Cancellations - K3K3</title>
+    <link rel="icon" type="image/png" href="../assets/k3k3.png">
+    <link rel="stylesheet" href="../css/k3k3-theme.css">
+    <link rel="stylesheet" href="../css/passenger-dashboard.css">
+    <link rel="stylesheet" href="cancellations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <script src="../js/passenger-dashboard.js"></script>
+    <script src="cancellations.js"></script>
+
+    <!-- Professional Header -->
+    <header class="passenger-header">
+        <div class="header-content">
+            <div class="header-brand">
+                <img src="../assets/k3k3.png" alt="K3K3" class="brand-logo">
+                <span class="brand-text">K3K3</span>
+            </div>
+            
+            <div class="header-nav">
+                <!-- Uber-style Hamburger Menu -->
+                <div class="hamburger-menu" onclick="toggleMainMenu()">
+                    <div class="hamburger-line"></div>
+                    <div class="hamburger-line"></div>
+                    <div class="hamburger-line"></div>
+                </div>
+                
+                <!-- User Profile (Compact) -->
+                <div class="user-profile-compact" onclick="goToProfile()">
+                    <div class="profile-avatar">
+                        <img src="https://picsum.photos/seed/user-avatar/40/40.jpg" alt="Profile" class="profile-img">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Professional Dropdown Menu -->
+    <div class="main-dropdown-menu" id="mainDropdownMenu">
+        <div class="menu-header">
+            <div class="menu-user-info">
+                <div class="menu-avatar">
+                    <img src="https://picsum.photos/seed/user-avatar/50/50.jpg" alt="User" class="menu-avatar-img">
+                </div>
+                <div class="menu-user-details">
+                    <div class="menu-user-name">John Doe</div>
+                    <div class="menu-user-phone">+233 50 123 4567</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="menu-section">
+            <div class="menu-section-title">Ride Options</div>
+            <div class="menu-item" onclick="goToDashboard()">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </div>
+            <div class="menu-item" onclick="goToRideStatus()">
+                <i class="fas fa-car"></i>
+                <span>Ride Status</span>
+            </div>
+            <div class="menu-item" onclick="goToRideHistory()">
+                <i class="fas fa-history"></i>
+                <span>Ride History</span>
+            </div>
+            <div class="menu-item active" onclick="goToCancellations()">
+                <i class="fas fa-times-circle"></i>
+                <span>Recent Cancellations</span>
+            </div>
+        </div>
+        
+        <div class="menu-section">
+            <div class="menu-section-title">Account</div>
+            <div class="menu-item" onclick="goToProfile()">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </div>
+            <div class="menu-item" onclick="showPaymentMethods()">
+                <i class="fas fa-credit-card"></i>
+                <span>Payment Methods</span>
+            </div>
+            <div class="menu-item" onclick="showNotifications()">
+                <i class="fas fa-bell"></i>
+                <span>Notifications</span>
+            </div>
+            <div class="menu-item" onclick="showSupport()">
+                <i class="fas fa-headset"></i>
+                <span>Support</span>
+            </div>
+            <div class="menu-item" onclick="showSettings()">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </div>
+        </div>
+        
+        <div class="menu-section">
+            <div class="menu-item logout-item" onclick="handleLogout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="cancellations-main">
+        <div class="container">
+            <div class="cancellations-container">
+                
+                <!-- Page Header -->
+                <section class="page-header">
+                    <div class="header-content">
+                        <div class="header-icon">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                        <div class="header-text">
+                            <h1>Ride Cancellations</h1>
+                            <p class="header-subtitle">View and manage your cancelled rides</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Stats Cards -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon cancelled">
+                                <i class="fas fa-times"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="totalCancelled">0</div>
+                                <div class="stat-label">Total Cancelled</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon by-user">
+                                <i class="fas fa-user-times"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="cancelledByUser">0</div>
+                                <div class="stat-label">Cancelled by You</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon by-driver">
+                                <i class="fas fa-car-times"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="cancelledByDriver">0</div>
+                                <div class="stat-label">Cancelled by Driver</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon this-month">
+                                <i class="fas fa-calendar-times"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="thisMonth">0</div>
+                                <div class="stat-label">This Month</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Filters and Search -->
+                <section class="filters-section">
+                    <div class="filters-header">
+                        <h3>Filter Cancellations</h3>
+                        <button class="clear-filters-btn" onclick="clearAllFilters()">
+                            <i class="fas fa-times"></i>
+                            Clear All
+                        </button>
+                    </div>
+                    
+                    <div class="filters-content">
+                        <div class="filter-group">
+                            <label for="dateFilter">Date Range</label>
+                            <select id="dateFilter" onchange="applyFilters()">
+                                <option value="all">All Time</option>
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                                <option value="quarter">Last 3 Months</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label for="reasonFilter">Cancellation Reason</label>
+                            <select id="reasonFilter" onchange="applyFilters()">
+                                <option value="all">All Reasons</option>
+                                <option value="user-cancelled">Cancelled by User</option>
+                                <option value="driver-cancelled">Cancelled by Driver</option>
+                                <option value="no-driver">No Driver Available</option>
+                                <option value="payment-issue">Payment Issue</option>
+                                <option value="weather">Weather Conditions</option>
+                                <option value="emergency">Emergency</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label for="searchFilter">Search</label>
+                            <div class="search-input">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="searchFilter" placeholder="Search by location or ride ID..." oninput="applyFilters()">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Cancellations List -->
+                <section class="cancellations-list-section">
+                    <div class="list-header">
+                        <h3>Recent Cancellations</h3>
+                        <div class="view-options">
+                            <button class="view-btn active" data-view="list" onclick="setView('list')">
+                                <i class="fas fa-list"></i>
+                                List
+                            </button>
+                            <button class="view-btn" data-view="cards" onclick="setView('cards')">
+                                <i class="fas fa-th-large"></i>
+                                Cards
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="cancellations-content" id="cancellationsContent">
+                        <!-- Cancellations will be loaded here -->
+                        <div class="loading-state">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Loading cancellations...</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Empty State -->
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <div class="empty-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3>No Cancellations Found</h3>
+                    <p>You don't have any cancelled rides matching your filters.</p>
+                    <button class="btn-primary" onclick="clearAllFilters()">
+                        <i class="fas fa-redo"></i>
+                        Clear Filters
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Cancellation Detail Modal -->
+    <div class="cancellation-modal" id="cancellationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Cancellation Details</h3>
+                <button class="close-btn" onclick="closeCancellationModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body" id="modalBody">
+                <!-- Details will be loaded here -->
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeCancellationModal()">Close</button>
+                <button class="btn-primary" onclick="bookNewRide()">
+                    <i class="fas fa-car"></i>
+                    Book New Ride
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rebook Modal -->
+    <div class="rebook-modal" id="rebookModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Rebook Ride</h3>
+                <button class="close-btn" onclick="closeRebookModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="rebook-summary">
+                    <div class="route-info">
+                        <div class="route-point">
+                            <i class="fas fa-map-marker-alt pickup"></i>
+                            <div class="point-details">
+                                <label>Pickup</label>
+                                <span id="rebookPickup">--</span>
+                            </div>
+                        </div>
+                        <div class="route-line"></div>
+                        <div class="route-point">
+                            <i class="fas fa-flag-checkered destination"></i>
+                            <div class="point-details">
+                                <label>Destination</label>
+                                <span id="rebookDestination">--</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="rebook-options">
+                        <div class="option-group">
+                            <label>Number of Seats</label>
+                            <div class="seat-options">
+                                <button class="seat-btn" data-seats="1" onclick="selectRebookSeats(1)">1</button>
+                                <button class="seat-btn" data-seats="2" onclick="selectRebookSeats(2)">2</button>
+                                <button class="seat-btn" data-seats="3" onclick="selectRebookSeats(3)">3</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeRebookModal()">Cancel</button>
+                <button class="btn-primary" onclick="confirmRebook()">
+                    <i class="fas fa-check"></i>
+                    Confirm Rebook
+                </button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

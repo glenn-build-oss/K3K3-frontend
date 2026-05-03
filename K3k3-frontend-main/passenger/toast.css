@@ -1,0 +1,109 @@
+/* Toast Notification Styles for Login Page */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    min-width: 300px;
+    max-width: 400px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    z-index: 10000;
+    transform: translateX(400px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.toast.toast-show {
+    transform: translateX(0);
+}
+
+.toast.toast-hide {
+    transform: translateX(400px);
+    opacity: 0;
+}
+
+.toast-content {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    gap: 12px;
+}
+
+.toast-content i {
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.toast-success .toast-content i {
+    color: #10B981;
+}
+
+.toast-info .toast-content i {
+    color: #3B82F6;
+}
+
+.toast-warning .toast-content i {
+    color: #F59E0B;
+}
+
+.toast-error .toast-content i {
+    color: #EF4444;
+}
+
+.toast-content span {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1F2937;
+    line-height: 1.4;
+}
+
+.toast-progress {
+    height: 3px;
+    background: #E5E7EB;
+    position: relative;
+    overflow: hidden;
+}
+
+.toast-success .toast-progress {
+    background: #10B981;
+}
+
+.toast-info .toast-progress {
+    background: #3B82F6;
+}
+
+.toast-warning .toast-progress {
+    background: #F59E0B;
+}
+
+.toast-error .toast-progress {
+    background: #EF4444;
+}
+
+.toast-progress::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .toast {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        min-width: auto;
+        max-width: none;
+    }
+}

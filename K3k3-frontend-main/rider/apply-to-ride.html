@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply to Ride - K3K3</title>
+    <link rel="icon" type="image/png" href="../assets/k3k3.png">
+    <link rel="stylesheet" href="apply-to-ride.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <img src="../assets/k3k3.png" alt="K3K3 Logo" class="logo-img">
+            <span class="logo-text">K3K3 Rider</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="rider-login.html">Login</a></li>
+                <li><a href="../index.html">Home</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="apply-container">
+        <div class="apply-form-wrapper">
+            <!-- Progress Steps -->
+            <div class="progress-bar">
+                <div class="step active" data-step="1">
+                    <span class="step-number">1</span>
+                    <span class="step-title">Personal Info</span>
+                </div>
+                <div class="step" data-step="2">
+                    <span class="step-number">2</span>
+                    <span class="step-title">Vehicle Details</span>
+                </div>
+                <div class="step" data-step="3">
+                    <span class="step-number">3</span>
+                    <span class="step-title">Documents</span>
+                </div>
+                <div class="step" data-step="4">
+                    <span class="step-number">4</span>
+                    <span class="step-title">Review</span>
+                </div>
+            </div>
+
+            <!-- Application Form -->
+            <form id="riderApplicationForm" class="application-form">
+                <!-- Step 1: Personal Information -->
+                <div class="form-step active" data-step="1">
+                    <h2>Personal Information</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="firstName">First Name *</label>
+                            <input type="text" id="firstName" name="firstName">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" name="lastName">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <div class="phone-input-wrapper">
+                                <div class="country-selector">
+                                    <select id="countryCode" name="countryCode" class="country-dropdown">
+                                        <!-- Ghana and Major African Countries -->
+                                        <option value="+233">🇬🇭 Ghana (+233)</option>
+                                        <option value="+234">🇳🇬 Nigeria (+234)</option>
+                                        <option value="+254">🇰🇪 Kenya (+254)</option>
+                                        <option value="+255">🇹🇿 Tanzania (+255)</option>
+                                        <option value="+256">🇺🇬 Uganda (+256)</option>
+                                        <option value="+258">�� Burundi (+258)</option>
+                                        <option value="+260">🇿🇲 Zambia (+260)</option>
+                                        <option value="+263">🇿🇼 Zimbabwe (+263)</option>
+                                        <option value="+264">�� Botswana (+264)</option>
+                                        <option value="+265">�� Namibia (+265)</option>
+                                        <option value="+266">🇱🇸 Lesotho (+266)</option>
+                                        <option value="+267">�� Eswatini (+267)</option>
+                                        <option value="+268">🇦 South Africa (+268)</option>
+                                        <option value="+27">🇿🇦 South Africa (+27)</option>
+                                        
+                                        <!-- West African Countries -->
+                                        <option value="+211">🇸� Senegal (+211)</option>
+                                        <option value="+212">🇲🇦 Morocco (+212)</option>
+                                        <option value="+213">🇩🇿 Algeria (+213)</option>
+                                        <option value="+216">🇹🇳 Tunisia (+216)</option>
+                                        <option value="+218">🇱🇾 Libya (+218)</option>
+                                        <option value="+220">🇬🇲 Gambia (+220)</option>
+                                        <option value="+221">🇸� Sierra Leone (+221)</option>
+                                        <option value="+222">🇲🇷 Mauritania (+222)</option>
+                                        <option value="+223">🇲🇱 Mali (+223)</option>
+                                        <option value="+224">🇬🇳 Guinea (+224)</option>
+                                        <option value="+225">🇨🇮 Côte d'Ivoire (+225)</option>
+                                        <option value="+226">🇧🇫 Burkina Faso (+226)</option>
+                                        <option value="+227">🇳🇪 Niger (+227)</option>
+                                        <option value="+228">🇹🇬 Togo (+228)</option>
+                                        <option value="+229">🇧🇯 Benin (+229)</option>
+                                        <option value="+230">🇲🇺 Mauritius (+230)</option>
+                                        <option value="+231">🇱🇷 Liberia (+231)</option>
+                                        <option value="+232">🇸🇱 Sierra Leone (+232)</option>
+                                        <option value="+237">�� Gabon (+237)</option>
+                                        <option value="+238">�� São Tomé & Príncipe (+238)</option>
+                                        <option value="+239">�� Central African Republic (+239)</option>
+                                        <option value="+240">🇬🇶 Equatorial Guinea (+240)</option>
+                                        <option value="+241">🇬🇦 Gabon (+241)</option>
+                                        <option value="+242">🇨🇬 Republic of Congo (+242)</option>
+                                        <option value="+243">🇨🇩 Democratic Republic of Congo (+243)</option>
+                                        <option value="+244">🇦🇴 Angola (+244)</option>
+                                        <option value="+245">🇬🇼 Guinea-Bissau (+245)</option>
+                                        <option value="+246">🇾🇹 Mayotte (+246)</option>
+                                        <option value="+247">🇦🇨 Ascension Island (+247)</option>
+                                        <option value="+248">🇸🇨 Seychelles (+248)</option>
+                                        <option value="+249">🇸� Comoros (+249)</option>
+                                        <option value="+250">🇷🇼 Réunion (+250)</option>
+                                        <option value="+251">🇪🇹 Ethiopia (+251)</option>
+                                        <option value="+252">🇸🇴 Somalia (+252)</option>
+                                        <option value="+253">🇩� Djibouti (+253)</option>
+                                        <option value="+257">🇧🇮 Burundi (+257)</option>
+                                        <option value="+258">🇱🇺 Burundi (+258)</option>
+                                        <option value="+259">🇱� Burundi (+259)</option>
+                                        
+                                        <!-- Major International Countries -->
+                                        <option value="+290">🇸🇭 St. Helena (+290)</option>
+                                        <option value="+291">🇪🇷 Eritrea (+291)</option>
+                                        <option value="+297">🇦🇼 Aruba (+297)</option>
+                                        <option value="+298">🇫🇴 Faroe Islands (+298)</option>
+                                        <option value="+299">🇬🇱 Greenland (+299)</option>
+                                        <option value="+350">🇬🇮 Gibraltar (+350)</option>
+                                        <option value="+351">🇵🇹 Portugal (+351)</option>
+                                        <option value="+352">🇱🇺 Luxembourg (+352)</option>
+                                        <option value="+353">🇮🇪 Ireland (+353)</option>
+                                        <option value="+354">🇮🇸 Iceland (+354)</option>
+                                        <option value="+355">🇦🇱 Albania (+355)</option>
+                                        <option value="+356">🇲🇹 Malta (+356)</option>
+                                        <option value="+357">🇨🇾 Cyprus (+357)</option>
+                                        <option value="+358">🇫🇮 Finland (+358)</option>
+                                        <option value="+359">🇧🇬 Bulgaria (+359)</option>
+                                        <option value="+36">🇭🇺 Hungary (+36)</option>
+                                        <option value="+371">🇱� Lithuania (+371)</option>
+                                        <option value="+372">🇪🇪 Estonia (+372)</option>
+                                        <option value="+373">🇲🇩 Moldova (+373)</option>
+                                        <option value="+374">🇦🇲 Jordan (+374)</option>
+                                        <option value="+375">🇧🇾 Belarus (+375)</option>
+                                        <option value="+376">🇦� Montenegro (+376)</option>
+                                        <option value="+377">🇲🇨 Monaco (+377)</option>
+                                        <option value="+378">🇸🇲 San Marino (+378)</option>
+                                        <option value="+380">🇺🇦 Ukraine (+380)</option>
+                                        <option value="+381">🇷� Russia (+381)</option>
+                                        <option value="+382">�� Slovenia (+382)</option>
+                                        <option value="+383">🇽🇰 Kosovo (+383)</option>
+                                        <option value="+385">🇭🇷 Croatia (+385)</option>
+                                        <option value="+386">�� Bosnia & Herzegovina (+386)</option>
+                                        <option value="+387">�� Serbia (+387)</option>
+                                        <option value="+389">🇲🇰 North Macedonia (+389)</option>
+                                        <option value="+39">🇮🇹 Italy (+39)</option>
+                                        <option value="+40">🇷🇴 Romania (+40)</option>
+                                        <option value="+41">🇨🇭 Switzerland (+41)</option>
+                                        <option value="+43">🇦🇹 Austria (+43)</option>
+                                        <option value="+44">🇬🇧 United Kingdom (+44)</option>
+                                        <option value="+45">🇩🇰 Denmark (+45)</option>
+                                        <option value="+46">🇸🇪 Sweden (+46)</option>
+                                        <option value="+47">🇳🇴 Norway (+47)</option>
+                                        <option value="+48">🇵🇱 Poland (+48)</option>
+                                        <option value="+49">🇩🇪 Germany (+49)</option>
+                                    </select>
+                                </div>
+                                <input type="tel" id="phone" name="phone" placeholder="Phone number" class="phone-input-field">
+                            </div>
+                            <small>Select your country code, then enter your phone number</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="dateOfBirth">Date of Birth *</label>
+                            <input type="date" id="dateOfBirth" name="dateOfBirth">
+                        </div>
+                        <div class="form-group">
+                            <label for="nationality">Nationality *</label>
+                            <select id="nationality" name="nationality">
+                                <option value="">Select Continent/Region</option>
+                                <option value="african">African</option>
+                                <option value="asian">Asian</option>
+                                <option value="european">European</option>
+                                <option value="north-american">North American</option>
+                                <option value="south-american">South American</option>
+                                <option value="australian">Australian</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="specifyCountryGroup" style="display: none;">
+                            <label for="specifyCountry">Please specify your country *</label>
+                            <input type="text" id="specifyCountry" name="specifyCountry" placeholder="Enter your country name">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="address">Residential Address *</label>
+                        <input type="text" id="address" name="address">
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="about">Tell us about yourself *</label>
+                        <textarea id="about" name="about" rows="4" placeholder="Briefly describe your experience and why you want to drive with K3K3..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Step 2: Vehicle Details -->
+                <div class="form-step" data-step="2">
+                    <h2>Vehicle Information</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="vehicleType">TukTuk Type *</label>
+                            <select id="vehicleType" name="vehicleType">
+                                <option value="">Select TukTuk Type</option>
+                                <option value="bajaj-re">Bajaj RE (2-seater)</option>
+                                <option value="bajaj-re-compact">Bajaj RE Compact (3-seater)</option>
+                                <option value="piaggio-apé">Piaggio Apé (2-seater)</option>
+                                <option value="tvs-king">TVS King (3-seater)</option>
+                                <option value="atul-shakti">Atul Shakti (4-seater)</option>
+                                <option value="mahindra-gio">Mahindra Gio (4-seater)</option>
+                                <option value="piaggio-ape">Piaggio Ape (Cargo)</option>
+                                <option value="bajaj-maxima">Bajaj Maxima (Cargo)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="vehicleMake">Make *</label>
+                            <input type="text" id="vehicleMake" name="vehicleMake" placeholder="e.g., Bajaj, Piaggio, TVS, Atul">
+                        </div>
+                        <div class="form-group">
+                            <label for="vehicleModel">Model *</label>
+                            <input type="text" id="vehicleModel" name="vehicleModel" placeholder="e.g., RE, Apsonic, City, Cargo, King">
+                        </div>
+                        <div class="form-group">
+                            <label for="vehicleYear">Year *</label>
+                            <input type="number" id="vehicleYear" name="vehicleYear" min="2000" max="2025">
+                        </div>
+                        <div class="form-group">
+                            <label for="vehicleColor">Color *</label>
+                            <input type="text" id="vehicleColor" name="vehicleColor">
+                        </div>
+                        <div class="form-group">
+                            <label for="plateNumber">Plate Number *</label>
+                            <input type="text" id="plateNumber" name="plateNumber" placeholder="e.g., GR 1234-25">
+                            <small>Format: Regional Code (XX) Vehicle Number (####) Year (YY)</small>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="vehicleFeatures">TukTuk Features *</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="features" value="canopy">
+                                <span>Weather Canopy (Rain/Sun Protection)</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="features" value="cushioned seats">
+                                <span>Cushioned Passenger Seats</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="features" value="storage compartment">
+                                <span>Storage Compartment</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="features" value="led lights">
+                                <span>LED Headlights & Taillights</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="features" value="phone holder">
+                                <span>Phone Holder/Stand</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="features" value="safety bars">
+                                <span>Safety Handrails</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="features" value="cargo rack">
+                                <span>Cargo Rack</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="features" value="usb charging">
+                                <span>USB Charging Port</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Documents -->
+                <div class="form-step" data-step="3">
+                    <h2>Required Documents</h2>
+                    <div class="document-upload-grid">
+                        <div class="upload-group">
+                            <label for="riderLicense">Rider's License *</label>
+                            <div class="file-upload">
+                                <input type="file" id="riderLicense" name="riderLicense" accept="image/*,.pdf">
+                                <div class="upload-preview">
+                                    <span class="upload-text">Click to upload or drag and drop</span>
+                                    <span class="upload-hint">PNG, JPG, PDF up to 20MB</span>
+                                </div>
+                                <div class="file-upload-actions">
+                                    <button type="button" class="view-btn" onclick="viewFile('riderLicense')" title="View File">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button type="button" class="export-btn" onclick="exportFile('riderLicense')" title="Export File">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button type="button" class="close-btn" onclick="removeFile('riderLicense')" title="Remove File">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="upload-group">
+                            <label for="vehicleRegistration">Vehicle Registration *</label>
+                            <div class="file-upload">
+                                <input type="file" id="vehicleRegistration" name="vehicleRegistration" accept="image/*,.pdf">
+                                <div class="upload-preview">
+                                    <span class="upload-text">Click to upload or drag and drop</span>
+                                    <span class="upload-hint">PNG, JPG, PDF up to 20MB</span>
+                                </div>
+                                <div class="file-upload-actions">
+                                    <button type="button" class="view-btn" onclick="viewFile('vehicleRegistration')" title="View File">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button type="button" class="export-btn" onclick="exportFile('vehicleRegistration')" title="Export File">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button type="button" class="close-btn" onclick="removeFile('vehicleRegistration')" title="Remove File">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="upload-group">
+                            <label for="insurance">Insurance Certificate *</label>
+                            <div class="file-upload">
+                                <input type="file" id="insurance" name="insurance" accept="image/*,.pdf">
+                                <div class="upload-preview">
+                                    <span class="upload-text">Click to upload or drag and drop</span>
+                                    <span class="upload-hint">PNG, JPG, PDF up to 20MB</span>
+                                </div>
+                                <div class="file-upload-actions">
+                                    <button type="button" class="view-btn" onclick="viewFile('insurance')" title="View File">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button type="button" class="export-btn" onclick="exportFile('insurance')" title="Export File">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button type="button" class="close-btn" onclick="removeFile('insurance')" title="Remove File">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="upload-group">
+                            <label for="idCard">National ID Card *</label>
+                            <div class="file-upload">
+                                <input type="file" id="idCard" name="idCard" accept="image/*,.pdf">
+                                <div class="upload-preview">
+                                    <span class="upload-text">Click to upload or drag and drop</span>
+                                    <span class="upload-hint">PNG, JPG, PDF up to 20MB</span>
+                                </div>
+                                <div class="file-upload-actions">
+                                    <button type="button" class="view-btn" onclick="viewFile('idCard')" title="View File">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button type="button" class="export-btn" onclick="exportFile('idCard')" title="Export File">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button type="button" class="close-btn" onclick="removeFile('idCard')" title="Remove File">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="upload-group">
+                            <label for="passportPhoto">Passport Photo *</label>
+                            <div class="file-upload">
+                                <input type="file" id="passportPhoto" name="passportPhoto" accept="image/*">
+                                <div class="upload-preview">
+                                    <span class="upload-text">Click to upload or drag and drop</span>
+                                    <span class="upload-hint">PNG, JPG up to 10MB</span>
+                                </div>
+                                <div class="file-upload-actions">
+                                    <button type="button" class="view-btn" onclick="viewFile('passportPhoto')" title="View File">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button type="button" class="export-btn" onclick="exportFile('passportPhoto')" title="Export File">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button type="button" class="close-btn" onclick="removeFile('passportPhoto')" title="Remove File">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="termsAgreed" name="termsAgreed">
+                            <span>I confirm that all documents are genuine and I have the legal right to work in Ghana *</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Step 4: Review -->
+                <div class="form-step" data-step="4">
+                    <h2>Review Your Application</h2>
+                    <div class="review-section">
+                        <div class="review-item">
+                            <h3>Personal Information</h3>
+                            <div id="reviewPersonal"></div>
+                        </div>
+                        <div class="review-item">
+                            <h3>Vehicle Information</h3>
+                            <div id="reviewVehicle"></div>
+                        </div>
+                        <div class="review-item">
+                            <h3>Documents Uploaded</h3>
+                            <div id="reviewDocuments"></div>
+                        </div>
+                        
+                        <!-- Terms and Conditions -->
+                        <div class="review-item">
+                            <h3>Terms and Conditions</h3>
+                            <div class="terms-section">
+                                <label class="checkbox-label required">
+                                    <input type="checkbox" name="terms" value="agreed" required>
+                                    <span>I agree to K3K3's Terms of Service and Privacy Policy *</span>
+                                </label>
+                                <label class="checkbox-label required">
+                                    <input type="checkbox" name="legal" value="confirmed" required>
+                                    <span>I confirm that all documents are genuine and I have the legal right to work in Ghana *</span>
+                                </label>
+                                <small class="terms-note">
+                                    By checking these boxes, you confirm that you have read and agreed to our 
+                                    <a href="../legal/terms-of-service.html" target="_blank">Terms of Service</a> and 
+                                    <a href="../legal/privacy-policy.html" target="_blank">Privacy Policy</a>.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="finalAgreement" name="finalAgreement">
+                            <span>I agree to K3K3's Terms of Service and Privacy Policy *</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="form-navigation">
+                    <button type="button" class="btn-secondary" id="prevBtn" style="display: none;">Previous</button>
+                    <button type="button" class="btn-primary" id="nextBtn">Next</button>
+                    <button type="submit" class="btn-primary" id="submitBtn" style="display: none;">Submit Application</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 K3K3 Rides. All Rights Reserved.</p>
+        <div class="footer-links">
+            <a href="../legal/terms-of-service.html">Terms of Service</a>
+            <a href="../legal/privacy-policy.html">Privacy Policy</a>
+            <a href="../legal/terms-of-service.html#contact">Contact Support</a>
+        </div>
+    </footer>
+
+    <script src="apply-to-ride.js"></script>
+</body>
+</html>

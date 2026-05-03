@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time Ride Monitoring - K3K3 Admin</title>
+    <link rel="icon" type="image/png" href="../assets/k3k3.png">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="ride-monitoring.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="k3k3-sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <img src="../assets/k3k3.png" alt="K3K3" class="logo">
+                    <div class="logo-text">
+                        <strong>K3K3</strong>
+                        <span>Admin</span>
+                    </div>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-title">Operations</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="dashboard.html" class="nav-link">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="rider-management.html" class="nav-link">
+                                <i class="fas fa-users"></i>
+                                <span>Riders</span>
+                            </a>
+                        </li>
+                        <li class="nav-item active">
+                            <a href="ride-monitoring.html" class="nav-link">
+                                <i class="fas fa-map-marked-alt"></i>
+                                <span>Live Rides</span>
+                                <div class="nav-indicator"></div>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="rider-management.html" class="nav-link">
+                                <i class="fas fa-id-card"></i>
+                                <span>Riders</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="payment-management.html" class="nav-link">
+                                <i class="fas fa-credit-card"></i>
+                                <span>Payments</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="system-settings.html" class="nav-link">
+                                <i class="fas fa-cog"></i>
+                                <span>Settings</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="k3k3-main-content">
+            <!-- Top Navigation Bar -->
+            <header class="k3k3-topbar">
+                <div class="topbar-left">
+                    <button class="sidebar-toggle" id="sidebarToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <button class="action-btn back-btn" id="backBtn" title="Back to Dashboard" onclick="window.location.href='dashboard.html'">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <div class="breadcrumb">
+                        <span>Admin</span>
+                        <i class="fas fa-chevron-right"></i>
+                        <span>Live Ride Monitoring</span>
+                    </div>
+                </div>
+                
+                <div class="topbar-right">
+                    <div class="topbar-actions">
+                        <button class="action-btn" id="pauseUpdates" title="Pause Updates">
+                            <i class="fas fa-pause"></i>
+                        </button>
+                        <button class="action-btn" id="exportData" title="Export Data">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Live Monitoring Content -->
+            <div class="dashboard-content">
+                <!-- Live Stats -->
+                <section class="live-stats">
+                    <div class="stats-grid">
+                        <div class="stat-card primary">
+                            <div class="stat-icon">
+                                <i class="fas fa-car"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-number" id="activeRides">0</div>
+                                <div class="stat-label">Active Rides</div>
+                            </div>
+                        </div>
+                        <div class="stat-card success">
+                            <div class="stat-icon">
+                                <i class="fas fa-route"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-number" id="completedRides">0</div>
+                                <div class="stat-label">Completed Today</div>
+                            </div>
+                        </div>
+                        <div class="stat-card warning">
+                            <div class="stat-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-number" id="avgDuration">0</div>
+                                <div class="stat-label">Avg Duration</div>
+                            </div>
+                        </div>
+                        <div class="stat-card info">
+                            <div class="stat-icon">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-number" id="totalRevenue">₵0</div>
+                                <div class="stat-label">Today's Revenue</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Live Map -->
+                <section class="live-map-section">
+                    <div class="map-header">
+                        <h2>Live Ride Tracking</h2>
+                        <div class="map-controls">
+                            <button class="btn-primary" id="centerMap">
+                                <i class="fas fa-crosshairs"></i>
+                                Center Map
+                            </button>
+                            <button class="btn-secondary" id="toggleHeatmap">
+                                <i class="fas fa-fire"></i>
+                                Heatmap
+                            </button>
+                            <button class="btn-secondary" id="toggleSatellite">
+                                <i class="fas fa-satellite"></i>
+                                Satellite
+                            </button>
+                            <button class="btn-secondary" id="toggleTraffic">
+                                <i class="fas fa-traffic-light"></i>
+                                Traffic
+                            </button>
+                            <button class="btn-secondary" id="toggle3D">
+                                <i class="fas fa-cube"></i>
+                                3D View
+                            </button>
+                            <button class="btn-secondary" id="toggleClusters">
+                                <i class="fas fa-layer-group"></i>
+                                Clusters
+                            </button>
+                            <button class="btn-secondary" id="toggleRoutes">
+                                <i class="fas fa-route"></i>
+                                Routes
+                            </button>
+                            <button class="btn-secondary" id="refreshMap">
+                                <i class="fas fa-sync-alt"></i>
+                                Refresh
+                            </button>
+                            <button class="btn-secondary" id="toggleFullscreen">
+                                <i class="fas fa-expand"></i>
+                                Fullscreen
+                            </button>
+                            <div class="zoom-controls">
+                                <button class="zoom-btn" id="zoomIn">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                                <span class="zoom-level" id="zoomLevel">100%</span>
+                                <button class="zoom-btn" id="zoomOut">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="map-container">
+                        <div class="professional-map" id="liveMap">
+                            <!-- Advanced Map Background -->
+                            <div class="map-background">
+                                <!-- Main Roads -->
+                                <div class="main-road" style="top: 20%; left: 10%; width: 80%; height: 3px;"></div>
+                                <div class="main-road" style="top: 40%; left: 5%; width: 90%; height: 3px;"></div>
+                                <div class="main-road" style="top: 60%; left: 15%; width: 70%; height: 3px;"></div>
+                                <div class="main-road" style="top: 80%; left: 8%; width: 85%; height: 3px;"></div>
+                                
+                                <!-- Secondary Roads -->
+                                <div class="secondary-road" style="top: 25%; left: 25%; width: 50%; height: 2px; transform: rotate(45deg);"></div>
+                                <div class="secondary-road" style="top: 45%; left: 60%; width: 40%; height: 2px; transform: rotate(-30deg);"></div>
+                                <div class="secondary-road" style="top: 65%; left: 35%; width: 45%; height: 2px; transform: rotate(15deg);"></div>
+                                <div class="secondary-road" style="top: 30%; left: 80%; width: 35%; height: 2px; transform: rotate(75deg);"></div>
+                                <div class="secondary-road" style="top: 75%; left: 55%; width: 30%; height: 2px; transform: rotate(-60deg);"></div>
+                                
+                                <!-- Traffic Flow Visualization -->
+                                <div class="traffic-flow" style="top: 22%; left: 12%; width: 15%; height: 1px; background: rgba(255, 165, 0, 0.2); border-radius: 2px;">
+                                    <div class="traffic-dot" style="left: 0%; animation: trafficFlow 3s infinite;"></div>
+                                    <div class="traffic-dot" style="left: 25%; animation: trafficFlow 3s infinite 1s;"></div>
+                                    <div class="traffic-dot" style="left: 50%; animation: trafficFlow 3s infinite 2s;"></div>
+                                    <div class="traffic-dot" style="left: 75%; animation: trafficFlow 3s infinite 3s;"></div>
+                                    <div class="traffic-dot" style="left: 100%; animation: trafficFlow 3s infinite 4s;"></div>
+                                </div>
+                                
+                                <!-- Area Highlights -->
+                                <div class="area-highlight" style="top: 15%; left: 10%; width: 25%; height: 25%; background: rgba(16, 185, 129, 0.1); border-radius: 8px; border: 2px solid rgba(16, 185, 129, 0.3);">
+                                    <div class="area-label">Downtown</div>
+                                </div>
+                                <div class="area-highlight" style="top: 50%; left: 60%; width: 30%; height: 30%; background: rgba(16, 185, 129, 0.1); border: 2px solid rgba(16, 185, 129, 0.3);">
+                                    <div class="area-label">Airport Zone</div>
+                                </div>
+                                <div class="area-highlight" style="top: 85%; left: 25%; width: 35%; height: 25%; background: rgba(16, 185, 129, 0.1); border: 2px solid rgba(16, 185, 129, 0.3);">
+                                    <div class="area-label">University Area</div>
+                                </div>
+                                
+                                <!-- Building Footprints -->
+                                <div class="building" style="top: 35%; left: 15%; width: 20px; height: 20px; background: rgba(0, 0, 0, 0.3); border-radius: 2px;">
+                                    <div class="building-window" style="top: 2px; left: 2px; width: 6px; height: 8px; background: rgba(255,255,255,0.8);"></div>
+                                    <div class="building-window" style="top: 8px; left: 8px; width: 6px; height: 8px; background: rgba(255,255,255,0.8);"></div>
+                                    <div class="building-window" style="top: 14px; left: 14px; width: 6px; height: 8px; background: rgba(255,255,255,0.8);"></div>
+                                </div>
+                                <div class="building" style="top: 25%; left: 25%; width: 20px; height: 15px; background: rgba(0, 0, 0,0.3); border-radius: 2px;">
+                                    <div class="building-window" style="top: 2px; left: 2px; width: 6px; height: 8px; background: rgba(255,255,255,0.8);"></div>
+                                    <div class="building-window" style="top: 8px; left: 2px; width: 6px; height: 8px; background: rgba(255,255,255,0.8);"></div>
+                                </div>
+                                <div class="building" style="top: 35%; left: 35%; width: 20px; height: 15px; background: rgba(0, 0, 0,0.3); border-radius: 2px;">
+                                    <div class="building-window" style="top: 2px; left: 2px; width: 6px; height: 8px; background: rgba(255,255,255,0.8);"></div>
+                                    <div class="building-window" style="top: 2px; left: 2px; width: 6px; height: 8px; background: rgba(255,255,255,0.8);"></div>
+                                </div>
+                            </div>    
+                                <!-- Landmarks -->
+                                <div class="landmark" style="top: 15%; left: 12%;">
+                                    <div class="landmark-icon">🏢</div>
+                                    <div class="landmark-label">Accra Mall</div>
+                                </div>
+                                <div class="landmark" style="top: 35%; left: 8%;">
+                                    <div class="landmark-icon">✈️</div>
+                                    <div class="landmark-label">Kotoka Airport</div>
+                                </div>
+                                <div class="landmark" style="top: 55%; left: 28%;">
+                                    <div class="landmark-icon">🎓</div>
+                                    <div class="landmark-label">University of Ghana</div>
+                                </div>
+                                <div class="landmark" style="top: 70%; left: 52%;">
+                                    <div class="landmark-icon">🏭</div>
+                                    <div class="landmark-label">Tema</div>
+                                </div>
+                                <div class="landmark" style="top: 25%; left: 75%;">
+                                    <div class="landmark-icon">🏪</div>
+                                    <div class="landmark-label">Osu</div>
+                                </div>
+                                <div class="landmark" style="top: 65%; left: 18%;">
+                                    <div class="landmark-icon">🏛️</div>
+                                    <div class="landmark-label">Labone</div>
+                                </div>
+                                <div class="landmark" style="top: 80%; left: 65%;">
+                                    <div class="landmark-icon">🏪</div>
+                                    <div class="landmark-label">Kaneshie</div>
+                                </div>
+                                <div class="landmark" style="top: 45%; left: 88%;">
+                                    <div class="landmark-icon">🎓</div>
+                                    <div class="landmark-label">East Legon</div>
+                                </div>
+                                
+                                <!-- Traffic Zones -->
+                                <div class="traffic-zone" style="top: 22%; left: 40%; width: 15%; height: 15%; background: rgba(255, 0, 0, 0.1); border-radius: 8px;">
+                                    <div class="traffic-label">Heavy</div>
+                                </div>
+                                <div class="traffic-zone" style="top: 50%; left: 20%; width: 20%; height: 12%; background: rgba(255, 165, 0, 0.1); border-radius: 8px;">
+                                    <div class="traffic-label">Moderate</div>
+                                </div>
+                                <div class="traffic-zone" style="top: 70%; left: 60%; width: 18%; height: 10%; background: rgba(0, 128, 0, 0.1); border-radius: 8px;">
+                                    <div class="traffic-label">Light</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Enhanced Location Labels -->
+                            <div class="location-label enhanced" style="top: 18%; left: 12%;">📍 Accra Mall</div>
+                            <div class="location-label enhanced" style="top: 38%; left: 8%;">📍 Kotoka Airport</div>
+                            <div class="location-label enhanced" style="top: 58%; left: 28%;">📍 University of Ghana</div>
+                            <div class="location-label enhanced" style="top: 78%; left: 52%;">📍 Tema</div>
+                            <div class="location-label enhanced" style="top: 28%; left: 75%;">📍 Osu</div>
+                            <div class="location-label enhanced" style="top: 68%; left: 18%;">📍 Labone</div>
+                            <div class="location-label enhanced" style="top: 88%; left: 65%;">📍 Kaneshie</div>
+                            <div class="location-label enhanced" style="top: 48%; left: 88%;">📍 East Legon</div>
+                            
+                            <!-- Professional Vehicle Icons -->
+                            <div class="vehicle-marker car premium" style="top: 25%; left: 20%;" data-vehicle-id="K3V-1001">
+                                <div class="vehicle-shadow"></div>
+                                <div class="vehicle-icon">
+                                    <i class="fas fa-car"></i>
+                                </div>
+                                <div class="vehicle-pulse"></div>
+                                <div class="vehicle-label">K3V-1001</div>
+                                <div class="vehicle-status">Active</div>
+                            </div>
+                            
+                            <div class="vehicle-marker car premium" style="top: 45%; left: 65%;" data-vehicle-id="K3V-1002">
+                                <div class="vehicle-shadow"></div>
+                                <div class="vehicle-icon">
+                                    <i class="fas fa-car"></i>
+                                </div>
+                                <div class="vehicle-pulse"></div>
+                                <div class="vehicle-label">K3V-1002</div>
+                                <div class="vehicle-status">Active</div>
+                            </div>
+                            
+                            <div class="vehicle-marker tuk-tuk premium" style="top: 65%; left: 35%;" data-vehicle-id="K3T-1001">
+                                <div class="vehicle-shadow gold"></div>
+                                <div class="vehicle-icon">
+                                    <i class="fas fa-motorcycle"></i>
+                                </div>
+                                <div class="vehicle-pulse gold"></div>
+                                <div class="vehicle-label">K3T-1001</div>
+                                <div class="vehicle-status">Active</div>
+                            </div>
+                            
+                            <div class="vehicle-marker car premium" style="top: 30%; left: 80%;" data-vehicle-id="K3V-1003">
+                                <div class="vehicle-shadow"></div>
+                                <div class="vehicle-icon">
+                                    <i class="fas fa-car"></i>
+                                </div>
+                                <div class="vehicle-pulse"></div>
+                                <div class="vehicle-label">K3V-1003</div>
+                                <div class="vehicle-status">Active</div>
+                            </div>
+                            
+                            <div class="vehicle-marker car premium" style="top: 75%; left: 55%;" data-vehicle-id="K3V-1004">
+                                <div class="vehicle-shadow"></div>
+                                <div class="vehicle-icon">
+                                    <i class="fas fa-car"></i>
+                                </div>
+                                <div class="vehicle-pulse"></div>
+                                <div class="vehicle-label">K3V-1004</div>
+                                <div class="vehicle-status">Active</div>
+                            </div>
+                            
+                            <div class="vehicle-marker car premium" style="top: 52%; left: 42%;" data-vehicle-id="K3V-1005">
+                                <div class="vehicle-shadow"></div>
+                                <div class="vehicle-icon">
+                                    <i class="fas fa-car"></i>
+                                </div>
+                                <div class="vehicle-pulse"></div>
+                                <div class="vehicle-label">K3V-1005</div>
+                                <div class="vehicle-status">Active</div>
+                            </div>
+                            
+                            <!-- Advanced Map Legend -->
+                            <div class="map-legend advanced">
+                                <div class="legend-title">🗺️ Live Fleet Intelligence</div>
+                                <div class="legend-grid">
+                                    <div class="legend-section">
+                                        <div class="legend-subtitle">Vehicle Status</div>
+                                        <div class="legend-items">
+                                            <div class="legend-item">
+                                                <div class="legend-icon car active">
+                                                    <i class="fas fa-car"></i>
+                                                </div>
+                                                <span>Cars: 4 Active</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="legend-icon tuk-tuk active">
+                                                    <i class="fas fa-motorcycle"></i>
+                                                </div>
+                                                <span>Tuk-Tuks: 1 Active</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="legend-section">
+                                        <div class="legend-subtitle">Traffic Conditions</div>
+                                        <div class="legend-items">
+                                            <div class="legend-item">
+                                                <div class="traffic-indicator heavy"></div>
+                                                <span>Heavy (2 zones)</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="traffic-indicator moderate"></div>
+                                                <span>Moderate (1 zone)</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="traffic-indicator light"></div>
+                                                <span>Light (1 zone)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="legend-section">
+                                        <div class="legend-subtitle">System Status</div>
+                                        <div class="legend-items">
+                                            <div class="legend-item">
+                                                <div class="status-indicator online"></div>
+                                                <span>GPS: Online</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="status-indicator online"></div>
+                                                <span>API: Connected</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="status-indicator online"></div>
+                                                <span>Real-time: Active</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="legend-stats">
+                                    <div class="stat-item">
+                                        <span class="stat-label">Total Active:</span>
+                                        <span class="stat-value" id="totalActiveVehicles">5</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-label">Coverage:</span>
+                                        <span class="stat-value">87%</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-label">Last Update:</span>
+                                        <span class="stat-value" id="lastMapUpdate">Just now</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-label">Response Time:</span>
+                                        <span class="stat-value">1.2s</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Active Rides Table -->
+                <section class="rides-table-section">
+                    <div class="table-header">
+                        <h2>Active Rides</h2>
+                        <div class="table-controls">
+                            <input type="text" id="searchRides" placeholder="Search rides..." class="search-input">
+                            <select id="statusFilter" class="filter-select">
+                                <option value="all">All Status</option>
+                                <option value="active">Active</option>
+                                <option value="completed">Completed</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table class="rides-table" id="ridesTable">
+                            <thead>
+                                <tr>
+                                    <th>Ride ID</th>
+                                    <th>Driver</th>
+                                    <th>Rider</th>
+                                    <th>Pickup</th>
+                                    <th>Dropoff</th>
+                                    <th>Status</th>
+                                    <th>Duration</th>
+                                    <th>Fare</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ridesTableBody">
+                                <!-- Rides will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Ride Chart -->
+                <section class="ride-chart-section">
+                    <div class="chart-header">
+                        <h2>Ride Analytics</h2>
+                        <div class="chart-controls">
+                            <select id="chartPeriod" class="filter-select">
+                                <option value="hourly">Last Hour</option>
+                                <option value="daily">Today</option>
+                                <option value="weekly">This Week</option>
+                                <option value="monthly">This Month</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="rideChart" width="400" height="200"></canvas>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="ride-monitoring.js"></script>
+</body>
+</html>

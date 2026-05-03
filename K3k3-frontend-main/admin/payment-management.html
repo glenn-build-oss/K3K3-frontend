@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment & Commission Management - K3K3 Admin</title>
+    <link rel="icon" type="image/png" href="../assets/k3k3.png">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="payment-management.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="k3k3-sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <img src="../assets/k3k3.png" alt="K3K3" class="logo">
+                    <div class="logo-text">
+                        <strong>K3K3</strong>
+                        <span>Admin</span>
+                    </div>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-title">Operations</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="dashboard.html" class="nav-link">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="rider-management.html" class="nav-link">
+                                <i class="fas fa-users"></i>
+                                <span>Riders</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="ride-monitoring.html" class="nav-link">
+                                <i class="fas fa-map-marked-alt"></i>
+                                <span>Live Rides</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="rider-management.html" class="nav-link">
+                                <i class="fas fa-id-card"></i>
+                                <span>Riders</span>
+                            </a>
+                        </li>
+                        <li class="nav-item active">
+                            <a href="payment-management.html" class="nav-link">
+                                <i class="fas fa-credit-card"></i>
+                                <span>Payments</span>
+                                <div class="nav-indicator"></div>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="system-settings.html" class="nav-link">
+                                <i class="fas fa-cog"></i>
+                                <span>Settings</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="k3k3-main-content">
+            <!-- Top Navigation Bar -->
+            <header class="k3k3-topbar">
+                <div class="topbar-left">
+                    <button class="sidebar-toggle" id="sidebarToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <button class="action-btn back-btn" id="backBtn" title="Back to Dashboard" onclick="window.location.href='dashboard.html'">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <div class="breadcrumb">
+                        <span>Admin</span>
+                        <i class="fas fa-chevron-right"></i>
+                        <span>Payment & Commission Management</span>
+                    </div>
+                </div>
+                
+                <div class="topbar-right">
+                    <div class="topbar-actions">
+                        <button class="action-btn" id="refreshBtn" title="Refresh">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                        <button class="action-btn" id="exportBtn" title="Export">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Payment Management Content -->
+            <div class="dashboard-content">
+                <!-- Financial Overview -->
+                <section class="financial-overview">
+                    <div class="overview-grid">
+                        <div class="overview-card primary">
+                            <div class="overview-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div class="overview-info">
+                                <div class="overview-number" id="totalRevenue">₵0</div>
+                                <div class="overview-label">Total Revenue</div>
+                            </div>
+                        </div>
+                        <div class="overview-card success">
+                            <div class="overview-icon">
+                                <i class="fas fa-percentage"></i>
+                            </div>
+                            <div class="overview-info">
+                                <div class="overview-number" id="commissionEarned">₵0</div>
+                                <div class="overview-label">Commission Earned</div>
+                            </div>
+                        </div>
+                        <div class="overview-card warning">
+                            <div class="overview-icon">
+                                <i class="fas fa-hand-holding-usd"></i>
+                            </div>
+                            <div class="overview-info">
+                                <div class="overview-number" id="pendingPayments">0</div>
+                                <div class="overview-label">Pending Payments</div>
+                            </div>
+                        </div>
+                        <div class="overview-card info">
+                            <div class="overview-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="overview-info">
+                                <div class="overview-number" id="avgTransaction">₵0</div>
+                                <div class="overview-label">Avg Transaction</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Commission Settings -->
+                <section class="commission-settings">
+                    <div class="settings-header">
+                        <h2>Commission Settings</h2>
+                        <div class="settings-actions">
+                            <button class="btn-primary" id="saveCommissionBtn">
+                                <i class="fas fa-save"></i>
+                                Save Settings
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-grid">
+                        <div class="setting-card">
+                            <h3>Driver Commission Rates</h3>
+                            <div class="setting-group">
+                                <label for="driverCommissionRate">Commission Rate (%)</label>
+                                <input type="number" id="driverCommissionRate" min="0" max="100" step="0.1" value="20" class="setting-input">
+                                <small class="setting-help">Percentage of fare paid to driver</small>
+                            </div>
+                            <div class="setting-group">
+                                <label for="driverBaseFee">Base Fee (₵)</label>
+                                <input type="number" id="driverBaseFee" min="0" step="0.5" value="5" class="setting-input">
+                                <small class="setting-help">Fixed amount per ride</small>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-card">
+                            <h3>Platform Commission</h3>
+                            <div class="setting-group">
+                                <label for="platformCommissionRate">Platform Rate (%)</label>
+                                <input type="number" id="platformCommissionRate" min="0" max="100" step="0.1" value="15" class="setting-input">
+                                <small class="setting-help">Percentage kept by platform</small>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Recent Transactions -->
+                <section class="transactions-section">
+                    <div class="section-header">
+                        <h2>Recent Transactions</h2>
+                        <div class="section-controls">
+                            <input type="text" id="searchTransactions" placeholder="Search transactions..." class="search-input">
+                            <select id="transactionFilter" class="filter-select">
+                                <option value="all">All Types</option>
+                                <option value="payment">Payments</option>
+                                <option value="commission">Commissions</option>
+                                <option value="refund">Refunds</option>
+                            </select>
+                            <button class="btn-primary" id="addTransactionBtn">
+                                <i class="fas fa-plus"></i>
+                                Add Transaction
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table class="transactions-table" id="transactionsTable">
+                            <thead>
+                                <tr>
+                                    <th>Transaction ID</th>
+                                    <th>Type</th>
+                                    <th>From</th>
+                                    <th>To</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionsTableBody">
+                                <!-- Transactions will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Payment Analytics -->
+                <section class="payment-analytics">
+                    <div class="analytics-header">
+                        <h2>Payment Analytics</h2>
+                        <div class="analytics-controls">
+                            <select id="analyticsPeriod" class="filter-select">
+                                <option value="daily">Daily</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="monthly">Monthly</option>
+                                <option value="yearly">Yearly</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="charts-grid">
+                        <div class="chart-container">
+                            <h3>Revenue Trend</h3>
+                            <canvas id="revenueChart" width="400" height="200"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3>Transaction Volume</h3>
+                            <canvas id="volumeChart" width="400" height="200"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3>Commission Distribution</h3>
+                            <canvas id="commissionChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transaction Modal -->
+    <div id="transactionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Transaction Details</h3>
+                <button class="modal-close" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Content will be populated dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="payment-management.js"></script>
+</body>
+</html>

@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Settings - K3K3 Admin</title>
+    <link rel="icon" type="image/png" href="../assets/k3k3.png">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="system-settings.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="k3k3-sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <img src="../assets/k3k3.png" alt="K3K3" class="logo">
+                    <div class="logo-text">
+                        <strong>K3K3</strong>
+                        <span>Admin</span>
+                    </div>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-title">Operations</div>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="dashboard.html" class="nav-link">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="rider-management.html" class="nav-link">
+                                <i class="fas fa-users"></i>
+                                <span>Riders</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="ride-monitoring.html" class="nav-link">
+                                <i class="fas fa-map-marked-alt"></i>
+                                <span>Live Rides</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="rider-management.html" class="nav-link">
+                                <i class="fas fa-id-card"></i>
+                                <span>Riders</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="payment-management.html" class="nav-link">
+                                <i class="fas fa-credit-card"></i>
+                                <span>Payments</span>
+                            </a>
+                        </li>
+                        <li class="nav-item active">
+                            <a href="system-settings.html" class="nav-link">
+                                <i class="fas fa-cog"></i>
+                                <span>Settings</span>
+                                <div class="nav-indicator"></div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="k3k3-main-content">
+            <!-- Top Navigation Bar -->
+            <header class="k3k3-topbar">
+                <div class="topbar-left">
+                    <button class="sidebar-toggle" id="sidebarToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <button class="action-btn back-btn" id="backBtn" title="Back to Dashboard" onclick="window.location.href='dashboard.html'">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <div class="breadcrumb">
+                        <span>Admin</span>
+                        <i class="fas fa-chevron-right"></i>
+                        <span>System Settings</span>
+                    </div>
+                </div>
+                
+                <div class="topbar-right">
+                    <div class="topbar-actions">
+                        <button class="action-btn" id="refreshBtn" title="Refresh">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                        <button class="action-btn" id="exportBtn" title="Export">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- System Settings Content -->
+            <div class="dashboard-content">
+                <!-- General Settings -->
+                <section class="settings-section">
+                    <div class="section-header">
+                        <h2>General Settings</h2>
+                        <div class="section-controls">
+                            <button class="btn-primary" id="saveGeneralBtn">
+                                <i class="fas fa-save"></i>
+                                Save Changes
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-grid">
+                        <div class="setting-card">
+                            <h3>Platform Configuration</h3>
+                            <div class="setting-group">
+                                <label for="platformName">Platform Name</label>
+                                <input type="text" id="platformName" value="K3K3 Transport" class="setting-input">
+                                <small class="setting-help">Display name of the platform</small>
+                            </div>
+                            <div class="setting-group">
+                                <label for="platformVersion">Version</label>
+                                <input type="text" id="platformVersion" value="v2.1.0" class="setting-input" readonly>
+                                <small class="setting-help">Current platform version</small>
+                            </div>
+                            <div class="setting-group">
+                                <label for="maintenanceMode">Maintenance Mode</label>
+                                <select id="maintenanceMode" class="setting-input">
+                                    <option value="disabled">Disabled</option>
+                                    <option value="scheduled">Scheduled</option>
+                                    <option value="active">Active</option>
+                                </select>
+                                <small class="setting-help">Enable maintenance mode</small>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-card">
+                            <h3>System Preferences</h3>
+                            <div class="setting-group">
+                                <label for="timezone">Timezone</label>
+                                <select id="timezone" class="setting-input">
+                                    <option value="UTC">UTC (GMT+0)</option>
+                                    <option value="GMT">GMT (Accra)</option>
+                                    <option value="EST">EST (New York)</option>
+                                </select>
+                                <small class="setting-help">Server timezone</small>
+                            </div>
+                            <div class="setting-group">
+                                <label for="dateFormat">Date Format</label>
+                                <select id="dateFormat" class="setting-input">
+                                    <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+                                    <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                                    <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                                </select>
+                                <small class="setting-help">Preferred date format</small>
+                            </div>
+                            <div class="setting-group">
+                                <label for="currency">Default Currency</label>
+                                <select id="currency" class="setting-input">
+                                    <option value="GHS">GHS - Ghana Cedi</option>
+                                    <option value="USD">USD - US Dollar</option>
+                                    <option value="EUR">EUR - Euro</option>
+                                </select>
+                                <small class="setting-help">Platform default currency</small>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Security Settings -->
+                <section class="settings-section">
+                    <div class="section-header">
+                        <h2>Security Settings</h2>
+                        <div class="section-controls">
+                            <button class="btn-primary" id="saveSecurityBtn">
+                                <i class="fas fa-save"></i>
+                                Save Changes
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-grid">
+                        <div class="setting-card">
+                            <h3>Authentication</h3>
+                            <div class="setting-group">
+                                <label for="sessionTimeout">Session Timeout (minutes)</label>
+                                <input type="number" id="sessionTimeout" value="30" min="5" max="240" class="setting-input">
+                                <small class="setting-help">Auto-logout after inactivity</small>
+                            </div>
+                            <div class="setting-group">
+                                <label for="maxLoginAttempts">Max Login Attempts</label>
+                                <input type="number" id="maxLoginAttempts" value="5" min="3" max="10" class="setting-input">
+                                <small class="setting-help">Maximum failed login attempts</small>
+                            </div>
+                            <div class="setting-group">
+                                <label for="lockoutDuration">Lockout Duration (minutes)</label>
+                                <input type="number" id="lockoutDuration" value="15" min="5" max="60" class="setting-input">
+                                <small class="setting-help">Account lockout time after failed attempts</small>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-card">
+                            <h3>Password Policy</h3>
+                            <div class="setting-group">
+                                <label for="minPasswordLength">Min Password Length</label>
+                                <input type="number" id="minPasswordLength" value="8" min="6" max="20" class="setting-input">
+                                <small class="setting-help">Minimum password characters</small>
+                            </div>
+                            <div class="setting-group">
+                                <label for="requireSpecialChars">Require Special Characters</label>
+                                <select id="requireSpecialChars" class="setting-input">
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                </select>
+                                <small class="setting-help">Require special characters in passwords</small>
+                            </div>
+                            <div class="setting-group">
+                                <label for="passwordExpiry">Password Expiry (days)</label>
+                                <input type="number" id="passwordExpiry" value="90" min="30" max="365" class="setting-input">
+                                <small class="setting-help">Password validity period</small>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Notification Settings -->
+                <section class="settings-section">
+                    <div class="section-header">
+                        <h2>Notification Settings</h2>
+                        <div class="section-controls">
+                            <button class="btn-primary" id="saveNotificationBtn">
+                                <i class="fas fa-save"></i>
+                                Save Changes
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-grid">
+                        <div class="setting-card">
+                            <h3>Email Notifications</h3>
+                            <div class="setting-group">
+                                <label for="adminEmail">Admin Email</label>
+                                <input type="email" id="adminEmail" value="admin@k3k3.com" class="setting-input">
+                                <small class="setting-help">Admin notification email</small>
+                            </div>
+                            <div class="setting-group">
+                                <label for="emailNotifications">
+                                    <input type="checkbox" id="emailNotifications" checked class="setting-checkbox">
+                                    Enable Email Notifications
+                                </label>
+                                <small class="setting-help">Send email alerts for system events</small>
+                            </div>
+                            <div class="setting-group">
+                                <label for="lowBalanceAlert">Low Balance Alert (₵)</label>
+                                <input type="number" id="lowBalanceAlert" value="100" min="0" step="10" class="setting-input">
+                                <small class="setting-help">Alert when balance falls below this amount</small>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-card">
+                            <h3>System Alerts</h3>
+                            <div class="setting-group">
+                                <label for="systemAlerts">
+                                    <input type="checkbox" id="systemAlerts" checked class="setting-checkbox">
+                                    Enable System Alerts
+                                </label>
+                                <small class="setting-help">Critical system event notifications</small>
+                            </div>
+                            <div class="setting-group">
+                                <label for="rideMonitoring">
+                                    <input type="checkbox" id="rideMonitoring" checked class="setting-checkbox">
+                                    Ride Monitoring Alerts
+                                </label>
+                                <small class="setting-help">Alert for unusual ride activity</small>
+                            </div>
+                            <div class="setting-group">
+                                <label for="paymentAlerts">
+                                    <input type="checkbox" id="paymentAlerts" checked class="setting-checkbox">
+                                    Payment Alerts
+                                </label>
+                                <small class="setting-help">Notify for payment issues</small>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- API Settings -->
+                <section class="settings-section">
+                    <div class="section-header">
+                        <h2>API Settings</h2>
+                        <div class="section-controls">
+                            <button class="btn-primary" id="saveApiBtn">
+                                <i class="fas fa-save"></i>
+                                Save Changes
+                            </button>
+                            <button class="btn-secondary" id="regenerateApiBtn">
+                                <i class="fas fa-key"></i>
+                                Regenerate API Key
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-grid">
+                        <div class="setting-card">
+                            <h3>API Configuration</h3>
+                            <div class="setting-group">
+                                <label for="apiEnabled">API Access</label>
+                                <select id="apiEnabled" class="setting-input">
+                                    <option value="enabled">Enabled</option>
+                                    <option value="disabled">Disabled</option>
+                                    <option value="readonly">Read-only</option>
+                                </select>
+                                <small class="setting-help">Control API access level</small>
+                            </div>
+                            <div class="setting-group">
+                                <label for="apiKey">API Key</label>
+                                <div class="api-key-group">
+                                    <input type="password" id="apiKey" value="k3k3_live_20241216abcdef123456" class="setting-input" readonly>
+                                    <button class="btn-secondary" id="copyApiBtn">
+                                        <i class="fas fa-copy"></i>
+                                        Copy
+                                    </button>
+                                </div>
+                                <small class="setting-help">Current API authentication key</small>
+                            </div>
+                            <div class="setting-group">
+                                <label for="rateLimit">Rate Limit (requests/minute)</label>
+                                <input type="number" id="rateLimit" value="100" min="10" max="1000" class="setting-input">
+                                <small class="setting-help">API rate limiting</small>
+                            </div>
+                            <div class="setting-group">
+                                <label for="allowedOrigins">Allowed Origins</label>
+                                <textarea id="allowedOrigins" rows="3" class="setting-input" placeholder="https://k3k3.com&#10;https://app.k3k3.com">https://k3k3.com&#10;https://app.k3k3.com</textarea>
+                                <small class="setting-help">CORS allowed origins (one per line)</small>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Backup Settings -->
+                <section class="settings-section">
+                    <div class="section-header">
+                        <h2>Backup Settings</h2>
+                        <div class="section-controls">
+                            <button class="btn-primary" id="backupNowBtn">
+                                <i class="fas fa-download"></i>
+                                Backup Now
+                            </button>
+                            <button class="btn-secondary" id="restoreBtn">
+                                <i class="fas fa-upload"></i>
+                                Restore
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-grid">
+                        <div class="setting-card">
+                            <h3>Automated Backups</h3>
+                            <div class="setting-group">
+                                <label for="autoBackup">
+                                    <input type="checkbox" id="autoBackup" checked class="setting-checkbox">
+                                    Enable Automatic Backups
+                                </label>
+                                <small class="setting-help">Daily automatic system backup</small>
+                            </div>
+                            <div class="setting-group">
+                                <label for="backupFrequency">Backup Frequency</label>
+                                <select id="backupFrequency" class="setting-input">
+                                    <option value="daily">Daily</option>
+                                    <option value="weekly">Weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                </select>
+                                <small class="setting-help">How often to run backups</small>
+                            </div>
+                            <div class="setting-group">
+                                <label for="backupRetention">Retention Period (days)</label>
+                                <input type="number" id="backupRetention" value="30" min="7" max="365" class="setting-input">
+                                <small class="setting-help">Days to keep backup files</small>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-card">
+                            <h3>Backup Status</h3>
+                            <div class="backup-status">
+                                <div class="status-item">
+                                    <span class="status-label">Last Backup:</span>
+                                    <span class="status-value" id="lastBackupDate">2024-12-16 02:00:00</span>
+                                </div>
+                                <div class="status-item">
+                                    <span class="status-label">Next Backup:</span>
+                                    <span class="status-value" id="nextBackupDate">2024-12-17 02:00:00</span>
+                                </div>
+                                <div class="status-item">
+                                    <span class="status-label">Storage Used:</span>
+                                    <span class="status-value" id="storageUsed">2.3 GB / 10 GB</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- System Management -->
+                <section class="settings-section">
+                    <div class="section-header">
+                        <h2>System Management</h2>
+                        <div class="section-controls">
+                            <button class="btn-primary" id="generateReportBtn">
+                                <i class="fas fa-chart-line"></i>
+                                Generate Report
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-grid">
+                        <div class="setting-card">
+                            <h3>System Actions</h3>
+                            <div class="setting-group">
+                                <button class="btn-secondary" id="testApiBtn" style="width: 100%; margin-bottom: 0.5rem;">
+                                    <i class="fas fa-plug"></i>
+                                    Test API Connection
+                                </button>
+                                <small class="setting-help">Test API connectivity and response time</small>
+                            </div>
+                            <div class="setting-group">
+                                <button class="btn-secondary" id="testEmailBtn" style="width: 100%; margin-bottom: 0.5rem;">
+                                    <i class="fas fa-envelope"></i>
+                                    Send Test Email
+                                </button>
+                                <small class="setting-help">Send a test email to verify email configuration</small>
+                            </div>
+                            <div class="setting-group">
+                                <button class="btn-secondary" id="clearCacheBtn" style="width: 100%; margin-bottom: 0.5rem;">
+                                    <i class="fas fa-broom"></i>
+                                    Clear System Cache
+                                </button>
+                                <small class="setting-help">Clear temporary system files and cache</small>
+                            </div>
+                            <div class="setting-group">
+                                <button class="btn-secondary" id="resetSettingsBtn" style="width: 100%; margin-bottom: 0.5rem; background: #dc3545; color: white; border: none;">
+                                    <i class="fas fa-undo"></i>
+                                    Reset to Defaults
+                                </button>
+                                <small class="setting-help">Reset all settings to default values</small>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-card">
+                            <h3>System Information</h3>
+                            <div class="system-info">
+                                <div class="info-item">
+                                    <span class="info-label">Platform:</span>
+                                    <span class="info-value" id="platformInfo">K3K3 Transport</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Version:</span>
+                                    <span class="info-value" id="versionInfo">v2.1.0</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Uptime:</span>
+                                    <span class="info-value" id="uptimeInfo">Calculating...</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Active Users:</span>
+                                    <span class="info-value" id="activeUsersInfo">Calculating...</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Storage Usage:</span>
+                                    <span class="info-value" id="storageInfo">Calculating...</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">API Status:</span>
+                                    <span class="info-value" id="apiStatusInfo">Enabled</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="system-settings.js"></script>
+</body>
+</html>

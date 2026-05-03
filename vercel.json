@@ -1,0 +1,38 @@
+{
+  "builds": [
+    {
+      "src": "mvp/public/**/*",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/css/(.*)",
+      "dest": "/mvp/public/css/$1"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "/mvp/public/assets/$1"
+    },
+    {
+      "src": "/passenger/(.*)",
+      "dest": "/mvp/public/passenger/$1"
+    },
+    {
+      "src": "/admin/(.*)",
+      "dest": "/mvp/public/admin/$1"
+    },
+    {
+      "src": "/rider/(.*)",
+      "dest": "/mvp/public/rider/$1"
+    },
+    {
+      "src": "/legal/(.*)",
+      "dest": "/mvp/public/legal/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/mvp/public/$1"
+    }
+  ]
+}
