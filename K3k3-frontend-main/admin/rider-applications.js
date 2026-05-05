@@ -1621,33 +1621,20 @@ Welcome aboard!`;
     // Database API Preparation Methods
     // These methods prepare the data for backend database integration
     
-    // Create rider account in database (API endpoint simulation)
+    // Create rider account in database (REAL API integration)
     async createRiderAccountInDatabase(riderData) {
         try {
-            // API endpoint for backend integration
-            const API_ENDPOINT = '/api/riders/create';
+            // REAL API endpoint for backend integration
+            const API_ENDPOINT = 'http://localhost:8810/api/v1/admin/approve-rider/' + riderData.applicationId;
             
-            // Prepare data for database
+            // Prepare data for database - match backend expectations
             const databasePayload = {
-                riderId: riderData.riderId,
-                firstName: riderData.firstName,
-                lastName: riderData.lastName,
+                name: `${riderData.firstName} ${riderData.lastName}`,
                 email: riderData.email,
                 phone: riderData.phone,
                 dateOfBirth: riderData.dateOfBirth,
-                password: riderData.defaultPassword, // Will be hashed in backend
-                isFirstLogin: true,
-                status: 'active',
-                createdAt: new Date().toISOString(),
-                applicationId: riderData.applicationId,
-                profile: {
-                    address: riderData.address || '',
-                    city: riderData.city || '',
-                    state: riderData.state || '',
-                    zipCode: riderData.zipCode || '',
-                    emergencyContact: riderData.emergencyContact || '',
-                    vehicleInfo: riderData.vehicleInfo || {}
-                }
+                gender: riderData.gender || 'prefer_not_to_say',
+                vehicleInfo: riderData.vehicleInfo || {}
             };
 
             console.log('🔄 Creating rider account in database:', {
@@ -1656,62 +1643,46 @@ Welcome aboard!`;
                 endpoint: API_ENDPOINT
             });
 
-            // Simulate API call (replace with actual fetch when backend is ready)
-            const response = await this.simulateDatabaseAPI(API_ENDPOINT, 'POST', databasePayload);
+            // REAL API call to backend
+            const response = await fetch(API_ENDPOINT, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${this.getAdminToken()}`
+                },
+                body: JSON.stringify(databasePayload)
+            });
             
-            if (response.success) {
-                console.log('✅ Rider account created in database:', response.data);
+            const result = await response.json();
+            
+            if (response.ok) {
+                console.log('✅ Rider account created in database:', result);
                 return {
                     success: true,
-                    databaseId: response.data.databaseId,
+                    databaseId: result.user_id,
+                    riderId: result.rider_id,
                     message: 'Rider account successfully created in database'
                 };
             } else {
-                throw new Error(response.message || 'Database creation failed');
+                console.error('❌ Database creation failed:', result);
+                return {
+                    success: false,
+                    message: result.detail || 'Database creation failed'
+                };
             }
-
+            
         } catch (error) {
             console.error('❌ Error creating rider account in database:', error);
             return {
                 success: false,
-                error: error.message,
-                message: 'Failed to create rider account in database'
+                message: `Database API error: ${error.message}`
             };
         }
     }
 
-    // Simulate database API call (temporary - replace with real API)
-    async simulateDatabaseAPI(endpoint, method, data) {
-        // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 500));
-        
-        // Simulate database storage in localStorage for demo
-        const storedRiders = JSON.parse(localStorage.getItem('databaseRiders') || '[]');
-        
-        if (method === 'POST' && endpoint === '/api/riders/create') {
-            const newRider = {
-                ...data,
-                databaseId: `DB_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-                id: storedRiders.length + 1
-            };
-            
-            storedRiders.push(newRider);
-            localStorage.setItem('databaseRiders', JSON.stringify(storedRiders));
-            
-            return {
-                success: true,
-                data: {
-                    databaseId: newRider.databaseId,
-                    riderId: newRider.riderId,
-                    message: 'Rider account created successfully'
-                }
-            };
-        }
-        
-        return {
-            success: false,
-            message: 'API endpoint not implemented'
-        };
+    // Get admin authentication token
+    getAdminToken() {
+        return localStorage.getItem('k3k3_admin_token') || 'admin_session_token';
     }
 
     // Update rider credentials in database

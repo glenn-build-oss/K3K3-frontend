@@ -2,14 +2,11 @@
 
 // Global Variables
 let cancellations = [];
-let filteredCancellations = [];
-let currentView = 'list';
-let selectedRebookSeats = 1;
-let isMenuOpen = false;
 
-// Initialize Page
-document.addEventListener('DOMContentLoaded', function() {
-    initializeCancellationsPage();
+// Initialize the page
+document.addEventListener('DOMContentLoaded', async function() {
+    await loadCancellationsData();
+    setupEventListeners();
 });
 
 function initializeCancellationsPage() {
@@ -112,27 +109,125 @@ function showSettings() {
     alert('Settings - Feature coming soon!');
 }
 
-// Load Cancellations Data
-function loadCancellationsData() {
+// Load Cancellations Data from REAL Database
+async function loadCancellationsData() {
     try {
-        // Try to load from localStorage first
-        const storedData = localStorage.getItem('k3k3_cancellations');
-        if (storedData) {
-            cancellations = JSON.parse(storedData);
-        } else {
-            // Generate sample data for demonstration
+        console.log('🔄 Loading cancellations from database...');
+        
+        // Get current passenger from localStorage
+        const passengerUser = JSON.parse(localStorage.getItem('passenger_user') || '{}');
+        if (!passengerUser.id) {
+            console.warn('⚠️ No passenger user found, using fallback data');
             cancellations = generateSampleCancellations();
-            saveToLocalStorage();
+            filteredCancellations = [...cancellations];
+            return;
+        }
+
+        // Load real trips from database
+        const response = await fetch('http://localhost:8810/api/v1/trips/');
+        if (response.ok) {
+            const allTrips = await response.json();
+            
+            // Filter cancelled trips for this passenger
+            const cancelledTrips = allTrips.filter(trip => 
+                trip.passenger_id === passengerUser.id && 
+                trip.status === 'cancelled'
+            );
+            
+            // Transform trip data to cancellations format
+            cancellations = await Promise.all(cancelledTrips.map(async (trip) => {
+                // Get rider information if available
+                let driverName = null;
+                let driverPhone = null;
+                
+                if (trip.rider_id) {
+                    try {
+                        const ridersResponse = await fetch('http://localhost:8810/api/v1/riders/');
+                        if (ridersResponse.ok) {
+                            const riders = await ridersResponse.json();
+                            const rider = riders.find(r => r.id === trip.rider_id);
+                            
+                            if (rider) {
+                                // Get user info for driver name
+                                const usersResponse = await fetch('http://localhost:8810/api/v1/users/');
+                                if (usersResponse.ok) {
+                                    const users = await usersResponse.json();
+                                    const user = users.find(u => u.id === rider.user_id);
+                                    if (user) {
+                                        driverName = user.name;
+                                        driverPhone = user.phone;
+                                    }
+                                }
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error loading rider info:', error);
+                    }
+                }
+                
+                // Determine who cancelled (simplified logic)
+                const cancelledBy = trip.cancelled_at ? 
+                    (driverName ? 'driver' : 'user') : 'user';
+                
+                // Generate cancellation reason based on timing
+                let reasonText = 'Ride cancelled';
+                if (cancelledBy === 'user') {
+                    reasonText = 'Changed plans - no longer needed the ride';
+                } else if (cancelledBy === 'driver') {
+                    reasonText = 'Driver emergency - unable to complete ride';
+                }
+                
+                return {
+                    id: `K3R-${trip.id}`,
+                    pickup: await getAddressFromCoords(trip.pickup_lat, trip.pickup_lng),
+                    destination: await getAddressFromCoords(trip.dest_lat, trip.dest_lng),
+                    cancelledAt: trip.cancelled_at || trip.created_at,
+                    cancelledBy: cancelledBy,
+                    reason: cancelledBy === 'user' ? 'user-cancelled' : 'driver-cancelled',
+                    reasonText: reasonText,
+                    seats: 1, // Default for K3K3
+                    estimatedFare: trip.fare_estimate || 0,
+                    driverName: driverName,
+                    driverPhone: driverPhone,
+                    status: 'cancelled',
+                    requested_at: trip.requested_at,
+                    accepted_at: trip.accepted_at
+                };
+            }));
+            
+            // Sort by date (newest first)
+            cancellations.sort((a, b) => new Date(b.cancelledAt) - new Date(a.cancelledAt));
+            
+            // Save to localStorage for offline access
+            localStorage.setItem('k3k3_cancellations', JSON.stringify(cancellations));
+            
+            console.log(`✅ Loaded ${cancellations.length} real cancellations from database`);
+        } else {
+            console.warn('⚠️ Failed to load cancellations from database, using fallback');
+            cancellations = generateSampleCancellations();
         }
         
         filteredCancellations = [...cancellations];
-        console.log(`📊 Loaded ${cancellations.length} cancellations`);
         
     } catch (error) {
         console.error('❌ Error loading cancellations data:', error);
         cancellations = generateSampleCancellations();
         filteredCancellations = [...cancellations];
     }
+}
+
+// Get address from coordinates using geocoding API
+async function getAddressFromCoords(lat, lon) {
+    try {
+        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`);
+        if (response.ok) {
+            const data = await response.json();
+            return data.display_name || `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
+        }
+    } catch (error) {
+        console.error('Error getting address:', error);
+    }
+    return `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
 }
 
 // Generate Sample Cancellations

@@ -6,9 +6,9 @@ window.riderDashboard.isOnline = false;
 window.riderDashboard.currentLocation = null;
 window.riderDashboard.locationInterval = null;
 window.riderDashboard.earningsData = {
-    today: 245.50,
-    trips: 12,
-    tips: 25.50,
+    today: 0, // Will be loaded from database
+    trips: 0, // Will be loaded from database
+    tips: 0, // Will be loaded from database
     bonus: 0.00
 };
 
@@ -1187,9 +1187,98 @@ function showRideRequestModal() {
     }
 }
 
-// Update Ride Request Data
-function updateRideRequestData() {
-    // Sample Ghana locations - realistic ride data
+// Update Ride Request Data - Load from Database
+async function updateRideRequestData() {
+    try {
+        // Load real ride requests from database
+        const riderUser = JSON.parse(localStorage.getItem('driver_user') || '{}');
+        if (!riderUser.id) {
+            console.warn('No rider user found, using fallback data');
+            loadFallbackRideData();
+            return;
+        }
+
+        // Get available trips from database
+        const response = await fetch('http://localhost:8810/api/v1/trips/');
+        if (response.ok) {
+            const trips = await response.json();
+            
+            // Filter trips that need riders (status = 'requested' and no rider assigned)
+            const availableTrips = trips.filter(trip => 
+                trip.status === 'requested' && !trip.rider_id
+            );
+
+            if (availableTrips.length > 0) {
+                // Load real trip data
+                loadRealTripData(availableTrips);
+            } else {
+                console.log('No available trips found');
+                loadFallbackRideData();
+            }
+        } else {
+            console.warn('Failed to load trips from database, using fallback');
+            loadFallbackRideData();
+        }
+    } catch (error) {
+        console.error('Error loading ride requests:', error);
+        loadFallbackRideData();
+    }
+}
+
+// Load real trip data from database
+async function loadRealTripData(trips) {
+    // Get passenger information for each trip
+    const rideOptions = [];
+    
+    for (const trip of trips) {
+        try {
+            // Get passenger info
+            const passengersResponse = await fetch('http://localhost:8810/api/v1/passengers/');
+            if (passengersResponse.ok) {
+                const passengers = await passengersResponse.json();
+                const passenger = passengers.find(p => p.id === trip.passenger_id);
+                
+                if (passenger) {
+                    // Get user info for passenger name
+                    const usersResponse = await fetch('http://localhost:8810/api/v1/users/');
+                    if (usersResponse.ok) {
+                        const users = await usersResponse.json();
+                        const user = users.find(u => u.id === passenger.user_id);
+                        
+                        if (user) {
+                            // Calculate distance and time (simplified)
+                            const distance = calculateDistance(
+                                trip.pickup_lat, trip.pickup_lng,
+                                trip.dest_lat, trip.dest_lng
+                            );
+                            const estimatedTime = Math.round(distance * 3); // Rough estimate: 3 mins per km
+                            
+                            rideOptions.push({
+                                passengerName: user.name || 'Unknown Passenger',
+                                passengerRating: '4.8', // Would come from passenger rating
+                                pickupAddress: await getAddressFromCoords(trip.pickup_lat, trip.pickup_lng),
+                                destinationAddress: await getAddressFromCoords(trip.dest_lat, trip.dest_lng),
+                                distance: `${distance.toFixed(1)} km`,
+                                estimatedTime: `${estimatedTime} mins`,
+                                passengerCount: '1',
+                                fare: trip.fare_estimate ? `₵${trip.fare_estimate.toFixed(2)}` : '₵45.00',
+                                tripId: trip.id
+                            });
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Error loading trip details:', error);
+        }
+    }
+    
+    // Update ride request modal with real data
+    updateRideRequestModal(rideOptions);
+}
+
+// Load fallback ride data when database is unavailable
+function loadFallbackRideData() {
     const rideOptions = [
         {
             passengerName: 'Sarah Johnson',
@@ -1210,66 +1299,65 @@ function updateRideRequestData() {
             estimatedTime: '35 mins',
             passengerCount: '2',
             fare: '₵62.00'
-        },
-        {
-            passengerName: 'Ama Mensah',
-            passengerRating: '4.7',
-            pickupAddress: 'Tema Community 1',
-            destinationAddress: 'Accra Central',
-            distance: '28.7 km',
-            estimatedTime: '45 mins',
-            passengerCount: '1',
-            fare: '₵95.00'
-        },
-        {
-            passengerName: 'Yaa Boateng',
-            passengerRating: '5.0',
-            pickupAddress: 'Labone Beach Road',
-            destinationAddress: 'West Hills Mall',
-            distance: '15.2 km',
-            estimatedTime: '30 mins',
-            passengerCount: '3',
-            fare: '₵78.00'
-        },
-        {
-            passengerName: 'Kojo Osei',
-            passengerRating: '4.6',
-            pickupAddress: 'Kumasi City Mall',
-            destinationAddress: 'Kumasi Airport',
-            distance: '6.8 km',
-            estimatedTime: '18 mins',
-            passengerCount: '1',
-            fare: '₵38.00'
         }
     ];
     
-    // Select random ride option
-    const rideData = rideOptions[Math.floor(Math.random() * rideOptions.length)];
+    updateRideRequestModal(rideOptions);
+}
+
+// Update ride request modal with data
+function updateRideRequestModal(rideOptions) {
+    // Update modal with ride options
+    const pickupAddressEl = document.getElementById('pickupAddress');
+    const destinationAddressEl = document.getElementById('destinationAddress');
+    const passengerNameEl = document.getElementById('passengerName');
+    const passengerRatingEl = document.getElementById('passengerRating');
+    const rideDistanceEl = document.getElementById('rideDistance');
+    const rideTimeEl = document.getElementById('rideTime');
+    const passengerCountEl = document.getElementById('passengerCount');
+    const rideFareEl = document.getElementById('rideFare');
     
-    // Update modal elements
-    const elements = {
-        passengerName: document.getElementById('passengerName'),
-        passengerRating: document.getElementById('passengerRating'),
-        pickupAddress: document.getElementById('pickupAddress'),
-        destinationAddress: document.getElementById('destinationAddress'),
-        rideDistance: document.getElementById('rideDistance'),
-        rideTime: document.getElementById('rideTime'),
-        passengerCount: document.getElementById('passengerCount'),
-        rideFare: document.getElementById('rideFare')
-    };
-    
-    // Update elements with ride data
-    if (elements.passengerName) elements.passengerName.textContent = rideData.passengerName;
-    if (elements.passengerRating) elements.passengerRating.textContent = rideData.passengerRating;
-    if (elements.pickupAddress) elements.pickupAddress.textContent = rideData.pickupAddress;
-    if (elements.destinationAddress) elements.destinationAddress.textContent = rideData.destinationAddress;
-    if (elements.rideDistance) elements.rideDistance.textContent = rideData.distance;
-    if (elements.rideTime) elements.rideTime.textContent = rideData.estimatedTime;
-    if (elements.passengerCount) elements.passengerCount.textContent = rideData.passengerCount;
-    if (elements.rideFare) elements.rideFare.textContent = rideData.fare;
-    
-    // Store current ride data for acceptance
-    window.riderDashboard.currentRide = rideData;
+    if (rideOptions.length > 0) {
+        const ride = rideOptions[0]; // Use first available ride
+        
+        if (pickupAddressEl) pickupAddressEl.textContent = ride.pickupAddress;
+        if (destinationAddressEl) destinationAddressEl.textContent = ride.destinationAddress;
+        if (passengerNameEl) passengerNameEl.textContent = ride.passengerName;
+        if (passengerRatingEl) passengerRatingEl.textContent = ride.passengerRating;
+        if (rideDistanceEl) rideDistanceEl.textContent = ride.distance;
+        if (rideTimeEl) rideTimeEl.textContent = ride.estimatedTime;
+        if (passengerCountEl) passengerCountEl.textContent = ride.passengerCount;
+        if (rideFareEl) rideFareEl.textContent = ride.fare;
+        
+        // Store trip ID for acceptance
+        window.currentTripId = ride.tripId;
+    }
+}
+
+// Calculate distance between two coordinates
+function calculateDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371; // Earth's radius in km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c; // Distance in km
+}
+
+// Get address from coordinates using geocoding API
+async function getAddressFromCoords(lat, lon) {
+    try {
+        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`);
+        if (response.ok) {
+            const data = await response.json();
+            return data.display_name || `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
+        }
+    } catch (error) {
+        console.error('Error getting address:', error);
+    }
+    return `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
 }
 
 // Start Request Timer

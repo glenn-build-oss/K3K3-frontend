@@ -16,30 +16,42 @@ class RideMonitoring {
         this.setupEventListeners();
         this.initializeChart();
         this.connectWebSocket();
-        this.loadRealTimeData();
+        this.loadMonitoringData();
         this.startRealTimeUpdates();
         console.log('✅ Ride Monitoring System Ready for Real Data');
     }
 
-    async loadRealTimeData() {
+    async loadMonitoringData() {
         try {
-            console.log('📊 Loading real-time monitoring data...');
+            console.log('� Loading ride monitoring data from database...');
             
-            // Load all monitoring data in parallel
-            const [ridesData, vehiclesData, statsData, analyticsData] = await Promise.all([
-                this.fetchActiveRides(),
-                this.fetchLiveVehicles(),
-                this.fetchMonitoringStats(),
-                this.fetchAnalytics()
+            // Load real-time data from backend endpoints
+            const [tripsResponse, ridersResponse] = await Promise.all([
+                fetch('http://localhost:8810/api/v1/trips/'),
+                fetch('http://localhost:8810/api/v1/riders/')
             ]);
-
-            // Update all monitoring components
-            this.updateRidesTable(ridesData);
-            this.updateLiveMap(vehiclesData);
-            this.updateStats(statsData);
+            
+            // Process trips data
+            if (tripsResponse.ok) {
+                const trips = await tripsResponse.json();
+                this.rides = this.transformTripsToRides(trips);
+                console.log(`✅ Loaded ${this.rides.length} rides from database`);
+            } else {
+                throw new Error('Failed to load trips from database');
+            }
+            
+            // Process riders data
+            if (ridersResponse.ok) {
+                const riders = await ridersResponse.json();
+                this.processRiderData(riders);
+                console.log(`✅ Loaded ${riders.length} riders from database`);
+            }
+            
+            // Update analytics
+            const analyticsData = this.calculateAnalytics();
             this.updateChart(analyticsData);
             
-            this.showNotification('Monitoring data updated', 'success');
+            this.showNotification('Monitoring data updated from database', 'success');
             
         } catch (error) {
             console.error('❌ Error loading monitoring data:', error);
@@ -51,12 +63,12 @@ class RideMonitoring {
 
     connectWebSocket() {
         try {
-            // Connect to real-time WebSocket for live updates
-            const wsUrl = `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}${this.apiBaseUrl}/ws/monitoring`;
+            // Connect to K3K3 backend WebSocket for live updates
+            const wsUrl = 'ws://localhost:8810/api/v1/ws/trips/monitoring';
             this.websocket = new WebSocket(wsUrl);
             
             this.websocket.onopen = () => {
-                console.log('🔌 WebSocket connected for real-time updates');
+                console.log('🔌 WebSocket connected to K3K3 backend for real-time updates');
                 this.showNotification('Real-time connection established', 'success');
             };
             

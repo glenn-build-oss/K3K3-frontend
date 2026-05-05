@@ -27,24 +27,84 @@ class RiderManagement {
         try {
             console.log('🔄 Loading real-time rider data from database...');
             
-            // Load active riders from localStorage (approved riders)
-            const activeRiders = JSON.parse(localStorage.getItem('activeRiders') || '[]');
-            console.log(`📊 Found ${activeRiders.length} active riders`);
-            
-            // Load database riders (for backend integration)
-            const databaseRiders = JSON.parse(localStorage.getItem('databaseRiders') || '[]');
-            console.log(`🗄️ Found ${databaseRiders.length} database riders`);
-            
-            // Load approved applications
-            const applications = JSON.parse(localStorage.getItem('riderApplications') || '[]');
-            const approvedApplications = applications.filter(app => app.status === 'approved');
-            console.log(`📋 Found ${approvedApplications.length} approved applications`);
-            
-            // Combine all rider data sources
-            this.riders = this.combineRiderDataSources(activeRiders, databaseRiders, approvedApplications);
-            
-            this.filteredRiders = [...this.riders];
-            console.log(`📊 Total loaded riders: ${this.riders.length}`);
+            // Load real riders from backend API
+            const response = await fetch('http://localhost:8810/api/v1/riders/');
+            if (response.ok) {
+                const databaseRiders = await response.json();
+                console.log(`�️ Found ${databaseRiders.length} database riders`);
+                
+                // Transform database riders to management format
+                this.riders = await Promise.all(databaseRiders.map(async (rider) => {
+                    // Get user information for each rider
+                    let userName = 'Unknown User';
+                    let userEmail = 'unknown@example.com';
+                    let userPhone = '+233 XXX XXXX';
+                    
+                    try {
+                        const usersResponse = await fetch('http://localhost:8810/api/v1/users/');
+                        if (usersResponse.ok) {
+                            const users = await usersResponse.json();
+                            const user = users.find(u => u.id === rider.user_id);
+                            if (user) {
+                                userName = user.name;
+                                userEmail = user.email;
+                                userPhone = user.phone || '+233 XXX XXXX';
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error loading user info:', error);
+                    }
+                    
+                    // Get trip statistics for this rider
+                    let tripCount = 0;
+                    let totalEarnings = 0;
+                    
+                    try {
+                        const tripsResponse = await fetch('http://localhost:8810/api/v1/trips/');
+                        if (tripsResponse.ok) {
+                            const trips = await tripsResponse.json();
+                            const riderTrips = trips.filter(trip => trip.rider_id === rider.id);
+                            tripCount = riderTrips.length;
+                            totalEarnings = riderTrips
+                                .filter(t => t.status === 'completed' && t.actual_fare)
+                                .reduce((sum, trip) => sum + parseFloat(trip.actual_fare), 0);
+                        }
+                    } catch (error) {
+                        console.error('Error loading trip stats:', error);
+                    }
+                    
+                    return {
+                        id: rider.id,
+                        riderId: rider.public_id,
+                        name: userName,
+                        email: userEmail,
+                        phone: userPhone,
+                        rating: parseFloat(rider.rating) || 4.5,
+                        rating_count: rider.rating_count || 0,
+                        status: rider.is_available ? 'online' : 'offline',
+                        joinDate: rider.created_at || new Date().toISOString(),
+                        trips: tripCount,
+                        earnings: totalEarnings,
+                        is_available: rider.is_available,
+                        current_lat: rider.current_lat,
+                        current_lng: rider.current_lng,
+                        vehicle_type: 'Motorcycle', // Default for K3K3
+                        license_type: 'Professional', // Default
+                        experience: '2+ years', // Default
+                        dataSource: 'database'
+                    };
+                }));
+                
+                // Load rider applications
+                await this.loadRiderApplications();
+                
+                this.filteredRiders = [...this.riders];
+                console.log(`📊 Total loaded riders: ${this.riders.length}`);
+                
+            } else {
+                console.warn('⚠️ Failed to load riders from database, using fallback');
+                this.generateSampleRiderData();
+            }
             
         } catch (error) {
             console.error('❌ Error loading real-time rider data:', error);
@@ -150,21 +210,6 @@ class RiderManagement {
                 }
             }
             
-            // Get applications from multiple sources (simulate different submission points)
-            const applicationSources = [
-                'k3k3_applications_web',
-                'k3k3_applications_mobile',
-                'k3k3_applications_api'
-            ];
-            
-            applicationSources.forEach(source => {
-                const sourceApplications = JSON.parse(localStorage.getItem(source) || '[]');
-                if (sourceApplications.length > 0) {
-                    console.log(`📋 Found ${sourceApplications.length} applications from ${source}`);
-                    allApplications.push(...sourceApplications);
-                }
-            });
-            
             // If no applications found, generate sample data for testing
             if (allApplications.length === 0) {
                 console.log('📋 No applications found, generating sample data...');
@@ -172,14 +217,9 @@ class RiderManagement {
                 allApplications.push(...sampleApplications);
             }
             
-            // Remove duplicates based on email or phone
-            const uniqueApplications = this.removeDuplicateApplications(allApplications);
-            console.log(`📊 Total unique applications: ${uniqueApplications.length}`);
-            
-            return uniqueApplications;
-            
+            return allApplications;
         } catch (error) {
-            console.error('Error fetching all rider applications:', error);
+            console.error('Error loading rider applications:', error);
             return [];
         }
     }

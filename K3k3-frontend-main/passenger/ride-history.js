@@ -5,9 +5,10 @@ let rides = [];
 let filteredRides = [];
 let currentView = 'list';
 
-// Initialize Page
-document.addEventListener('DOMContentLoaded', function() {
-    initializeRideHistoryPage();
+// Initialize the page
+document.addEventListener('DOMContentLoaded', async function() {
+    await loadRideHistory();
+    setupEventListeners();
 });
 
 function initializeRideHistoryPage() {
@@ -109,28 +110,148 @@ function showSettings() {
     alert('Settings - Feature coming soon!');
 }
 
-// Load Rides Data
-function loadRidesData() {
+// Load Ride History from REAL Database
+async function loadRideHistory() {
+    let rides = [];
     try {
-        // Try to load from localStorage first
-        const storedData = localStorage.getItem('k3k3_ride_history');
-        if (storedData) {
-            rides = JSON.parse(storedData);
-        } else {
-            // Generate sample data for demonstration
-            rides = generateSampleRides();
-            // Save to localStorage
+        console.log('🔄 Loading ride history from database...');
+        
+        // First check if backend is healthy
+        const healthResponse = await fetch('http://localhost:8810/api/v1/health');
+        if (!healthResponse.ok) {
+            throw new Error('Backend is not responding');
+        }
+        
+        // Get current passenger from localStorage
+        const passengerUser = JSON.parse(localStorage.getItem('passenger_user') || '{}');
+        if (!passengerUser.id) {
+            console.warn('⚠️ No passenger user found - please login again');
+            rides = [];
+            filteredRides = [...rides];
+            return;
+        }
+
+        // Load real trips from database
+        const response = await fetch('http://localhost:8810/api/v1/trips/');
+        if (response.ok) {
+            const allTrips = await response.json();
+            
+            // Filter trips for this passenger
+            rides = allTrips.filter(trip => trip.passenger_id === passengerUser.id);
+            
+            // Transform trip data to ride history format
+            rides = await Promise.all(rides.map(async (trip) => {
+                // Get rider information
+                let driverName = 'Unknown Driver';
+                let driverPhone = '+233 XXX XXXX';
+                let driverRating = 4.5;
+                
+                if (trip.rider_id) {
+                    try {
+                        const ridersResponse = await fetch('http://localhost:8810/api/v1/riders/');
+                        if (ridersResponse.ok) {
+                            const riders = await ridersResponse.json();
+                            const rider = riders.find(r => r.id === trip.rider_id);
+                            
+                            if (rider) {
+                                // Get user info for driver name
+                                const usersResponse = await fetch('http://localhost:8810/api/v1/users/');
+                                if (usersResponse.ok) {
+                                    const users = await usersResponse.json();
+                                    const user = users.find(u => u.id === rider.user_id);
+                                    if (user) {
+                                        driverName = user.name;
+                                        driverPhone = user.phone || '+233 XXX XXXX';
+                                    }
+                                }
+                                driverRating = parseFloat(rider.rating) || 4.5;
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error loading rider info:', error);
+                    }
+                }
+                
+                // Calculate duration and distance (simplified)
+                const duration = trip.completed_at && trip.started_at ? 
+                    Math.round((new Date(trip.completed_at) - new Date(trip.started_at)) / 60000) : 15;
+                const distance = trip.pickup_lat && trip.pickup_lng && trip.dest_lat && trip.dest_lng ?
+                    calculateDistance(trip.pickup_lat, trip.pickup_lng, trip.dest_lat, trip.dest_lng).toFixed(1) : '3.2';
+                
+                return {
+                    id: `K3R-${trip.id}`,
+                    pickup: await getAddressFromCoords(trip.pickup_lat, trip.pickup_lng),
+                    destination: await getAddressFromCoords(trip.dest_lat, trip.dest_lng),
+                    date: trip.created_at,
+                    status: trip.status,
+                    driverName: driverName,
+                    driverPhone: driverPhone,
+                    driverRating: driverRating,
+                    seats: 1, // Default for K3K3
+                    fare: trip.actual_fare || trip.fare_estimate || 0,
+                    paymentMethod: 'Mobile Money', // Default
+                    duration: `${duration} mins`,
+                    distance: `${distance} km`,
+                    requested_at: trip.requested_at,
+                    accepted_at: trip.accepted_at,
+                    started_at: trip.started_at,
+                    completed_at: trip.completed_at,
+                    cancelled_at: trip.cancelled_at
+                };
+            }));
+            
+            // Sort by date (newest first)
+            rides.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            // Save to localStorage for offline access
             localStorage.setItem('k3k3_ride_history', JSON.stringify(rides));
+            
+            console.log(`✅ Loaded ${rides.length} real rides from database`);
+        } else {
+            throw new Error(`HTTP ${response.status}: Failed to load rides`);
         }
         
         filteredRides = [...rides];
-        console.log(`📊 Loaded ${rides.length} rides from history`);
         
     } catch (error) {
-        console.error('❌ Error loading rides data:', error);
-        rides = generateSampleRides();
+        console.error('❌ Error loading ride history:', error.message);
+        console.warn('⚠️ Backend connection failed - showing empty state');
+        rides = [];
         filteredRides = [...rides];
+        
+        // Show user-friendly error message
+        if (error.message.includes('Backend is not responding')) {
+            alert('Unable to connect to K3K3 server. Please check your internet connection and try again.');
+        } else if (error.message.includes('Failed to load rides')) {
+            alert('Unable to load ride history. Please try again later.');
+        }
     }
+}
+
+// Calculate distance between two coordinates
+function calculateDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371; // Earth's radius in km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c; // Distance in km
+}
+
+// Get address from coordinates using geocoding API
+async function getAddressFromCoords(lat, lon) {
+    try {
+        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`);
+        if (response.ok) {
+            const data = await response.json();
+            return data.display_name || `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
+        }
+    } catch (error) {
+        console.error('Error getting address:', error);
+    }
+    return `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
 }
 
 // Generate Sample Rides

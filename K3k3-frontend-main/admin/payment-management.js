@@ -25,50 +25,119 @@ class PaymentManagement {
         console.log('✅ Payment Management System Ready');
     }
 
-    loadMockData() {
-        // Generate mock transaction data
+    async loadMockData() {
+        try {
+            console.log('🔄 Loading payment data from database...');
+            
+            // Load real trip data from database to generate payment transactions
+            const response = await fetch('http://localhost:8810/api/v1/trips/');
+            if (response.ok) {
+                const trips = await response.json();
+                console.log(`✅ Found ${trips.length} trips to process for payments`);
+                
+                // Generate payment transactions from completed trips
+                this.transactions = await Promise.all(trips
+                    .filter(trip => trip.status === 'completed' && trip.actual_fare)
+                    .map(async (trip, index) => {
+                        // Get passenger and rider information
+                        let passengerName = 'Unknown Passenger';
+                        let riderName = 'Unknown Rider';
+                        
+                        try {
+                            // Get passenger info
+                            const usersResponse = await fetch('http://localhost:8810/api/v1/users/');
+                            if (usersResponse.ok) {
+                                const users = await usersResponse.json();
+                                
+                                // Get passenger
+                                const passengersResponse = await fetch('http://localhost:8810/api/v1/passengers/');
+                                if (passengersResponse.ok) {
+                                    const passengers = await passengersResponse.json();
+                                    const passenger = passengers.find(p => p.id === trip.passenger_id);
+                                    if (passenger) {
+                                        const user = users.find(u => u.id === passenger.user_id);
+                                        passengerName = user ? user.name : 'Unknown Passenger';
+                                    }
+                                }
+                                
+                                // Get rider
+                                const ridersResponse = await fetch('http://localhost:8810/api/v1/riders/');
+                                if (ridersResponse.ok) {
+                                    const riders = await ridersResponse.json();
+                                    const rider = riders.find(r => r.id === trip.rider_id);
+                                    if (rider) {
+                                        const user = users.find(u => u.id === rider.user_id);
+                                        riderName = user ? user.name : 'Unknown Rider';
+                                    }
+                                }
+                            }
+                        } catch (error) {
+                            console.error('Error loading user info:', error);
+                        }
+                        
+                        const fare = parseFloat(trip.actual_fare);
+                        const commission = fare * 0.20; // 20% commission
+                        
+                        return {
+                            id: `TXN-${trip.id}`,
+                            type: 'payment',
+                            from: `${passengerName}`,
+                            to: `${riderName}`,
+                            amount: fare,
+                            status: 'completed',
+                            date: trip.completed_at,
+                            commission: commission,
+                            rideId: `K3T-${trip.id}`,
+                            passenger_id: trip.passenger_id,
+                            rider_id: trip.rider_id
+                        };
+                    })
+                );
+                
+                // Add commission transactions
+                const commissionTransactions = this.transactions.map(tx => ({
+                    id: `TXN-COM-${tx.id}`,
+                    type: 'commission',
+                    from: 'Platform',
+                    to: tx.to,
+                    amount: tx.commission,
+                    status: 'completed',
+                    date: tx.date,
+                    commission: 0,
+                    rideId: tx.rideId
+                }));
+                
+                this.transactions.push(...commissionTransactions);
+                
+                // Sort by date (newest first)
+                this.transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                console.log(`✅ Generated ${this.transactions.length} payment transactions from database`);
+                
+            } else {
+                console.warn('⚠️ Failed to load trips from database, using fallback');
+                this.generateFallbackData();
+            }
+            
+        } catch (error) {
+            console.error('❌ Error loading payment data:', error);
+            this.generateFallbackData();
+        }
+    }
+    
+    generateFallbackData() {
+        // Fallback mock data when database is unavailable
         this.transactions = [
             {
-                id: 'TXN-20241216-000001',
+                id: 'TXN-FALLBACK-000001',
                 type: 'payment',
-                from: 'K3P-000001 (Kwame Asante)',
-                to: 'K3D-000001 (Kofi Osei)',
+                from: 'Kwame Asante',
+                to: 'Kofi Osei',
                 amount: 45.50,
                 status: 'completed',
-                date: '2024-12-16T10:30:00',
+                date: new Date().toISOString(),
                 commission: 9.10,
-                rideId: 'K3T-20241216-000001'
-            },
-            {
-                id: 'TXN-20241216-000002',
-                type: 'commission',
-                from: 'Platform',
-                to: 'K3D-000001 (Kofi Osei)',
-                amount: 9.10,
-                status: 'completed',
-                date: '2024-12-16T10:30:00',
-                rideId: 'K3T-20241216-000001'
-            },
-            {
-                id: 'TXN-20241216-000003',
-                type: 'payment',
-                from: 'K3P-000002 (Ama Mensah)',
-                to: 'K3D-000002 (Ama Mensah)',
-                amount: 32.00,
-                status: 'pending',
-                date: '2024-12-16T11:45:00',
-                commission: 6.40,
-                rideId: 'K3T-20241216-000002'
-            },
-            {
-                id: 'TXN-20241216-000004',
-                type: 'refund',
-                from: 'Platform',
-                to: 'K3P-000003 (Kofi Osei)',
-                amount: 15.00,
-                status: 'completed',
-                date: '2024-12-16T09:20:00',
-                rideId: 'K3T-20241216-000003'
+                rideId: 'K3T-FALLBACK-000001'
             }
         ];
     }

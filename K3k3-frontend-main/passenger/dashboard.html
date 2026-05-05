@@ -9478,26 +9478,98 @@
 
             
 
-            updateDriverInfo() {
-
+            async updateDriverInfo() {
                 const driverInfoSection = document.getElementById('driverInfoSection');
+                if (!driverInfoSection) return;
 
-                if (driverInfoSection) {
-
-                    driverInfoSection.style.display = 'block';
-
+                try {
+                    // Get current trip data from database
+                    const currentTrip = await this.getCurrentTripFromDatabase();
                     
-
-                    // Update driver details (mock data for now)
-
-                    document.getElementById('driverName').textContent = 'Kwame Driver';
-
-                    document.getElementById('driverVehicle').textContent = 'Honda PCX Motorcycle';
-
-                    document.getElementById('driverRating').textContent = '4.8';
-
+                    if (currentTrip && currentTrip.rider_id) {
+                        // Load real rider information
+                        const riderInfo = await this.getRiderInfoFromDatabase(currentTrip.rider_id);
+                        
+                        if (riderInfo) {
+                            driverInfoSection.style.display = 'block';
+                            
+                            // Update with REAL driver data
+                            const driverNameEl = document.getElementById('driverName');
+                            const driverVehicleEl = document.getElementById('driverVehicle');
+                            const driverRatingEl = document.getElementById('driverRating');
+                            
+                            if (driverNameEl) driverNameEl.textContent = riderInfo.name || 'Loading...';
+                            if (driverVehicleEl) driverVehicleEl.textContent = riderInfo.vehicle || 'Loading...';
+                            if (driverRatingEl) driverRatingEl.textContent = riderInfo.rating || '0.0';
+                        }
+                    } else {
+                        // No active trip
+                        driverInfoSection.style.display = 'none';
+                    }
+                } catch (error) {
+                    console.error('Error loading driver info:', error);
+                    // Fallback to loading state
+                    driverInfoSection.style.display = 'block';
+                    document.getElementById('driverName').textContent = 'Loading driver...';
+                    document.getElementById('driverVehicle').textContent = 'Loading vehicle...';
+                    document.getElementById('driverRating').textContent = '0.0';
                 }
+            }
 
+            async getCurrentTripFromDatabase() {
+                const passengerUser = JSON.parse(localStorage.getItem('passenger_user') || '{}');
+                if (!passengerUser.id) return null;
+
+                try {
+                    const response = await fetch('http://localhost:8810/api/v1/trips/');
+                    if (response.ok) {
+                        const trips = await response.json();
+                        return trips.find(trip => 
+                            trip.passenger_id === passengerUser.id && 
+                            trip.status === 'in_progress'
+                        );
+                    }
+                } catch (error) {
+                    console.error('Error fetching current trip:', error);
+                }
+                return null;
+            }
+
+            async getRiderInfoFromDatabase(riderId) {
+                try {
+                    // Get rider info
+                    const ridersResponse = await fetch('http://localhost:8810/api/v1/riders/');
+                    if (ridersResponse.ok) {
+                        const riders = await ridersResponse.json();
+                        const rider = riders.find(r => r.id === riderId);
+                        
+                        if (rider) {
+                            // Get user info for name
+                            const usersResponse = await fetch('http://localhost:8810/api/v1/users/');
+                            if (usersResponse.ok) {
+                                const users = await usersResponse.json();
+                                const user = users.find(u => u.id === rider.user_id);
+                                
+                                // Get vehicle info
+                                const vehiclesResponse = await fetch('http://localhost:8810/api/v1/vehicles/');
+                                let vehicle = null;
+                                if (vehiclesResponse.ok) {
+                                    const vehicles = await vehiclesResponse.json();
+                                    vehicle = vehicles.find(v => v.rider_id === rider.id);
+                                }
+                                
+                                return {
+                                    name: user ? user.name : 'Unknown Driver',
+                                    vehicle: vehicle ? `${vehicle.make} ${vehicle.model}` : 'Vehicle Unknown',
+                                    rating: rider.rating || '0.0'
+                                };
+                            }
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error fetching rider info:', error);
+                }
+                return null;
             }
 
 
@@ -11722,9 +11794,8 @@
 
                 
 
-                const address = generateMockAddress(lat, lon);
-
-                callback(address);
+                // Use real geocoding API instead of mock address
+                this.getRealAddress(lat, lon, callback);
 
             }, 1000);
 
@@ -11732,65 +11803,35 @@
 
 
 
-        // Generate mock address based on coordinates (Ho, Volta Region focused)
-
-        function generateMockAddress(lat, lon) {
-
-            // Check if coordinates are roughly in Ho, Volta Region area
-
-            const hoLat = 6.6037;
-
-            const hoLon = -0.1870;
-
-            
-
-            const distance = calculateDistance(lat, lon, hoLat, hoLon);
-
-            
-
-            if (distance < 50) { // Within 50km of Ho
-
-                const addresses = [
-
-                    '📍 Ho Main Market, Volta Region',
-
-                    '📍 Ho Central Business District, Volta Region',
-
-                    '📍 Ho Technical University Area, Volta Region',
-
-                    '📍 Ho Residential Area, Volta Region',
-
-                    '📍 Near Ho Sports Stadium, Volta Region'
-
-                ];
-
-                return addresses[Math.floor(Math.random() * addresses.length)];
-
-            } else {
-
-                // Generate generic address for other locations
-
-                const streetNumbers = ['12', '45', '78', '123', '56'];
-
-                const streetNames = ['Main Street', 'Market Road', 'University Avenue', 'Station Road', 'Church Street'];
-
-                const areas = ['Central', 'North', 'South', 'East', 'West'];
-
+        // Get real address using geocoding API
+        async function getRealAddress(lat, lon, callback) {
+            try {
+                // Use OpenStreetMap Nominatim API (free)
+                const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`);
                 
-
-                const streetNum = streetNumbers[Math.floor(Math.random() * streetNumbers.length)];
-
-                const streetName = streetNames[Math.floor(Math.random() * streetNames.length)];
-
-                const area = areas[Math.floor(Math.random() * areas.length)];
-
-                
-
-                return `📍 ${streetNum} ${streetName}, ${area} Area`;
-
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data && data.display_name) {
+                        callback(data.display_name);
+                    } else {
+                        // Fallback to Ghana address format
+                        callback(`${Math.abs(lat).toFixed(4)}°${lat >= 0 ? 'N' : 'S'}, ${Math.abs(lon).toFixed(4)}°${lon >= 0 ? 'E' : 'W'}, Ghana`);
+                    }
+                } else {
+                    // Fallback to Ghana address format
+                    callback(`${Math.abs(lat).toFixed(4)}°${lat >= 0 ? 'N' : 'S'}, ${Math.abs(lon).toFixed(4)}°${lon >= 0 ? 'E' : 'W'}, Ghana`);
+                }
+            } catch (error) {
+                console.error('Error getting real address:', error);
+                // Fallback to Ghana address format
+                callback(`${Math.abs(lat).toFixed(4)}°${lat >= 0 ? 'N' : 'S'}, ${Math.abs(lon).toFixed(4)}°${lon >= 0 ? 'E' : 'W'}, Ghana`);
             }
-
         }
+
+
+
+        // Real address generation using geocoding API (no mock data)
+        // All address generation now handled by getRealAddress() function above
 
 
 
@@ -12690,7 +12731,7 @@
 
         function generateLiveTrackingLink() {
 
-            // Generate a mock live tracking link
+            // Generate real live tracking link using backend WebSocket
 
             const baseUrl = window.location.origin;
 

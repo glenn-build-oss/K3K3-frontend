@@ -1,24 +1,48 @@
-// Validate admin credentials against database
-function validateAdminCredentials(email, password) {
+// Validate admin credentials against REAL database
+async function validateAdminCredentials(email, password) {
   try {
-    // Get stored admin credentials from localStorage
-    const storedCredentials = JSON.parse(localStorage.getItem('k3k3_admin_credentials') || '[]');
+    console.log('🔐 Validating admin credentials against database...');
     
-    // Check if provided credentials match any stored admin
-    const isValid = storedCredentials.some(cred => 
-      cred.email === email && cred.password === password
-    );
+    // Call the same login endpoint as all users
+    const response = await fetch('http://localhost:8810/api/v1/users/login', {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email, password })
+    });
     
-    if (isValid) {
-      console.log(' Admin credentials validated against database');
-      return true;
+    if (response.ok) {
+      const user = await response.json();
+      
+      // Verify this user has admin role
+      if (user.role_type === 'admin') {
+        console.log('✅ Admin credentials validated against database');
+        
+        // Store admin session in localStorage
+        localStorage.setItem('k3k3_admin_token', 'admin_session_token');
+        localStorage.setItem('current_admin', JSON.stringify({
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: 'admin',
+          loginTime: new Date().toISOString()
+        }));
+        
+        return { success: true, user: user };
+      } else {
+        console.log('❌ User exists but is not an admin:', user.role_type);
+        return { success: false, message: 'Access denied: Not an admin user' };
+      }
     } else {
-      console.log(' Admin credentials validation failed');
-      return false;
+      const errorData = await response.json();
+      console.log('❌ Admin credentials validation failed:', errorData.detail);
+      return { success: false, message: errorData.detail || 'Invalid credentials' };
     }
+    
   } catch (error) {
-    console.error('Error validating admin credentials:', error);
-    return false;
+    console.error('❌ Error validating admin credentials:', error);
+    return { success: false, message: 'Network error during login' };
   }
 }
 
@@ -89,61 +113,32 @@ document.getElementById("adminLoginForm").addEventListener("submit", async (e) =
   errorMessage.textContent = "";
 
   try {
-    // First validate against database credentials
-    const isValidAdmin = validateAdminCredentials(email, password);
+    console.log('🔐 Attempting admin login for:', email);
     
-    if (!isValidAdmin) {
-      errorMessage.textContent = "Invalid admin credentials. Access denied.";
+    // Validate against REAL database
+    const validationResult = await validateAdminCredentials(email, password);
+    
+    if (!validationResult.success) {
+      errorMessage.textContent = validationResult.message || "Invalid admin credentials. Access denied.";
       errorMessage.style.display = "block";
       return;
     }
 
-    // If valid, proceed with API authentication
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
+    console.log('✅ Admin login successful, redirecting to dashboard...');
+    
+    // Show success message
+    errorMessage.textContent = "Login successful! Redirecting...";
+    errorMessage.style.color = "#10b981";
+    errorMessage.style.display = "block";
 
-    const data = await res.json();
+    // Redirect to admin dashboard after short delay
+    setTimeout(() => {
+      window.location.href = "dashboard.html";
+    }, 1500);
 
-    if (res.ok && data.success) {
-      const toast = document.createElement('div');
-      toast.style.cssText = `
-        position: fixed; top: 20px; right: 20px; 
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-        color: white; padding: 15px 25px; border-radius: 10px; 
-        z-index: 9999; font-weight: 500; font-size: 16px;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-      `;
-      toast.textContent = "Admin login successful! Welcome to K3K3 Dashboard.";
-      document.body.appendChild(toast);
-      
-      // Store admin data using safe storage
-      if (window.k3k3Storage) {
-        window.k3k3Storage.setToken(data.token, 'localStorage');
-        window.k3k3Storage.setItem('activeUser', 'admin', 'localStorage');
-        window.k3k3Storage.setItem('email', data.user.email, 'localStorage');
-        window.k3k3Storage.setUser(data.user, 'localStorage');
-      } else {
-        // Fallback to direct storage access
-        try {
-          localStorage.setItem("token", data.token);
-          localStorage.setItem("activeUser", "admin");
-          localStorage.setItem("email", data.user.email);
-          localStorage.setItem("k3k3_user", JSON.stringify(data.user));
-        } catch (e) {
-          console.warn('Storage access blocked during admin login:', e.message);
-        }
-      }
-      setTimeout(() => {
-        toast.remove();
-        window.location.href = "dashboard.html";
-      }, 2000);
-    } else {
-      errorMessage.textContent = data.error || data.message || "Login failed.";
-    }
-  } catch (err) {
-    errorMessage.textContent = "Server error. Try again later.";
+  } catch (error) {
+    console.error("❌ Login error:", error);
+    errorMessage.textContent = "Login failed. Please try again.";
+    errorMessage.style.display = "block";
   }
 });
