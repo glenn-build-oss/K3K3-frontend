@@ -1,9 +1,9 @@
 // Validate admin credentials against REAL database
 async function validateAdminCredentials(email, password) {
   try {
-    console.log('🔐 Validating admin credentials against database...');
+    console.log(' Validating admin credentials against database...');
     
-    // Call the same login endpoint as all users
+    // Call login endpoint on main2.0 backend
     const response = await fetch('http://localhost:8810/api/v1/users/login', {
       method: 'POST',
       headers: { 

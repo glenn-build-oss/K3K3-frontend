@@ -123,7 +123,7 @@ async function loadCancellationsData() {
             return;
         }
 
-        // Load real trips from database
+        // Load real trips from main2.0 backend
         const response = await fetch('http://localhost:8810/api/v1/trips/');
         if (response.ok) {
             const allTrips = await response.json();
@@ -141,22 +141,21 @@ async function loadCancellationsData() {
                 let driverPhone = null;
                 
                 if (trip.rider_id) {
-                    try {
-                        const ridersResponse = await fetch('http://localhost:8810/api/v1/riders/');
-                        if (ridersResponse.ok) {
-                            const riders = await ridersResponse.json();
-                            const rider = riders.find(r => r.id === trip.rider_id);
-                            
-                            if (rider) {
-                                // Get user info for driver name
-                                const usersResponse = await fetch('http://localhost:8810/api/v1/users/');
-                                if (usersResponse.ok) {
-                                    const users = await usersResponse.json();
-                                    const user = users.find(u => u.id === rider.user_id);
-                                    if (user) {
-                                        driverName = user.name;
-                                        driverPhone = user.phone;
-                                    }
+                    // Get rider info from main2.0 backend
+                    const ridersResponse = await fetch('http://localhost:8810/api/v1/riders/');
+                    if (ridersResponse.ok) {
+                        const riders = await ridersResponse.json();
+                        const rider = riders.find(r => r.id === trip.rider_id);
+                        
+                        if (rider) {
+                            // Get user info for driver name
+                            const usersResponse = await fetch('http://localhost:8810/api/v1/users/');
+                            if (usersResponse.ok) {
+                                const users = await usersResponse.json();
+                                const user = users.find(u => u.id === rider.user_id);
+                                if (user) {
+                                    driverName = user.name;
+                                    driverPhone = user.phone;
                                 }
                             }
                         }

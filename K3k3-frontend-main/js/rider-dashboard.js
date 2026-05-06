@@ -1198,7 +1198,7 @@ async function updateRideRequestData() {
             return;
         }
 
-        // Get available trips from database
+        // Get available trips from main2.0 backend
         const response = await fetch('http://localhost:8810/api/v1/trips/');
         if (response.ok) {
             const trips = await response.json();
@@ -1232,20 +1232,20 @@ async function loadRealTripData(trips) {
     
     for (const trip of trips) {
         try {
-            // Get passenger info
+            // Get passenger info from main2.0 backend
             const passengersResponse = await fetch('http://localhost:8810/api/v1/passengers/');
             if (passengersResponse.ok) {
                 const passengers = await passengersResponse.json();
                 const passenger = passengers.find(p => p.id === trip.passenger_id);
                 
                 if (passenger) {
-                    // Get user info for passenger name
-                    const usersResponse = await fetch('http://localhost:8810/api/v1/users/');
-                    if (usersResponse.ok) {
-                        const users = await usersResponse.json();
-                        const user = users.find(u => u.id === passenger.user_id);
+                    // Get rider info from main2.0 backend
+                    const ridersResponse = await fetch('http://localhost:8810/api/v1/riders/');
+                    if (ridersResponse.ok) {
+                        const riders = await ridersResponse.json();
+                        const rider = riders.find(r => r.id === trip.rider_id);
                         
-                        if (user) {
+                        if (rider) {
                             // Calculate distance and time (simplified)
                             const distance = calculateDistance(
                                 trip.pickup_lat, trip.pickup_lng,
